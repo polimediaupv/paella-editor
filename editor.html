@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html ng-app>
 	<head>
 		<meta http-equiv="Content-type" content="text/html; charset=utf-8;">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -19,9 +19,108 @@
 
 		<link rel="stylesheet" href="resources/editor/css/bootstrap.min.css">
 		<link rel="stylesheet" href="resources/editor/css/editor.css">
+		<style>
+			html, body, main {
+				height: 100%;
+			}
+			
+			body {
+				overflow: hidden;
+			}
+			
+			#paellaVideoContainer {
+				position: relative;
+				background:
+				repeating-linear-gradient(
+					45deg,
+					#6F6F6F,
+					#6F6F6F 10px,
+					#3F3F3F 10px,
+					#3F3F3F 20px
+				);
+			    height: 100%;
+				width:80%;
+			}
+			
+			#sideBar {
+				background-color: #8A8A8A;
+				width:20%;
+				height: 100%;
+    			top: 0px;
+    			right: 0px;
+    			position: absolute;
+			}
+			
+			#topContainer {
+				position: relative;
+				height: 65%;
+				width: 100%;
+			}
+			
+			#timeLineBar {
+				height: 35%;
+				background-color: #8A8A8A;
+				overflow: auto;
+			}
+			
+			#resizerH {
+				position: fixed;
+				z-index: 10;
+				left: 0px;
+				right: 0px;
+				height: 6px;
+				background-color: darkgray;
+				cursor: ns-resize;
+				border-top:2px solid #444444;
+				border-bottom:2px solid #444444;
+			}
+			
+			#resizerV {
+				position: absolute;
+				z-index: 10;
+				top: 0px;
+				left: 80%;
+				bottom: 0px;
+				width: 6px;
+				background-color: darkgray;
+				cursor: ew-resize;
+				border-left:2px solid #444444;
+				border-right:2px solid #444444;
+			}
+			
+			#playerContainer {
+				position: absolute;
+				top: 20px;
+				left: 35px;
+				right: 20px;
+				bottom: 20px;
+			}
+			
+			
+			
+			
+		</style>
 	</head>
     <body id="body" onload="paella.load('playerContainer',{ url:'../repository/' });">
-		<div id="playerContainer" style="display:block;width:100%">
-		</div>
+		<main class="">
+			<div id="topContainer">
+				<div id="paellaVideoContainer" class="">
+					<div id="playerContainer" >
+					</div>
+				</div>
+				
+				<div id="resizerV"></div>
+				
+				<div id="sideBar" class="">
+					hola
+				</div>
+			</div>
+			
+			<div id="resizerH"></div>
+			
+			<div id="timeLineBar" class="col-xs-12">
+				adios
+			</div>
+		</main>
 	</body>
 </html>

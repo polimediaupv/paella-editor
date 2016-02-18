@@ -112,7 +112,7 @@ module.exports = function(grunt) {
 		express: {
 			paella: {
 		      options: {
-			      port:8000,
+			      port:8001,
 			      bases: 'build'
 		      }
 		  }

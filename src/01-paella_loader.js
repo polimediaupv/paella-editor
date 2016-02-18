@@ -2,7 +2,9 @@ Class ("paella.editor.PaellaPlayer", paella.PaellaPlayer,{
 	
 	initialize:function(playerId) {
 		this.parent(playerId);
-
+		paella.events.bind(paella.events.loadComplete, function() {
+			paella.$editor.load();
+		});
 	},
 
 	showPlaybackBar:function() {
