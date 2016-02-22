@@ -19,9 +19,12 @@ module.exports = function(grunt) {
 				files: [
 					{ expand: true, src: ['player/**'], dest:'build/' },
 					{ expand: true, src: ['editor.html'], dest: 'build/player' },
+					{ expand: true, src: ['templates/**'], dest: 'build/player' },
  					{ expand: true, cwd:'config/', src: ['**'], dest: 'build/player/config' },
-					{ expand: true, cwd:'demos', src:[ '**' ], dest: 'build/repository'},
-					{ expand: true, cwd:'bower_components/angular/', src:[ 'angular.min.js' ], dest:'build/player/javascript' },
+					{ expand: true, cwd:'demos', src:[ '**' ], dest: 'build/repository'},					
+					{ expand: true, cwd:'bower_components/angular/', src:[ 'angular.min.js', 'angular.js' ], dest:'build/player/javascript' },
+					{ expand: true, cwd:'bower_components/angular-bootstrap/', src:[ 'ui-bootstrap-tpls.min.js', 'angular.js' ], dest:'build/player/javascript' },
+					{ expand: true, cwd:'bower_components/angular-route/', src:[ 'angular-route.min.js' ], dest:'build/player/javascript' },
 					{ expand: true, cwd:'bower_components/angular-resource/', src:[ 'angular-resource.min.js' ], dest:'build/player/javascript' },
 					{ expand: true, cwd:'bower_components/angular-translate/', src:[ 'angular-translate.min.js' ], dest:'build/player/javascript' },
 					{ expand: true, cwd:'bower_components/bootstrap/dist/js', src:[ 'bootstrap.min.js' ], dest:'build/player/javascript' },
@@ -95,7 +98,8 @@ module.exports = function(grunt) {
 				 	'editor.html',
 				 	'src/*.js',
 				 	'plugins/**',
-					'style/*.less'
+					'style/*',
+					'templates/**'
 				 ],
 				 tasks: ['build.release']
 			},
@@ -104,7 +108,8 @@ module.exports = function(grunt) {
 				 	'editor.html',
 				 	'src/*.js',
 				 	'plugins/**',
-					'style/*.less'
+					'style/*',
+					'templates/**'
 				 ],
 				 tasks: ['build.debug']
 			}

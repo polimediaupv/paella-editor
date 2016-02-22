@@ -4,6 +4,7 @@ Class ("paella.editor.PaellaPlayer", paella.PaellaPlayer,{
 		this.parent(playerId);
 		paella.events.bind(paella.events.loadComplete, function() {
 			paella.$editor.load();
+			angular.bootstrap(document, [ paella.editor.APP_NAME ]);
 		});
 	},
 

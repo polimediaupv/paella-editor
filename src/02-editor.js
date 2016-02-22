@@ -84,3 +84,12 @@ paella.$editor = {
 	}
 };
 
+(function() {
+	var app = angular.module(paella.editor.APP_NAME);
+	
+	app.service("PaellaEditor", [ function() {
+		this.tools = [];
+		
+		
+	}]);
+})();
