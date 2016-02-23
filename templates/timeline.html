@@ -1,3 +1,11 @@
 <nav class="navbar navbar-inverse navbar-static-top">
 	
 </nav>
+<div class="timeline-content">
+	<div class="track main-track" ng-repeat="trackData in mainTracks">
+		<track data="trackData"></track>
+	</div>
+	<div class="track" ng-repeat="trackData in tracks">
+		<track data="trackData"></track>
+	</div>
+</div>

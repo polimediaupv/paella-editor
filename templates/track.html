@@ -1,0 +1,5 @@
+<div class="track-item" ng-repeat="trackData in tracks" style="left: {{ getLeft(trackData) }}%; width: {{ getWidth(trackData) }}%;">
+	<div class="handler" style="color: {{ textColor }}; background-color: {{ color }}; "></div>
+	<p style="color: {{ textColor }}; background-color: {{ color }}; ">{{ trackData.name || name }}</p>
+	<div class="handler" style="color: {{ textColor }}; background-color: {{ color }}; "></div>
+</div>

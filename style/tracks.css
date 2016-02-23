@@ -1,0 +1,50 @@
+.timeline-content {
+	
+}
+
+.track {
+	position: relative;
+	height: 20px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+.track.main-track {
+	height: 35px;
+}
+
+.track-item {
+	position: absolute;
+}
+
+.track .track-item {
+	height: 20px;
+	line-height: 20px;
+}
+
+.track.main-track .track-item {
+	height: 35px;
+	line-height: 35px;
+}
+
+.handler {
+	width: 7px;
+    height: 100%;
+    position: absolute;
+    top: 0px;
+}
+
+.handler:first-child {
+	left: -7px;
+	border-radius: 8px 0px 0px 8px;
+}
+
+.handler:last-child {
+	right: -7px;
+	border-radius: 0px 8px 8px 0px;
+}
+
+.track-item p {
+	overflow: hidden;
+	max-height: 100%;
+}
