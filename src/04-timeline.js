@@ -7,10 +7,18 @@
 			templateUrl: "templates/timeline.html",
 			controller: ["$scope","PaellaEditor",function($scope,PaellaEditor) {
 				$scope.tracks = [];
+				$scope.zoom = 100;
+				$scope.zoomOptions = {
+					floor:100,
+					ceil:5000
+				};
 				
 				$scope.tracks = PaellaEditor.tracks;
 				
 				$scope.$watch('tracks');
+				$scope.$watch('zoom',function() {
+					$('#timeline-content').css({ width:$scope.zoom + "%" });
+				});
 			}]
 		};
 	});
@@ -66,7 +74,6 @@
 							else {
 								cancelMouseTracking();
 							}
-							console.log(trackData.s + " - " + trackData.e);
 						});
 						$(document).on("mouseup",function(evt) {
 							cancelMouseTracking();

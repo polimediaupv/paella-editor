@@ -1,8 +1,18 @@
 <nav class="navbar navbar-inverse navbar-static-top">
 	
 </nav>
-<div class="timeline-content">
-	<div class="track" ng-class="{ 'main-track':trackData.type=='main' }" ng-repeat="trackData in tracks">
-		<track data="trackData"></track>
+<div class="timeline-zoom-container">
+	<div id="timeline-content" class="timeline-content">
+		<div class="track" ng-class="{ 'main-track':trackData.type=='main' }" ng-repeat="trackData in tracks">
+			<track data="trackData"></track>
+		</div>
 	</div>
+</div>
+
+<div class="visualization-bar">
+	<div class="col-xs-offset-9 col-xs-1 text-right">Zoom:</div>
+	<div class="col-xs-2">
+		<rzslider rz-slider-model="zoom" rz-slider-options="zoomOptions"></rzslider>
+	</div>
+	
 </div>

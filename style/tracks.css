@@ -1,3 +1,32 @@
+time-line {
+	position: relative;
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+time-line nav {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	right: 0px;
+}
+
+time-line .timeline-zoom-container {
+	width: 100%;
+    overflow: auto;
+    position: absolute;
+    bottom: 54px;
+    top: 50px;
+}
+
+time-line .visualization-bar {
+	position: absolute;
+	bottom: 0px;
+	left: 0px;
+	right: 0px;
+	background-color: #0F0F0F;
+}
 .timeline-content {
 	
 }
@@ -32,6 +61,7 @@
     height: 100%;
     position: absolute;
     top: 0px;
+	cursor: ew-resize;
 }
 
 .handler:first-child {
@@ -47,4 +77,20 @@
 .track-item p {
 	overflow: hidden;
 	max-height: 100%;
+	cursor: pointer;
+}
+
+rzslider .rz-pointer {
+	width: 12px;
+	height: 12px;
+	top: -9px;
+}
+
+rzslider .rz-pointer:after {
+	top: 2px;
+    left: 2px;
+}
+
+rzslider .rz-bar-wrapper {
+	padding-top: 10px;
 }

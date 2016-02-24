@@ -7,6 +7,7 @@ paella.editor.APP_NAME = "paella-editor";
 (function(){
 	var app = angular.module(paella.editor.APP_NAME,[
 		"ngRoute",
+		'rzModule',
 		"ui.bootstrap",
 		"ngResource"]);
 		

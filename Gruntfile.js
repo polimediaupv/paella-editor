@@ -29,7 +29,9 @@ module.exports = function(grunt) {
 					{ expand: true, cwd:'bower_components/angular-translate/', src:[ 'angular-translate.min.js' ], dest:'build/player/javascript' },
 					{ expand: true, cwd:'bower_components/bootstrap/dist/js', src:[ 'bootstrap.min.js' ], dest:'build/player/javascript' },
 					{ expand: true, cwd:'bower_components/bootstrap/dist/css', src:[ 'bootstrap.min.css' ], dest:'build/player/resources/editor/css' },
-					{ expand: true, cwd:'bower_components/bootstrap/dist/fonts', src:[ '**' ], dest:'build/player/resources/editor/fonts' }
+					{ expand: true, cwd:'bower_components/bootstrap/dist/fonts', src:[ '**' ], dest:'build/player/resources/editor/fonts' },
+					{ expand: true, cwd:'bower_components/angularjs-slider/dist/', src:[ 'rzslider.js' ], dest:'build/player/javascript' },
+					{ expand: true, cwd:'bower_components/angularjs-slider/dist/', src:[ 'rzslider.min.css' ], dest:'build/player/resources/editor/css' },
 				]
 			}
 		},
