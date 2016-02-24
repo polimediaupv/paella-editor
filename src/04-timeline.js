@@ -5,81 +5,123 @@
 		return {
 			restrict: "E",
 			templateUrl: "templates/timeline.html",
-			controller: ["$scope",function($scope) {
-				$scope.mainTracks = [];
+			controller: ["$scope","PaellaEditor",function($scope,PaellaEditor) {
 				$scope.tracks = [];
 				
-				paella.player.videoContainer.masterVideo().getVideoData()
-					.then(function(data) {
-						$scope.mainTracks.push({
-							pluginId:'trimming',
-							name:'trimming',
-							color:'#5500FF',
-							textColor:'white',
-							duration:data.duration,
-							list:[
-								{id:1,s:10,e:660}
-							]
-						});
-						
-						$scope.mainTracks.push({
-							pluginId:'rest',
-							name:'rest',
-							color:'#AA2211',
-							textColor:'black',
-							duration:data.duration,
-							list:[
-								{id:1,s:120,e:150},{id:2,s:210,e:260}
-							]
-						});
-						
-						$scope.tracks.push({
-							pluginId:'slices',
-							name:'slices',
-							color:'#11BB33',
-							textColor:'black',
-							duration:data.duration,
-							list:[
-								{id:1,s:20,e:90,name:"slice 1"},{id:2,s:105,e:160,name:"slice 2"}
-							]
-						});
-						
-						$scope.tracks.push({
-							pluginId:'captions',
-							name:'captions',
-							color:'#FFBB33',
-							textColor:'black',
-							duration:data.duration,
-							list:[
-								{id:1,s:120,e:130,name:"caption 1"},{id:2,s:140,e:145,name:"caption 2"}
-							]
-						});
-					});
+				$scope.tracks = PaellaEditor.tracks;
+				
+				$scope.$watch('tracks');
 			}]
 		};
 	});
 	
 	app.directive("track", function() {
+		function cancelMouseTracking() {
+			$(document).off("mouseup");
+			$(document).off("mousemove");
+		}
+		
 		return {
 			restrict: "E",
 			templateUrl: "templates/track.html",
 			scope: {
 				data: "="
 			},
-			controller: ["$scope",function($scope) {
+			controller: ["$scope","PaellaEditor",function($scope,PaellaEditor) {
 				$scope.pluginId = $scope.data.pluginId;
 				$scope.name = $scope.data.name;
 				$scope.color = $scope.data.color;
 				$scope.textColor = $scope.data.textColor || 'black';
 				$scope.tracks = $scope.data.list;
 				$scope.duration = $scope.data.duration;
-				
+				$scope.allowResize = $scope.data.allowResize;
+				$scope.allowMove = $scope.data.allowMove;
+								
 				$scope.getLeft = function(trackData) {
 					return (100 * trackData.s / $scope.duration);
 				};
 				
 				$scope.getWidth = function(trackData) {
 					return (100 * (trackData.e - trackData.s) / $scope.duration);
+				};
+				
+				$scope.getTrackItemId = function(trackData) {
+					return "track-" + $scope.pluginId + "-" + trackData.id;
+				};
+				
+				$scope.leftHandlerDown = function(event,trackData) {
+					if ($scope.allowResize) {
+						var mouseDown = event.clientX;
+						$(document).on("mousemove",function(evt) {
+							var delta = evt.clientX - mouseDown;
+							var elem = $('#' + $scope.getTrackItemId(trackData));
+							var trackWidth = elem.width();
+							var diff = delta * (trackData.e - trackData.s) / trackWidth;
+							var s = trackData.s + diff;
+							if (s>0 && s<trackData.e) {
+								trackData.s = s;
+								PaellaEditor.saveTrack(trackData);
+								mouseDown = evt.clientX;
+							}
+							else {
+								cancelMouseTracking();
+							}
+							console.log(trackData.s + " - " + trackData.e);
+						});
+						$(document).on("mouseup",function(evt) {
+							cancelMouseTracking();
+						});
+					}
+				};
+				
+				$scope.centerHandlerDown = function(event,trackData) {
+					if ($scope.allowMove) {
+						var mouseDown = event.clientX;
+						$(document).on("mousemove",function(evt) {
+							var delta = evt.clientX - mouseDown;
+							var elem = $('#' + $scope.getTrackItemId(trackData));
+							var trackWidth = elem.width();
+							var diff = delta * (trackData.e - trackData.s) / trackWidth;
+							var s = trackData.s + diff;
+							var e = trackData.e + diff;
+							if (s>0 && e<=$scope.duration) {
+								trackData.s = s;
+								trackData.e = e;
+								PaellaEditor.saveTrack(trackData);
+								mouseDown = evt.clientX;
+							}
+							else {
+								cancelMouseTracking();
+							}
+						});
+						$(document).on("mouseup",function(evt) {
+							cancelMouseTracking();
+						});
+					}
+				};
+				
+				$scope.rightHandlerDown = function(event,trackData) {
+					if ($scope.allowResize) {
+						var mouseDown = event.clientX;
+						$(document).on("mousemove",function(evt) {
+							var delta = evt.clientX - mouseDown;
+							var elem = $('#' + $scope.getTrackItemId(trackData));
+							var trackWidth = elem.width();
+							var diff = delta * (trackData.e - trackData.s) / trackWidth;
+							var e = trackData.e + diff;
+							if (e<=$scope.duration && e>trackData.s) {
+								trackData.e = e;
+								PaellaEditor.saveTrack(trackData);
+								mouseDown = evt.clientX;
+							}
+							else {
+								cancelMouseTracking();
+							}
+						});
+						$(document).on("mouseup",function(evt) {
+							cancelMouseTracking();
+						});						
+					}
 				};
 			}]
 		};
