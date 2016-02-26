@@ -3,8 +3,10 @@ Class ("paella.editor.PaellaPlayer", paella.PaellaPlayer,{
 	initialize:function(playerId) {
 		this.parent(playerId);
 		paella.events.bind(paella.events.loadComplete, function() {
-			paella.$editor.load();
-			angular.bootstrap(document, [ paella.editor.APP_NAME ]);
+			paella.$editor.load()
+				.then(function() {
+					angular.bootstrap(document, [ paella.editor.APP_NAME ]);
+				});
 		});
 	},
 

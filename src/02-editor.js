@@ -79,8 +79,19 @@ Class ("paella.editor.UILayout", {
 });
 
 paella.$editor = {
+	config:{},
+
 	load:function() {
+		var This = this;
+		var defer = $.Deferred();
 		this.uiLayout = new paella.editor.UILayout();
+		
+		$.get("config/editor-config.json")
+			.then(function(data) {
+				This.config = data;
+				defer.resolve();
+			});
+		return defer;
 	}
 };
 
@@ -90,6 +101,12 @@ paella.$editor = {
 	app.factory("PaellaEditor", [ "$rootScope", function($rootScope) {
 		var service = {
 			tracks:[],
+			tools:[],
+			currentTool:-1,
+			
+			setCurrentTool:function(tool) {
+				
+			},
 			
 			saveTrack:function(trackData) {
 				this.tracks.forEach(function(t) {
@@ -100,6 +117,8 @@ paella.$editor = {
 				});
 			}
 		};
+		
+		paella.editor.pluginManager.loadPlugins();
 				
 		paella.player.videoContainer.masterVideo().getVideoData()
 			.then(function(data) {

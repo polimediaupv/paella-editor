@@ -27,6 +27,7 @@ time-line .visualization-bar {
 	right: 0px;
 	background-color: #525252;
 }
+
 .timeline-content {
 	
 }
@@ -108,3 +109,6 @@ rzslider {
 	color: white;
 }
 
+.navbar-inverse {
+	background-color: #525252;
+}

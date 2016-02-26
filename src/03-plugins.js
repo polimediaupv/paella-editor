@@ -2,30 +2,62 @@ Class ("paella.editor.PluginManager", {
 	trackPlugins:[],
 	rightBarPlugins:[],
 	toolbarPlugins:[],
-
+	
+	plugins:[],
+	
 	initialize:function() {
-		this.initPlugins();
+		
 	},
 
-	initPlugins:function() {
-		paella.pluginManager.setTarget('editorTrackPlugin',this);
-		paella.pluginManager.setTarget('editorRightBarPlugin',this);
-		paella.pluginManager.setTarget('editorToolbarPlugin',this);
+	registerPlugin:function(plugin) {
+		this.plugins.push(plugin);
+	},
+	
+	loadPlugins:function() {
+		var This = this;
+		this.foreach(function(plugin,config) {
+			if (config.enabled) {
+				plugin.config = config;
+				This.addPlugin(plugin);
+			}
+		});
+	},
+
+	foreach:function(callback) {
+		var enablePluginsByDefault = false;
+		var pluginsConfig = {};
+		try {
+			enablePluginsByDefault = paella.$editor.config.plugins.enablePluginsByDefault;
+		}
+		catch(e){}
+		try {
+			pluginsConfig = paella.player.config.plugins.list;
+		}
+		catch(e){}
+				
+		this.plugins.forEach(function(plugin){			
+			var name = plugin.getName();
+			var config = pluginsConfig[name];
+			if (!config) {
+				config = { enabled: enablePluginsByDefault };
+			}
+			callback(plugin, config);
+		});
 	},
 
 	addPlugin:function(plugin) {
-		var thisClass = this;
+		var This = this;
 		plugin.checkEnabled(function(isEnabled) {
 			if (isEnabled) {
-				paella.pluginManager.setupPlugin(plugin);
+				plugin.setup();
 				if (plugin.type=='editorTrackPlugin') {
-					thisClass.trackPlugins.push(plugin);
+					This.trackPlugins.push(plugin);
 				}
 				if (plugin.type=='editorRightBarPlugin') {
-					thisClass.rightBarPlugins.push(plugin);
+					This.rightBarPlugins.push(plugin);
 				}
 				if (plugin.type=='editorToolbarPlugin') {
-					thisClass.toolbarPlugins.push(plugin);
+					This.toolbarPlugins.push(plugin);
 				}
 			}
 		});
@@ -83,7 +115,15 @@ Class ("paella.editor.PluginManager", {
 
 paella.editor.pluginManager = new paella.editor.PluginManager();
 
-Class ("paella.editor.EditorPlugin", paella.DeferredLoadPlugin,{
+Class ("paella.editor.EditorPlugin", {
+	initialize:function() {
+		paella.editor.pluginManager.registerPlugin(this);
+	},
+	
+	setup:function() {
+		
+	},
+
 	onTrackSelected:function(newTrack) {
 		if (newTrack) {
 			base.log.debug(this.getName() + ": New track selected " + newTrack.getName());
