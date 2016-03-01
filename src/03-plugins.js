@@ -11,6 +11,9 @@ Class ("paella.editor.PluginManager", {
 
 	registerPlugin:function(plugin) {
 		this.plugins.push(plugin);
+		this.plugins.sort(function(a,b) {
+			return a.getIndex() - b.getIndex();
+		});
 	},
 	
 	loadPlugins:function() {
@@ -123,16 +126,7 @@ Class ("paella.editor.EditorPlugin", {
 	setup:function() {
 		
 	},
-
-	onTrackSelected:function(newTrack) {
-		if (newTrack) {
-			base.log.debug(this.getName() + ": New track selected " + newTrack.getName());
-		}
-		else {
-			base.log.debug("No track selected");
-		}
-	},
-
+	
 	onSave:function() {
 		return paella_DeferredResolved();
 	},
@@ -221,6 +215,10 @@ Class ("paella.editor.TrackPlugin", paella.editor.EditorPlugin,{
 	},
 
 	isToolEnabled:function(toolName) {
+		return true;
+	},
+	
+	isToggleTool:function(toolName) {
 		return true;
 	},
 

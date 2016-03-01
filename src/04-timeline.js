@@ -6,18 +6,43 @@
 			restrict: "E",
 			templateUrl: "templates/timeline.html",
 			controller: ["$scope","PaellaEditor",function($scope,PaellaEditor) {
-				$scope.tracks = [];
 				$scope.zoom = 100;
 				$scope.zoomOptions = {
 					floor:100,
 					ceil:5000
 				};
 				
+				$scope.trackSelector = {
+					isOpen:false
+				};
+				
 				$scope.tracks = PaellaEditor.tracks;
+				$scope.currentTrack = PaellaEditor.currentTrack;
+				$scope.selectTrack = function(t) {
+					PaellaEditor.selectTrack(t);
+				};
+				
+				$scope.tools = PaellaEditor.tools;
+				$scope.currentTool = PaellaEditor.currentTool;
+				$scope.selectTool = function(tool) {
+					if (tool.isEnabled) {
+						PaellaEditor.selectTool(tool.name);
+					}
+				};
+				
+				$scope.selectTrack = function(trackData) {
+					PaellaEditor.selectTrack(trackData);
+				};
 				
 				$scope.$watch('tracks');
 				$scope.$watch('zoom',function() {
 					$('#timeline-content').css({ width:$scope.zoom + "%" });
+				});
+				
+				PaellaEditor.subscribe($scope, function() {
+					$scope.currentTrack = PaellaEditor.currentTrack;
+					$scope.tools = PaellaEditor.tools;
+					$scope.currentTool = PaellaEditor.currentTool;
 				});
 			}]
 		};
@@ -68,7 +93,7 @@
 							var s = trackData.s + diff;
 							if (s>0 && s<trackData.e) {
 								trackData.s = s;
-								PaellaEditor.saveTrack(trackData);
+								PaellaEditor.saveTrack($scope.pluginId,trackData);
 								mouseDown = evt.clientX;
 							}
 							else {
@@ -94,7 +119,7 @@
 							if (s>0 && e<=$scope.duration) {
 								trackData.s = s;
 								trackData.e = e;
-								PaellaEditor.saveTrack(trackData);
+								PaellaEditor.saveTrack($scope.pluginId,trackData);
 								mouseDown = evt.clientX;
 							}
 							else {
@@ -118,7 +143,7 @@
 							var e = trackData.e + diff;
 							if (e<=$scope.duration && e>trackData.s) {
 								trackData.e = e;
-								PaellaEditor.saveTrack(trackData);
+								PaellaEditor.saveTrack($scope.pluginId,trackData);
 								mouseDown = evt.clientX;
 							}
 							else {

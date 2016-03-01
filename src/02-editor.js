@@ -102,19 +102,74 @@ paella.$editor = {
 		var service = {
 			tracks:[],
 			tools:[],
-			currentTool:-1,
+			currentTrack:null,
+			currentTool:null,
 			
-			setCurrentTool:function(tool) {
-				
-			},
-			
-			saveTrack:function(trackData) {
+			saveTrack:function(pluginId,trackData) {
 				this.tracks.forEach(function(t) {
-					if (t.pluginId == t.pluginId) {
-						t.list = t.list;
+					if (t.pluginId == pluginId) {
+						var index = -1;
+						t.list.some(function(trackItem, i) {
+							if (trackItem.id==trackData.id) {
+								index = i;
+								return true;
+							}
+						});
+						
+						if (index>=0) {
+							t.list[index] = trackData;
+						}
+						t.plugin.onTrackChanged(trackData.id, trackData.s, trackData.e);
 						$rootScope.$apply();
 					}
 				});
+				this.notify();
+			},
+			
+			saveTrackContent:function(pluginId,trackData) {
+				
+			},
+			
+			selectTrack:function(trackData) {
+				if (!this.currentTrack || this.currentTrack.pluginId!=trackData.pluginId) {
+					var This = this;
+					this.currentTrack = trackData;
+					this.currentTool = null;
+					this.tracks.forEach(function(track) {
+						track.plugin.onToolSelected(trackData);
+					});
+					this.tools = [];
+					trackData.plugin.getTools().forEach(function(tool) {
+						var isEnabled = This.currentTrack.plugin.isToolEnabled(tool);
+						var isToggle = This.currentTrack.plugin.isToggleTool(tool);
+						This.tools.push({
+							name:tool,
+							isEnabled:isEnabled,
+							isToggle:isToggle
+						});
+					});
+					this.notify();
+				}
+			},
+			
+			selectTool:function(toolName) {
+				if (this.currentTrack.plugin.getTools().some(function(t) {
+						return t==toolName;
+					})
+				) {
+					this.currentTool = toolName;
+					this.currentTrack.plugin.onToolSelected(toolName);
+					this.notify();
+				}
+			},
+			
+			subscribe:function(scope, callback) {
+				var handler = $rootScope.$on('notify-service-changed', callback);
+				scope.$on('destroy', handler);
+			},
+			
+			notify:function() {
+				$rootScope.$emit('notify-service-changed');
 			}
 		};
 		
@@ -122,6 +177,23 @@ paella.$editor = {
 				
 		paella.player.videoContainer.masterVideo().getVideoData()
 			.then(function(data) {
+				paella.editor.pluginManager.trackPlugins.forEach(function(plugin) {
+					service.tracks.push({
+						pluginId:plugin.getName(),
+						type:plugin.getTrackType(),
+						name:plugin.getTrackName(),
+						color:plugin.getColor(),
+						textColor:plugin.getTextColor(),
+						duration:data.duration,
+						allowResize:plugin.allowResize(),
+						allowMove:plugin.allowDrag(),
+						allowEditContent:plugin.allowEditContent(),
+						list: plugin.getTrackItems(),
+						plugin:plugin
+					});
+				});
+				
+				/*
 				service.tracks.push({
 					pluginId:'trimming',
 					type:'main',
@@ -175,6 +247,7 @@ paella.$editor = {
 						{id:1,s:120,e:130,name:"caption 1"},{id:2,s:140,e:145,name:"caption 2"}
 					]
 				});
+				*/
 			});
 			
 			
