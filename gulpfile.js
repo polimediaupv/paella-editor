@@ -53,7 +53,8 @@ gulp.task("copy", function() {
 		'bower_components/angular-resource/angular-resource.min.js',
 		'bower_components/angular-translate/angular-translate.min.js',
 		'bower_components/bootstrap/dist/js/bootstrap.min.js',
-		'bower_components/angularjs-slider/dist/rzslider.js'
+		'bower_components/angularjs-slider/dist/rzslider.js',
+		'bower_components/traceur/traceur.min.js'
 	];
 	gulp.src(depsjs)
 		.pipe(gulp.dest(`${config.outDir}player/javascript/`));
