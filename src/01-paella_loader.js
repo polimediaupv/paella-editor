@@ -1,3 +1,4 @@
+
 Class ("paella.editor.PaellaPlayer", paella.PaellaPlayer,{
 	
 	initialize:function(playerId) {
