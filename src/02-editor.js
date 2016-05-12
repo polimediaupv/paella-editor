@@ -165,6 +165,10 @@
 			
 			notify:function() {
 				$rootScope.$emit('notify-service-changed');
+			},
+			
+			plugins:function() {
+				return paella.editor.pluginManager.enabledPlugins;
 			}
 		};
 		

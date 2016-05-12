@@ -2,25 +2,43 @@
 	class PluginManager {
 		constructor() {
 			this.trackPlugins = [];
-			this.rightBarPlugins = [];
+			this.sideBarPlugins = [];
 			this.toolbarPlugins = [];
 			
-			this.plugins = [];
+			this._plugins = [];
+			this._pluginsLoaded = false;
 		}
 		
 		registerPlugin(plugin) {
-			this.plugins.push(plugin);
-			this.plugins.sort(function(a,b) {
+			this._plugins.push(plugin);
+			this._plugins.sort(function(a,b) {
 				return a.getIndex() - b.getIndex();
 			});
 		}
 		
 		loadPlugins() {
-			this.foreach((plugin,config) => {
-				if (config.enabled) {
-					plugin.config = config;
-					this.addPlugin(plugin);
-				}
+			return new Promise((loadResolve,loadReject) => {
+				let pluginsPromises = [];
+				this.foreach((plugin,config) => {
+					if (config.enabled) {
+						plugin.config = config;
+						let promise = new Promise((resolve, reject) => {
+							plugin.checkEnabled()
+								.then((isEnabled) => {
+									if (isEnabled) {
+										this.addPlugin(plugin);
+									}
+									resolve();
+								});
+						});
+						pluginsPromises.push(promise);
+					}
+				});
+				Promise.all(pluginsPromises)
+					.then(() => {
+						this._pluginsLoaded = true;
+						loadResolve();
+					});
 			});
 		}
 		
@@ -36,7 +54,7 @@
 			}
 			catch(e){}
 					
-			this.plugins.forEach(function(plugin){			
+			this._plugins.forEach(function(plugin){			
 				var name = plugin.getName();
 				var config = pluginsConfig[name];
 				if (!config) {
@@ -46,26 +64,45 @@
 			});
 		}
 		
-		addPlugin(plugin) {
-			plugin.checkEnabled((isEnabled) => {
-				if (isEnabled) {
-					plugin.setup();
-					if (plugin.type=='editorTrackPlugin') {
-						this.trackPlugins.push(plugin);
+		get plugins() {
+			return this._plugins;
+		}
+		
+		get enabledPlugins() {
+			return new Promise((resolve,reject) => {
+				function checkAndResolve() {
+					if (this._pluginsLoaded) {
+						resolve({
+							trackPlugins:this.trackPlugins,
+							sideBarPlugins:this.sideBarPlugins,
+							toolbarPlugins:this.toolbarPlugins
+						});
 					}
-					if (plugin.type=='editorRightBarPlugin') {
-						this.rightBarPlugins.push(plugin);
-					}
-					if (plugin.type=='editorToolbarPlugin') {
-						this.toolbarPlugins.push(plugin);
+					else {
+						setTimeout(checkAndResolve(), 100);
 					}
 				}
+				checkAndResolve();
 			});
+		}
+		
+		addPlugin(plugin) {
+			plugin.setup();
+			if (plugin.type=='editorTrackPlugin') {
+				this.trackPlugins.push(plugin);
+			}
+			if (plugin.type=='editorSideBarPlugin') {
+				console.log(`Adding plugin ${plugin.getName()}`)
+				this.sideBarPlugins.push(plugin);
+			}
+			if (plugin.type=='editorToolbarPlugin') {
+				this.toolbarPlugins.push(plugin);
+			}
 		}
 		
 		onTrackChanged(newTrack) {
 			// Notify tab plugins
-			this.rightBarPlugins.forEach(function(plugin) {
+			this.sideBarPlugins.forEach(function(plugin) {
 				plugin.onTrackSelected(newTrack);
 			});
 
@@ -83,7 +120,7 @@
 			};
 			
 			this.trackPlugins.forEach(handleOnSave);
-			this.rightBarPlugins.forEach(handleOnSave);
+			this.sideBarPlugins.forEach(handleOnSave);
 			this.toolbarPlugins.forEach(handleOnSave);
 			
 			return new Promise((resolve,reject) => {
@@ -106,7 +143,12 @@
 	
 	class EditorPlugin {
 		constructor() {
+			console.log("Registering plugin " + this.getName());
 			paella.editor.pluginManager.registerPlugin(this);
+		}
+		
+		checkEnabled() {
+			return Promise.resolve(true);
 		}
 		
 		setup() {
@@ -242,10 +284,10 @@
 	
 	paella.editor.MainTrackPlugin = MainTrackPlugin;
 
-	class RightBarPlugin extends paella.editor.EditorPlugin {
+	class SideBarPlugin extends paella.editor.EditorPlugin {
 		constructor() {
 			super();
-			this.type = 'editorRightBarPlugin';
+			this.type = 'editorSideBarPlugin';
 		}
 
 		getIndex() {
@@ -253,11 +295,11 @@
 		}
 
 		getName() {
-			return "editorRightbarPlugin";
+			return "editorSideBarPlugin";
 		}
 
 		getTabName() {
-			return "My Rightbar Plugin";
+			return "My Side bar Plugin";
 
 		}
 		getContent() {
@@ -269,7 +311,7 @@
 		}
 	}
 	
-	paella.editor.RightBarPlugin = RightBarPlugin;
+	paella.editor.SideBarPlugin = SideBarPlugin;
 
 	class EditorToolbarPlugin extends paella.editor.EditorPlugin {
 		constructor() {

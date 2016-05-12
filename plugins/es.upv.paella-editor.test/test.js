@@ -2,8 +2,8 @@
 
 Class ("es.upv.paellaEditor.Test", paella.editor.TrackPlugin,{
 	
-	checkEnabled:function(onSuccess) {
-		onSuccess(true);
+	checkEnabled:function() {
+		return Promise.resolve(true);
 	},
 	
 	getIndex:function() {
@@ -93,8 +93,8 @@ es.upv.paellaEditor.test = new es.upv.paellaEditor.Test();
 
 Class ("es.upv.paellaEditor.Test2", paella.editor.MainTrackPlugin,{
 	
-	checkEnabled:function(onSuccess) {
-		onSuccess(true);
+	checkEnabled:function() {
+		return Promise.resolve(true);
 	},
 	
 	getIndex:function() {
@@ -178,3 +178,20 @@ Class ("es.upv.paellaEditor.Test2", paella.editor.MainTrackPlugin,{
 });
 
 es.upv.paellaEditor.test2 = new es.upv.paellaEditor.Test2();
+
+Class ("es.upv.paellaEditor.TestSideBar", paella.editor.SideBarPlugin, {
+	getName:function() {
+		return "My side bar plugin";
+	},
+
+	getTabName:function() {
+		return "My Side bar Plugin";
+
+	},
+	
+	getContent:function() {
+		// 
+	}
+});
+
+es.upv.paellaEditor.testSideBar = new es.upv.paellaEditor.TestSideBar();
