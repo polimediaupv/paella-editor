@@ -16,10 +16,10 @@ gulp.task("webserver", function() {
 
 gulp.task("compile", function() {
 	gulp.src(["src/*.js","plugins/*/*.js"])
-		.pipe(sourcemaps.init())
+		//.pipe(sourcemaps.init())
 		.pipe(traceur())
 		.pipe(concat("paella_editor.js"))
-		.pipe(sourcemaps.write('.'))
+		//.pipe(sourcemaps.write('.'))
 		.pipe(gulp.dest(`${config.outDir}player/javascript/`));
 });
 

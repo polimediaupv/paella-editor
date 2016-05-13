@@ -10,6 +10,8 @@
 				PaellaEditor.plugins()
 					.then(function(plugins) {
 						$scope.plugins = plugins.sideBarPlugins;
+						console.log($scope.plugins.length);
+						$scope.$apply();
 					});
 			}]
 		};

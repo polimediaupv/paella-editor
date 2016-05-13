@@ -70,16 +70,17 @@
 		
 		get enabledPlugins() {
 			return new Promise((resolve,reject) => {
+				let This = this;
 				function checkAndResolve() {
-					if (this._pluginsLoaded) {
+					if (This._pluginsLoaded) {
 						resolve({
-							trackPlugins:this.trackPlugins,
-							sideBarPlugins:this.sideBarPlugins,
-							toolbarPlugins:this.toolbarPlugins
+							trackPlugins:This.trackPlugins,
+							sideBarPlugins:This.sideBarPlugins,
+							toolbarPlugins:This.toolbarPlugins
 						});
 					}
 					else {
-						setTimeout(checkAndResolve(), 100);
+						setTimeout(checkAndResolve, 100);
 					}
 				}
 				checkAndResolve();
