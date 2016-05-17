@@ -94,31 +94,63 @@
 	var app = angular.module(paella.editor.APP_NAME);
 	
 	app.factory("PaellaEditor", [ "$rootScope", function($rootScope) {
+		let videoData = null;
 		var service = {
-			tracks:[],
+			_tracks:[],
 			tools:[],
 			currentTrack:null,
 			currentTool:null,
 			
+			tracks:function() {
+				return new Promise((resolve,reject) => {
+					paella.player.videoContainer.masterVideo().getVideoData()
+						.then((data) => {
+							videoData = data;
+							paella.editor.pluginManager.enabledPlugins.then((plugins) => {
+								if (this._tracks.length==0) {
+									plugins.trackPlugins.forEach((plugin) => {
+										this._tracks.push({
+											pluginId:plugin.getName(),
+											type:plugin.getTrackType(),
+											name:plugin.getTrackName(),
+											color:plugin.getColor(),
+											textColor:plugin.getTextColor(),
+											duration:videoData.duration,
+											allowResize:plugin.allowResize(),
+											allowMove:plugin.allowDrag(),
+											allowEditContent:plugin.allowEditContent(),
+											list: plugin.getTrackItems(),
+											plugin:plugin
+										});
+									});
+								}
+								resolve(this._tracks);
+							}); 
+						})
+				});
+			},
+			
 			saveTrack:function(pluginId,trackData) {
-				this.tracks.forEach(function(t) {
-					if (t.pluginId == pluginId) {
-						var index = -1;
-						t.list.some(function(trackItem, i) {
-							if (trackItem.id==trackData.id) {
-								index = i;
-								return true;
+				this.tracks().then((tracks) => {
+						tracks.forEach(function(t) {
+							if (t.pluginId == pluginId) {
+								var index = -1;
+								t.list.some(function(trackItem, i) {
+									if (trackItem.id==trackData.id) {
+										index = i;
+										return true;
+									}
+								});
+								
+								if (index>=0) {
+									t.list[index] = trackData;
+								}
+								t.plugin.onTrackChanged(trackData.id, trackData.s, trackData.e);
+								$rootScope.$apply();
 							}
 						});
-						
-						if (index>=0) {
-							t.list[index] = trackData;
-						}
-						t.plugin.onTrackChanged(trackData.id, trackData.s, trackData.e);
-						$rootScope.$apply();
-					}
-				});
-				this.notify();
+						this.notify();
+					});
 			},
 			
 			saveTrackContent:function(pluginId,trackData) {
@@ -130,7 +162,7 @@
 					var This = this;
 					this.currentTrack = trackData;
 					this.currentTool = null;
-					this.tracks.forEach(function(track) {
+					this._tracks.forEach(function(track) {
 						track.plugin.onToolSelected(trackData);
 					});
 					this.tools = [];
@@ -173,27 +205,11 @@
 		};
 		
 		paella.editor.pluginManager.loadPlugins();
-				
-		paella.player.videoContainer.masterVideo().getVideoData()
-			.then(function(data) {
-				paella.editor.pluginManager.trackPlugins.forEach(function(plugin) {
-					service.tracks.push({
-						pluginId:plugin.getName(),
-						type:plugin.getTrackType(),
-						name:plugin.getTrackName(),
-						color:plugin.getColor(),
-						textColor:plugin.getTextColor(),
-						duration:data.duration,
-						allowResize:plugin.allowResize(),
-						allowMove:plugin.allowDrag(),
-						allowEditContent:plugin.allowEditContent(),
-						list: plugin.getTrackItems(),
-						plugin:plugin
-					});
-				});
-			});
-			
-			
+		
+		service.tracks().then((tracks) => {
+			// Tracks loaded
+		});
+					
 		return service;
 	}]);
 })();

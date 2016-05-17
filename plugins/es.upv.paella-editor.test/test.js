@@ -1,197 +1,242 @@
 
 
-Class ("es.upv.paellaEditor.Test", paella.editor.TrackPlugin,{
+(function() {
 	
-	checkEnabled:function() {
-		return Promise.resolve(true);
-	},
-	
-	getIndex:function() {
-		return 10000;
-	},
-
-	getName:function() {
-		return "testTrackPlugin";
-	},
-
-	getTrackName:function() {
-		return "Track test";
-	},
-
-	getColor:function() {
-		return "#5500FF";
-	},
-
-	getTextColor:function() {
-		return "#F0F0F0";
-	},
-
-	getTrackItems:function() {
-		var exampleTracks = [{id:1,s:10,e:70},{id:2,s:110,e:340}];
-		return exampleTracks;
-	},
-
-	allowResize:function() {
-		return true;
-	},
-
-	allowDrag:function() {
-		return true;
-	},
-
-	allowEditContent:function() {
-		return true;
-	},
-
-	onTrackChanged:function(id,start,end) {
-		//base.log.debug('Track changed: id=' + id + ", start: " + start + ", end:" + end);
-		console.log("Track changed: s=" + start + ", e=" + end);
-	},
-
-	onTrackContentChanged:function(id,content) {
-		//base.log.debug('Track content changed: id=' + id + ', new content: ' + content);
+	class TestPlugin extends paella.editor.TrackPlugin {
 		
-	},
-
-	onSelect:function(trackItemId) {
-		base.log.debug('Track list selected: ' + this.getTrackName());
-	},
-
-	onUnselect:function() {
-		base.log.debug('Track list unselected: ' + this.getTrackName());
-	},
-
-	onDblClick:function(trackData) {
-	},
-
-	getTools:function() {
-		return ["Tool 1", "Tool 2"];
-	},
-
-	onToolSelected:function(toolName) {
-		console.log('Tool selected: ' + toolName);
-	},
-
-	isToolEnabled:function(toolName) {
-		return true;
-	},
-	
-	isToggleTool:function(toolName) {
-		return toolName=="Tool 1";
-	},
-
-	buildToolTabContent:function(tabContainer) {
-
-	},
-
-	getSettings:function() {
-		return null;
-	}
-});
-
-es.upv.paellaEditor.test = new es.upv.paellaEditor.Test();
-
-Class ("es.upv.paellaEditor.Test2", paella.editor.MainTrackPlugin,{
-	
-	checkEnabled:function() {
-		return Promise.resolve(true);
-	},
-	
-	getIndex:function() {
-		return 9000;
-	},
-
-	getName:function() {
-		return "testTrackPlugin2";
-	},
-
-	getTrackName:function() {
-		return "Track test 2";
-	},
-
-	getColor:function() {
-		return "#AA2211";
-	},
-
-	getTextColor:function() {
-		return "black";
-	},
-
-	getTrackItems:function() {
-		var exampleTracks = [{id:1,s:10,e:550}];
-		return exampleTracks;
-	},
-
-	allowResize:function() {
-		return true;
-	},
-
-	allowDrag:function() {
-		return false;
-	},
-
-	allowEditContent:function() {
-		return false;
-	},
-
-	onTrackChanged:function(id,start,end) {
-		//base.log.debug('Track changed: id=' + id + ", start: " + start + ", end:" + end);
-		console.log("Track changed: s=" + start + ", e=" + end);
-	},
-
-	onTrackContentChanged:function(id,content) {
-		//base.log.debug('Track content changed: id=' + id + ', new content: ' + content);
+		checkEnabled() {
+			return Promise.resolve(true);
+		}
 		
-	},
+		getIndex() {
+			return 10000;
+		}
 
-	onSelect:function(trackItemId) {
-		base.log.debug('Track list selected: ' + this.getTrackName());
-	},
+		getName() {
+			return "testTrackPlugin";
+		}
 
-	onUnselect:function() {
-		base.log.debug('Track list unselected: ' + this.getTrackName());
-	},
+		getTrackName() {
+			return "Track test";
+		}
 
-	onDblClick:function(trackData) {
-	},
+		getColor() {
+			return "#5500FF";
+		}
 
-	getTools:function() {
-		return [];
-	},
+		getTextColor() {
+			return "#F0F0F0";
+		}
 
-	onToolSelected:function(toolName) {
-		//base.log.debug('Tool selected: ' + toolName);
-		paella.events.trigger(paella.events.documentChanged);
-	},
+		getTrackItems() {
+			var exampleTracks = [{id:1,s:10,e:70},{id:2,s:110,e:340}];
+			return exampleTracks;
+		}
 
-	isToolEnabled:function(toolName) {
-		return true;
-	},
+		allowResize() {
+			return true;
+		}
 
-	buildToolTabContent:function(tabContainer) {
+		allowDrag() {
+			return true;
+		}
 
-	},
+		allowEditContent() {
+			return true;
+		}
 
-	getSettings:function() {
-		return null;
+		onTrackChanged(id,start,end) {
+			//base.log.debug('Track changed: id=' + id + ", start: " + start + ", end:" + end);
+			console.log("Track changed: s=" + start + ", e=" + end);
+		}
+
+		onTrackContentChanged(id,content) {
+			//base.log.debug('Track content changed: id=' + id + ', new content: ' + content);	
+		}
+
+		onSelect(trackItemId) {
+			base.log.debug('Track list selected: ' + this.getTrackName());
+		}
+
+		onUnselect() {
+			base.log.debug('Track list unselected: ' + this.getTrackName());
+		}
+
+		onDblClick(trackData) {
+		}
+
+		getTools() {
+			return ["Tool 1", "Tool 2"];
+		}
+
+		onToolSelected(toolName) {
+			console.log('Tool selected: ' + toolName);
+		}
+
+		isToolEnabled(toolName) {
+			return true;
+		}
+		
+		isToggleTool(toolName) {
+			return toolName=="Tool 1";
+		}
+
+		buildToolTabContent(tabContainer) {
+
+		}
+
+		getSettings() {
+			return null;
+		}
 	}
-});
 
-es.upv.paellaEditor.test2 = new es.upv.paellaEditor.Test2();
+	new TestPlugin();
 
-Class ("es.upv.paellaEditor.TestSideBar", paella.editor.SideBarPlugin, {
-	getName:function() {
-		return "My side bar plugin";
-	},
+	class TestPlugin2 extends paella.editor.MainTrackPlugin {
+		
+		checkEnabled() {
+			return Promise.resolve(true);
+		}
+		
+		getIndex() {
+			return 9000;
+		}
 
-	getTabName:function() {
-		return "My Side bar Plugin";
+		getName() {
+			return "testTrackPlugin2";
+		}
 
-	},
+		getTrackName() {
+			return "Track test 2";
+		}
+
+		getColor() {
+			return "#AA2211";
+		}
+
+		getTextColor() {
+			return "black";
+		}
+
+		getTrackItems() {
+			var exampleTracks = [{id:1,s:10,e:550}];
+			return exampleTracks;
+		}
+
+		allowResize() {
+			return true;
+		}
+
+		allowDrag() {
+			return false;
+		}
+
+		allowEditContent() {
+			return false;
+		}
+
+		onTrackChanged(id,start,end) {
+			//base.log.debug('Track changed: id=' + id + ", start: " + start + ", end:" + end);
+			console.log("Track changed: s=" + start + ", e=" + end);
+		}
+
+		onTrackContentChanged(id,content) {
+			//base.log.debug('Track content changed: id=' + id + ', new content: ' + content);
+		}
+
+		onSelect(trackItemId) {
+			base.log.debug('Track list selected: ' + this.getTrackName());
+		}
+
+		onUnselect() {
+			base.log.debug('Track list unselected: ' + this.getTrackName());
+		}
+
+		onDblClick(trackData) {
+		}
+
+		getTools() {
+			return [];
+		}
+
+		onToolSelected(toolName) {
+			//base.log.debug('Tool selected: ' + toolName);
+			paella.events.trigger(paella.events.documentChanged);
+		}
+
+		isToolEnabled(toolName) {
+			return true;
+		}
+
+		buildToolTabContent(tabContainer) {
+
+		}
+
+		getSettings() {
+			return null;
+		}
+	}
+
+	new TestPlugin2();
 	
-	getContent:function() {
-		// 
-	}
-});
+	var app = angular.module(paella.editor.APP_NAME);
+	
+	app.directive("sidebar1",function() {
+		return {
+			restrict: "E",
+			templateUrl:"templates/es.upv.paella-editor.test/content.html",
+			controller:["$scope",function($scope) {
+				$scope.title = "Hello sidebar 1";
+			}]
+		}
+	});
 
-es.upv.paellaEditor.testSideBar = new es.upv.paellaEditor.TestSideBar();
+	class TestSideBar1 extends paella.editor.SideBarPlugin {
+		getName() {
+			return "My side bar plugin";
+		}
+
+		getTabName() {
+			return "Sidebar 1";
+		}
+		
+		getContent() {
+		}
+		
+		getDirectiveName() {
+			return "sidebar1";
+		}
+	}
+
+	new TestSideBar1();
+	
+	app.directive("sidebar2",function() {
+		return {
+			restrict: "E",
+			templateUrl:"templates/es.upv.paella-editor.test/content.html",
+			controller:["$scope",function($scope) {
+				$scope.title = "Hello sidebar 2";
+			}]
+		}
+	});
+
+	class TestSideBar2 extends paella.editor.SideBarPlugin {
+		getName() {
+			return "My side bar plugin 2";
+		}
+
+		getTabName() {
+			return "Sidebar 2";
+		}
+		
+		getContent() {
+		}
+		
+		getDirectiveName() {
+			return "sidebar2";
+		}
+	}
+
+	new TestSideBar2();
+})();
+

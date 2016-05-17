@@ -87,6 +87,21 @@
 			});
 		}
 		
+		ready() {
+			return new Promise((resolve,reject) => {
+				let This = this;
+				function checkAndResolve() {
+					if (This._pluginsLoaded) {
+						resolve(This);
+					}
+					else {
+						setTimeout(checkAndResolve, 100);
+					}
+				}
+				checkAndResolve();
+			});
+		}
+		
 		addPlugin(plugin) {
 			plugin.setup();
 			if (plugin.type=='editorTrackPlugin') {

@@ -16,34 +16,38 @@
 					isOpen:false
 				};
 				
-				$scope.tracks = PaellaEditor.tracks;
-				$scope.currentTrack = PaellaEditor.currentTrack;
-				$scope.selectTrack = function(t) {
-					PaellaEditor.selectTrack(t);
-				};
 				
-				$scope.tools = PaellaEditor.tools;
-				$scope.currentTool = PaellaEditor.currentTool;
-				$scope.selectTool = function(tool) {
-					if (tool.isEnabled) {
-						PaellaEditor.selectTool(tool.name);
-					}
-				};
-				
-				$scope.selectTrack = function(trackData) {
-					PaellaEditor.selectTrack(trackData);
-				};
-				
-				$scope.$watch('tracks');
-				$scope.$watch('zoom',function() {
-					$('#timeline-content').css({ width:$scope.zoom + "%" });
-				});
-				
-				PaellaEditor.subscribe($scope, function() {
-					$scope.currentTrack = PaellaEditor.currentTrack;
-					$scope.tools = PaellaEditor.tools;
-					$scope.currentTool = PaellaEditor.currentTool;
-				});
+				PaellaEditor.tracks()
+					.then(function(tracks) {
+						$scope.tracks = tracks;
+						$scope.currentTrack = PaellaEditor.currentTrack;
+						$scope.selectTrack = function(t) {
+							PaellaEditor.selectTrack(t);
+						};
+						
+						$scope.tools = PaellaEditor.tools;
+						$scope.currentTool = PaellaEditor.currentTool;
+						$scope.selectTool = function(tool) {
+							if (tool.isEnabled) {
+								PaellaEditor.selectTool(tool.name);
+							}
+						};
+						
+						$scope.selectTrack = function(trackData) {
+							PaellaEditor.selectTrack(trackData);
+						};
+						
+						$scope.$watch('tracks');
+						$scope.$watch('zoom',function() {
+							$('#timeline-content').css({ width:$scope.zoom + "%" });
+						});
+						
+						PaellaEditor.subscribe($scope, function() {
+							$scope.currentTrack = PaellaEditor.currentTrack;
+							$scope.tools = PaellaEditor.tools;
+							$scope.currentTool = PaellaEditor.currentTool;
+						});
+					});
 			}]
 		};
 	});

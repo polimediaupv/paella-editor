@@ -44,6 +44,9 @@ gulp.task("copy", function() {
 	
 	gulp.src('demos/**')
 		.pipe(gulp.dest(`${config.outDir}repository`));
+		
+	gulp.src('plugins/*/*.html')
+		.pipe(gulp.dest(`${config.outDir}player/templates/`));
 	
 	var depsjs = [
 		'bower_components/angular/angular.min.js',
@@ -89,7 +92,8 @@ gulp.task("watch", function() {
 		'style/*.css',
 		'plugins/**/*.css',
 		'src/*.js',
-		'plugins/**/*.js'
+		'plugins/**/*.js',
+		'plugins/**/*.html'
 	],["build"]);
 });
 
