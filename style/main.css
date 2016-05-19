@@ -33,6 +33,7 @@ body {
 	right: 0px;
 	padding-left: 8px;
 	position: absolute;
+	overflow: auto;
 }
 
 #topContainer {

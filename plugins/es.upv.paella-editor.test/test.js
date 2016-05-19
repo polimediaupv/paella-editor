@@ -29,8 +29,9 @@
 		}
 
 		getTrackItems() {
-			var exampleTracks = [{id:1,s:10,e:70},{id:2,s:110,e:340}];
-			return exampleTracks;
+			return new Promise((resolve,reject) => {
+				resolve([{id:1,s:10,e:70,name:"Track item 1"},{id:2,s:110,e:340,name:"second track item"}]);
+			});
 		}
 
 		allowResize() {
@@ -119,8 +120,9 @@
 		}
 
 		getTrackItems() {
-			var exampleTracks = [{id:1,s:10,e:550}];
-			return exampleTracks;
+			return new Promise((resolve,reject) => {
+				resolve([{id:1,s:10,e:550}]);
+			});
 		}
 
 		allowResize() {
@@ -192,6 +194,12 @@
 	});
 
 	class TestSideBar1 extends paella.editor.SideBarPlugin {
+		checkEnabled() {
+			return new Promise((resolve, reject) => {
+				resolve(true);
+			});
+		}
+		
 		getName() {
 			return "My side bar plugin";
 		}
@@ -214,8 +222,15 @@
 		return {
 			restrict: "E",
 			templateUrl:"templates/es.upv.paella-editor.test/content.html",
-			controller:["$scope",function($scope) {
+			controller:["$scope","PaellaEditor",function($scope,PaellaEditor) {
 				$scope.title = "Hello sidebar 2";
+				$scope.trackName = "";
+				
+				PaellaEditor.subscribe($scope,() => {
+					$scope.currentTrack = PaellaEditor.currentTrack;
+					console.log($scope.currentTrack);
+					$scope.trackName = $scope.currentTrack.name;
+				});
 			}]
 		}
 	});
@@ -228,10 +243,10 @@
 		getTabName() {
 			return "Sidebar 2";
 		}
-		
+
 		getContent() {
 		}
-		
+
 		getDirectiveName() {
 			return "sidebar2";
 		}

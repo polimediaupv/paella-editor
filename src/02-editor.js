@@ -107,24 +107,35 @@
 						.then((data) => {
 							videoData = data;
 							paella.editor.pluginManager.enabledPlugins.then((plugins) => {
+								let promisedTrackItems = [];
 								if (this._tracks.length==0) {
 									plugins.trackPlugins.forEach((plugin) => {
-										this._tracks.push({
-											pluginId:plugin.getName(),
-											type:plugin.getTrackType(),
-											name:plugin.getTrackName(),
-											color:plugin.getColor(),
-											textColor:plugin.getTextColor(),
-											duration:videoData.duration,
-											allowResize:plugin.allowResize(),
-											allowMove:plugin.allowDrag(),
-											allowEditContent:plugin.allowEditContent(),
-											list: plugin.getTrackItems(),
-											plugin:plugin
-										});
+										promisedTrackItems.push(plugin.getTrackItems()
+											.then((trackItems) => {
+												let depth = 0;
+												trackItems.forEach((item) => {
+													item.depth = depth++;
+												});
+												this._tracks.push({
+													pluginId:plugin.getName(),
+													type:plugin.getTrackType(),
+													name:plugin.getTrackName(),
+													color:plugin.getColor(),
+													textColor:plugin.getTextColor(),
+													duration:videoData.duration,
+													allowResize:plugin.allowResize(),
+													allowMove:plugin.allowDrag(),
+													allowEditContent:plugin.allowEditContent(),
+													list: trackItems,
+													plugin:plugin
+												});
+											}));
 									});
 								}
-								resolve(this._tracks);
+								Promise.all(promisedTrackItems)
+									.then(() => {
+										resolve(this._tracks);
+									});
 							}); 
 						})
 				});

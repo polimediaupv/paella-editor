@@ -45,6 +45,7 @@ time-line .visualization-bar {
 
 .track-item {
 	position: absolute;
+	opacity: 0.9;
 }
 
 .track .track-item {
@@ -68,17 +69,25 @@ time-line .visualization-bar {
 .handler:first-child {
 	left: -7px;
 	border-radius: 8px 0px 0px 8px;
+	border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    border-left: 1px solid black;
 }
 
 .handler:last-child {
 	right: -7px;
 	border-radius: 0px 8px 8px 0px;
+	border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    border-right: 1px solid black;
 }
 
 .track-item p {
 	overflow: hidden;
 	max-height: 100%;
 	cursor: pointer;
+	border-top: 1px solid black;
+    border-bottom: 1px solid black;
 }
 
 rzslider .rz-pointer {

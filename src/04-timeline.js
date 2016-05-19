@@ -73,7 +73,11 @@
 				$scope.duration = $scope.data.duration;
 				$scope.allowResize = $scope.data.allowResize;
 				$scope.allowMove = $scope.data.allowMove;
-								
+				
+				function bringTrackToFront(trackData) {
+					$('track-item').css({ 'z-index':2 });
+				}
+				
 				$scope.getLeft = function(trackData) {
 					return (100 * trackData.s / $scope.duration);
 				};
@@ -82,11 +86,16 @@
 					return (100 * (trackData.e - trackData.s) / $scope.duration);
 				};
 				
+				$scope.getDepth = function(trackData) {
+					return $(window).width() - Math.round(trackData.e - trackData.s);
+				};
+				
 				$scope.getTrackItemId = function(trackData) {
 					return "track-" + $scope.pluginId + "-" + trackData.id;
 				};
 				
 				$scope.leftHandlerDown = function(event,trackData) {
+					bringTrackToFront(trackData);
 					if ($scope.allowResize) {
 						var mouseDown = event.clientX;
 						$(document).on("mousemove",function(evt) {
@@ -111,6 +120,7 @@
 				};
 				
 				$scope.centerHandlerDown = function(event,trackData) {
+					
 					if ($scope.allowMove) {
 						var mouseDown = event.clientX;
 						$(document).on("mousemove",function(evt) {
@@ -129,6 +139,7 @@
 							else {
 								cancelMouseTracking();
 							}
+							bringTrackToFront(trackData);
 						});
 						$(document).on("mouseup",function(evt) {
 							cancelMouseTracking();
@@ -137,6 +148,7 @@
 				};
 				
 				$scope.rightHandlerDown = function(event,trackData) {
+					bringTrackToFront(trackData);
 					if ($scope.allowResize) {
 						var mouseDown = event.clientX;
 						$(document).on("mousemove",function(evt) {
