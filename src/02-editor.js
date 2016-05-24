@@ -100,6 +100,8 @@
 			tools:[],
 			currentTrack:null,
 			currentTool:null,
+			_isLoading:false,
+			
 			
 			tracks:function() {
 				return new Promise((resolve,reject) => {
@@ -142,6 +144,7 @@
 			},
 			
 			saveAll:function() {
+				this.isLoading = true;
 				return new Promise((resolve,reject) => {
 					this.tracks().then((tracks) => {
 						let promisedTasks = [];
@@ -150,8 +153,10 @@
 						});
 						Promise.all(promisedTasks)
 							.then(() => {
-								console.log("saved");
-								resolve();
+								$rootScope.$apply(() => {
+									this.isLoading = false;
+									resolve();
+								});
 							});
 					});
 				});
@@ -256,6 +261,17 @@
 		service.tracks().then((tracks) => {
 			// Tracks loaded
 		});
+		
+		Object.defineProperty(service,'isLoading', {
+			get: function() {
+				return this._isLoading;
+			},
+			
+			set: function(v) {
+				this._isLoading = v;
+				service.notify();
+			}
+		})
 					
 		return service;
 	}]);

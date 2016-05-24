@@ -203,7 +203,9 @@
 				PaellaEditor.subscribe($scope,() => {
 					$scope.currentTrack = PaellaEditor.currentTrack;
 					console.log($scope.currentTrack);
-					$scope.trackName = $scope.currentTrack.name;
+					if ($scope.currentTrack) {
+						$scope.trackName = $scope.currentTrack.name;	
+					}
 				});
 			}]
 		}
