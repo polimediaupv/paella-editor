@@ -144,6 +144,15 @@
 
 		onTrackContentChanged(id,content) {
 			//base.log.debug('Track content changed: id=' + id + ', new content: ' + content);
+			console.log("Track content changed: " + content);
+		}
+		
+		onSave() {
+			return new Promise((resolve,reject) => {
+				setTimeout(function() {
+					resolve();
+				},5000);
+			});
 		}
 
 		onSelect(trackItemId) {
@@ -183,41 +192,6 @@
 	
 	var app = angular.module(paella.editor.APP_NAME);
 	
-	app.directive("sidebar1",function() {
-		return {
-			restrict: "E",
-			templateUrl:"templates/es.upv.paella-editor.test/content.html",
-			controller:["$scope",function($scope) {
-				$scope.title = "Hello sidebar 1";
-			}]
-		}
-	});
-
-	class TestSideBar1 extends paella.editor.SideBarPlugin {
-		checkEnabled() {
-			return new Promise((resolve, reject) => {
-				resolve(true);
-			});
-		}
-		
-		getName() {
-			return "My side bar plugin";
-		}
-
-		getTabName() {
-			return "Sidebar 1";
-		}
-		
-		getContent() {
-		}
-		
-		getDirectiveName() {
-			return "sidebar1";
-		}
-	}
-
-	new TestSideBar1();
-	
 	app.directive("sidebar2",function() {
 		return {
 			restrict: "E",
@@ -253,5 +227,32 @@
 	}
 
 	new TestSideBar2();
+	
+	app.directive("testSidebar",function() {
+		return {
+			restrict: "E",
+			templateUrl:"templates/es.upv.paella-editor.test/plugin2.html",
+			controller:["$scope","PaellaEditor", function($scope,PaellaEditor) {
+				$scope.message = "I'm another plugin.";
+			}]
+		}
+	});
+	
+	class SidebarPlugin2 extends paella.editor.SideBarPlugin {
+		getName() {
+			return "other sidebar plugin";
+		}
+		
+		getTabName() {
+			return "Han Solo";
+		}
+		
+		getDirectiveName() {
+			return "test-sidebar";
+		}
+	}
+	
+	new SidebarPlugin2();
+	
 })();
 

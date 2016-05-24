@@ -2,16 +2,9 @@
 <div>
 	<form role="form" ng-repeat="trackItem in currentTrack.list">
 		<div class="form-group">
-			<label>Name</label>
-			<input type="trackItemName" class="form-control" value="{{trackItem.name}}">
-		</div>
-		<div class="form-group">
-			<label for="">Start</label>
-			<input type="trackItemStart" class="form-control" value="{{trackItem.s | number : 2}}">
-		</div>
-		<div class="form-group">
-			<label for="">End</label>
-			<input type="trackItemStart" class="form-control" value="{{trackItem.e | number: 2 }}">
+			<label>{{ "contents" | translate }}</label>
+			<input type="trackItemName" class="form-control" ng-model="currentTrack.list[$index].name">
+			<div>{{ "start" | translate }}: {{ trackItem.s | number : 0 }}, {{ "end" | translate }}: {{ trackItem.e | number : 0 }}</div>
 		</div>
 	</div>
 </div>

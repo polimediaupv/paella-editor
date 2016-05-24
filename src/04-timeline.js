@@ -37,6 +37,21 @@
 							PaellaEditor.selectTrack(trackData);
 						};
 						
+						$scope.saveAndClose = function() {
+							PaellaEditor.saveAll()
+								.then(() => {
+									$scope.closeEditor();
+								});
+						};
+						
+						$scope.saveChanges = function() {
+							PaellaEditor.saveAll();
+						};
+						
+						$scope.closeEditor = function() {
+							location.href = location.href.replace("editor.html","index.html");
+						};
+						
 						$scope.$watch('tracks');
 						$scope.$watch('zoom',function() {
 							$('#timeline-content').css({ width:$scope.zoom + "%" });
