@@ -95,6 +95,11 @@
 	
 	app.factory("PaellaEditor", [ "$rootScope", function($rootScope) {
 		let videoData = null;
+		let currentTrackItem = {
+			plugin:null,
+			trackItem:null
+		};
+		
 		var service = {
 			_tracks:[],
 			tools:[],
@@ -239,6 +244,20 @@
 					this.currentTool = toolName;
 					this.currentTrack.plugin.onToolSelected(toolName);
 					this.notify();
+				}
+			},
+			
+			selectTrackItem:function(plugin,trackData) {
+				if (currentTrackItem.plugin != plugin ||
+					!currentTrackItem.trackData || currentTrackItem.trackData.id!=trackData.id)
+				{
+					if (currentTrackItem.plugin)
+					{
+						currentTrackItem.plugin.onUnselect(currentTrackItem.trackData && currentTrackItem.trackData.id);
+					}
+					plugin.onSelect(trackData.id);
+					currentTrackItem.plugin = plugin;
+					currentTrackItem.trackData = trackData;
 				}
 			},
 			

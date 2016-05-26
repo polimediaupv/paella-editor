@@ -91,7 +91,7 @@
 				$scope.plugin = $scope.data.plugin;
 				
 				function selectTrackItem(trackData) {
-					$scope.plugin.onSelect(trackData.id);
+					PaellaEditor.selectTrackItem($scope.plugin,trackData);
 				}
 				
 				$scope.getLeft = function(trackData) {

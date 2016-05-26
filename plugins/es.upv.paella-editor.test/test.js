@@ -47,8 +47,7 @@
 		}
 
 		onTrackChanged(id,start,end) {
-			//base.log.debug('Track changed: id=' + id + ", start: " + start + ", end:" + end);
-			console.log("Track changed: s=" + start + ", e=" + end);
+			//console.log("Track changed: s=" + start + ", e=" + end);
 		}
 
 		onTrackContentChanged(id,content) {
@@ -59,8 +58,8 @@
 			console.log('Track item selected: ' + this.getTrackName() + ", " + trackItemId);
 		}
 
-		onUnselect() {
-			base.log.debug('Track list unselected: ' + this.getTrackName());
+		onUnselect(id) {
+			console.log('Track list unselected: ' + this.getTrackName() + ", " + id);
 		}
 
 		onDblClick(trackData) {
@@ -138,13 +137,11 @@
 		}
 
 		onTrackChanged(id,start,end) {
-			//base.log.debug('Track changed: id=' + id + ", start: " + start + ", end:" + end);
-			console.log("Track changed: s=" + start + ", e=" + end);
+			//console.log("Track changed: s=" + start + ", e=" + end);
 		}
 
 		onTrackContentChanged(id,content) {
-			//base.log.debug('Track content changed: id=' + id + ', new content: ' + content);
-			console.log("Track content changed: " + content);
+			//console.log("Track content changed: " + content);
 		}
 		
 		onSave() {
@@ -159,8 +156,8 @@
 			console.log('Track item selected: ' + this.getTrackName() + ", " + trackItemId);
 		}
 
-		onUnselect() {
-			base.log.debug('Track list unselected: ' + this.getTrackName());
+		onUnselect(id) {
+			console.log('Track list unselected: ' + this.getTrackName() + ", " + id);
 		}
 
 		onDblClick(trackData) {
@@ -202,7 +199,6 @@
 				
 				PaellaEditor.subscribe($scope,() => {
 					$scope.currentTrack = PaellaEditor.currentTrack;
-					console.log($scope.currentTrack);
 					if ($scope.currentTrack) {
 						$scope.trackName = $scope.currentTrack.name;	
 					}
