@@ -88,9 +88,10 @@
 				$scope.duration = $scope.data.duration;
 				$scope.allowResize = $scope.data.allowResize;
 				$scope.allowMove = $scope.data.allowMove;
+				$scope.plugin = $scope.data.plugin;
 				
-				function bringTrackToFront(trackData) {
-					$('track-item').css({ 'z-index':2 });
+				function selectTrackItem(trackData) {
+					$scope.plugin.onSelect(trackData.id);
 				}
 				
 				$scope.getLeft = function(trackData) {
@@ -110,7 +111,7 @@
 				};
 				
 				$scope.leftHandlerDown = function(event,trackData) {
-					bringTrackToFront(trackData);
+					selectTrackItem(trackData);
 					if ($scope.allowResize) {
 						var mouseDown = event.clientX;
 						$(document).on("mousemove",function(evt) {
@@ -135,7 +136,7 @@
 				};
 				
 				$scope.centerHandlerDown = function(event,trackData) {
-					
+					selectTrackItem(trackData);
 					if ($scope.allowMove) {
 						var mouseDown = event.clientX;
 						$(document).on("mousemove",function(evt) {
@@ -154,7 +155,6 @@
 							else {
 								cancelMouseTracking();
 							}
-							bringTrackToFront(trackData);
 						});
 						$(document).on("mouseup",function(evt) {
 							cancelMouseTracking();
@@ -163,7 +163,7 @@
 				};
 				
 				$scope.rightHandlerDown = function(event,trackData) {
-					bringTrackToFront(trackData);
+					selectTrackItem(trackData);
 					if ($scope.allowResize) {
 						var mouseDown = event.clientX;
 						$(document).on("mousemove",function(evt) {

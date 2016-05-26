@@ -56,7 +56,7 @@
 		}
 
 		onSelect(trackItemId) {
-			base.log.debug('Track list selected: ' + this.getTrackName());
+			console.log('Track item selected: ' + this.getTrackName() + ", " + trackItemId);
 		}
 
 		onUnselect() {
@@ -156,7 +156,7 @@
 		}
 
 		onSelect(trackItemId) {
-			base.log.debug('Track list selected: ' + this.getTrackName());
+			console.log('Track item selected: ' + this.getTrackName() + ", " + trackItemId);
 		}
 
 		onUnselect() {

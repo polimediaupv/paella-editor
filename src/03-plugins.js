@@ -245,7 +245,7 @@
 		}
 
 		onSelect(trackItemId) {
-			base.log.debug('Track list selected: ' + this.getTrackName());
+			base.log.debug('Track item selected: ' + this.getTrackName() + ", " + trackItemId);
 		}
 
 		onUnselect() {
