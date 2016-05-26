@@ -91,3 +91,8 @@ loader .pe-loader {
     bottom: 0px;
     background-color: rgba(255, 255, 255, 0.55);
 }
+
+/* Override bootstrap menu z-index */
+time-line nav.navbar {
+	z-index: 10000;
+}
