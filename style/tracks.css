@@ -18,6 +18,9 @@ time-line .timeline-zoom-container {
     position: absolute;
     bottom: 36px;
     top: 50px;
+	background: radial-gradient(#424242 15%, transparent 16%) 0 0, radial-gradient(#424242 15%, transparent 16%) 8px 8px, radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%) 0 1px, radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%) 8px 9px;
+    background-color: #5D5D5D;
+    background-size: 8px 8px;
 }
 
 time-line .visualization-bar {
@@ -26,6 +29,7 @@ time-line .visualization-bar {
 	left: 0px;
 	right: 0px;
 	background-color: #525252;
+	border-top: 2px solid #3E3E3E;
 }
 
 .timeline-content {
@@ -36,7 +40,13 @@ time-line .visualization-bar {
 	position: relative;
 	height: 20px;
 	margin-top: 5px;
-	margin-bottom: 5px;
+    margin-bottom: 5px;
+    border-bottom: 1px solid #3C3B3B;
+    border-top: 1px solid #3C3B3B;
+    background: radial-gradient(#575757 15%, transparent 16%) 0 0, radial-gradient(#575757 15%, transparent 16%) 8px 8px, radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%) 0 1px, radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%) 8px 9px;
+    background-color: #696666;
+    background-size: 8px 8px;
+    box-shadow: inset 0px 0px 5px 0px rgba(0,0,0,0.5);
 }
 
 .track.main-track {
@@ -62,8 +72,9 @@ time-line .visualization-bar {
 	width: 7px;
     height: 100%;
     position: absolute;
-    top: 0px;
+    top: -1px;
 	cursor: ew-resize;
+	box-sizing: border-box;
 }
 
 .handler:first-child {
@@ -86,6 +97,7 @@ time-line .visualization-bar {
 	overflow: hidden;
 	max-height: 100%;
 	cursor: pointer;
+	margin-top: -1px;
 	border-top: 1px solid black;
     border-bottom: 1px solid black;
 }

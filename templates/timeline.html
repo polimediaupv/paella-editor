@@ -26,8 +26,11 @@
 		</div>
 	</div>
 </nav>
+<div id="timeline-ruler-action"></div>
 <div class="timeline-zoom-container">
 	<div id="timeline-content" class="timeline-content">
+		<div id="timeline-ruler"></div>
+		<div id="time-mark" style="left:0%"></div>
 		<div class="track" ng-class="{ 'main-track':trackData.type=='master' }" ng-mousedown="selectTrack(trackData)" ng-repeat="trackData in tracks">
 			<track data="trackData"></track>
 		</div>

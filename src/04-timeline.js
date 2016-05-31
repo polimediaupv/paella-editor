@@ -16,6 +16,73 @@
 					isOpen:false
 				};
 				
+				$scope.divisionWidth = 60;
+				
+				paella.events.bind(paella.events.timeUpdate, function(evt,time) {
+					let p = time.currentTime * $scope.zoom / time.duration;
+					$('#time-mark').css({ left: p + '%'});
+				});
+				
+				function setTime(clientX) {
+					let left = $('.timeline-zoom-container')[0].scrollLeft;
+					let width = $('#timeline-ruler').width();
+					let offset = clientX;
+					
+					left = left * 100 / width;
+					offset = offset * 100 / width;
+					paella.player.videoContainer.seekTo(offset + left);
+				}
+				
+				function buildTimeDivisions(divisionWidth) {
+					paella.player.videoContainer.duration()
+						.then(function(duration) {
+							let width = $('#timeline-content').width();
+							let numberOfDivisions = Math.floor(width / divisionWidth);
+							let timelineRuler = $('#timeline-ruler')[0];
+							timelineRuler.innerHTML = "";
+							let timeIncrement = divisionWidth * duration / width;
+							console.log(numberOfDivisions);
+							
+							let time = 0;
+							for (let i=0; i<numberOfDivisions; ++i) {
+								let elem = document.createElement('span');
+								elem.className = 'time-division';
+								
+								let hours = Math.floor(time / (60 * 60));
+								let seconds = time % (60 * 60);
+								let minutes = Math.floor(seconds / 60);
+								seconds = Math.ceil(seconds % 60);
+								elem.innerHTML = hours + ":" +
+												 (minutes<10 ? "0":"") + minutes + ":" +
+												 (seconds<10 ? "0":"") + seconds;
+								
+								$(elem).css({ width:divisionWidth + 'px' });
+								timelineRuler.appendChild(elem);
+								
+								time += Math.round(timeIncrement);
+							}
+						});
+				}
+				
+				$(window).resize(function(evt) {
+					buildTimeDivisions($scope.divisionWidth);
+				});
+				
+				$('#timeline-ruler-action').on('mousedown',(evt) => {
+					setTime(evt.clientX);
+					
+					function cancelTracking() {
+						$('#timeline-ruler-action').off("mouseup");
+						$('#timeline-ruler-action').off("mousemove");
+						$('#timeline-ruler-action').off("mouseout");
+					}
+					$('#timeline-ruler-action').on('mouseup',cancelTracking);
+					$('#timeline-ruler-action').on('mouseout',cancelTracking);
+					
+					$('#timeline-ruler-action').on('mousemove',(evt) => {
+						setTime(evt.clientX);
+					});
+				});
 				
 				PaellaEditor.tracks()
 					.then(function(tracks) {
@@ -55,6 +122,7 @@
 						$scope.$watch('tracks');
 						$scope.$watch('zoom',function() {
 							$('#timeline-content').css({ width:$scope.zoom + "%" });
+							buildTimeDivisions($scope.divisionWidth);
 						});
 						
 						PaellaEditor.subscribe($scope, function() {
