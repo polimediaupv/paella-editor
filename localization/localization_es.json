@@ -1,3 +1,7 @@
 {
-	
+	"paella_editor": "Paella Editor",
+	"save_and_close": "Guardar y cerrar",
+	"save_changes": "Guardar",
+	"discard_and_close": "Descartar cambios y salir",
+	"Are you sure you want to discard all changes and close editor?":"¿Está seguro de que desea descartar todos los cambios y cerrar el editor?"
 }

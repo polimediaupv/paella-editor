@@ -55,12 +55,20 @@ time-line .visualization-bar {
 
 .track-item {
 	position: absolute;
+	opacity: 0.5;
+}
+
+.track-item.track-selected {
 	opacity: 0.9;
 }
 
 .track .track-item {
 	height: 20px;
 	line-height: 20px;
+}
+
+.track.selected {
+	background-color: #484A4C;
 }
 
 .track.main-track .track-item {

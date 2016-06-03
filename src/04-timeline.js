@@ -5,7 +5,7 @@
 		return {
 			restrict: "E",
 			templateUrl: "templates/timeline.html",
-			controller: ["$scope","PaellaEditor",function($scope,PaellaEditor) {
+			controller: ["$scope","$translate","PaellaEditor",function($scope,$translate,PaellaEditor) {
 				$scope.zoom = 100;
 				$scope.zoomOptions = {
 					floor:100,
@@ -18,9 +18,17 @@
 				
 				$scope.divisionWidth = 60;
 				
-				paella.events.bind(paella.events.timeUpdate, function(evt,time) {
+				function setTimeMark(time) {
 					let p = time.currentTime * $scope.zoom / time.duration;
 					$('#time-mark').css({ left: p + '%'});
+					let timeMarkOffset = $('#time-mark').offset();
+					if (timeMarkOffset.left<0 || timeMarkOffset.left>$(window).width()) {
+						$('.timeline-zoom-container')[0].scrollLeft += timeMarkOffset.left
+					}
+				}
+				
+				paella.events.bind(paella.events.timeUpdate, function(evt,time) {
+					setTimeMark(time);
 				});
 				
 				function setTime(clientX) {
@@ -41,7 +49,6 @@
 							let timelineRuler = $('#timeline-ruler')[0];
 							timelineRuler.innerHTML = "";
 							let timeIncrement = divisionWidth * duration / width;
-							console.log(numberOfDivisions);
 							
 							let time = 0;
 							for (let i=0; i<numberOfDivisions; ++i) {
@@ -107,7 +114,7 @@
 						$scope.saveAndClose = function() {
 							PaellaEditor.saveAll()
 								.then(() => {
-									$scope.closeEditor();
+									$scope.closeEditor(true);
 								});
 						};
 						
@@ -115,14 +122,21 @@
 							PaellaEditor.saveAll();
 						};
 						
-						$scope.closeEditor = function() {
-							location.href = location.href.replace("editor.html","index.html");
+						$scope.closeEditor = function(noConfirm) {
+							if (noConfirm || confirm($translate.instant("Are you sure you want to discard all changes and close editor?"))) {
+								location.href = location.href.replace("editor.html","index.html");
+							}
+							
 						};
 						
 						$scope.$watch('tracks');
 						$scope.$watch('zoom',function() {
 							$('#timeline-content').css({ width:$scope.zoom + "%" });
 							buildTimeDivisions($scope.divisionWidth);
+							paella.player.videoContainer.currentTime()
+								.then((time) => {
+									setTimeMark(time);
+								});
 						});
 						
 						PaellaEditor.subscribe($scope, function() {

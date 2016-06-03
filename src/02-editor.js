@@ -107,7 +107,6 @@
 			currentTool:null,
 			_isLoading:false,
 			
-			
 			tracks:function() {
 				return new Promise((resolve,reject) => {
 					paella.player.videoContainer.masterVideo().getVideoData()
@@ -216,8 +215,31 @@
 			
 			selectTrack:function(trackData) {
 				if (!this.currentTrack || this.currentTrack.pluginId!=trackData.pluginId) {
+					this.tracks()
+						.then((tracks) => {
+							tracks.forEach(function(track) {
+								if (track==trackData) {
+									track.selected = true;
+								}
+								else {
+									track.selected = false;
+								}
+								
+								track.list.forEach(function(trackItem) {
+									if (trackItem==trackData) {
+										trackItem.selected = true;
+									}
+									else {
+										trackItem.selected = false;
+									}
+									
+								});
+							});
+							//trackData.selected = true;
+						});
 					var This = this;
 					this.currentTrack = trackData;
+					//this.currentTrack.selected = true;
 					this.currentTool = null;
 					this._tracks.forEach(function(track) {
 						track.plugin.onToolSelected(trackData);
@@ -258,6 +280,23 @@
 					plugin.onSelect(trackData.id);
 					currentTrackItem.plugin = plugin;
 					currentTrackItem.trackData = trackData;
+					this.tracks()
+						.then((tracks) => {
+							tracks.forEach(function(track) {
+								track.selected = false;
+								track.list.forEach(function(trackItem) {
+									if (trackItem==trackData) {
+										trackItem.selected = true;
+										track.selected = true;
+									}
+									else {
+										trackItem.selected = false;
+									}
+									
+								});
+							});
+							//trackData.selected = true;
+						});
 				}
 			},
 			
