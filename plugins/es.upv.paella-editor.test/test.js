@@ -176,10 +176,6 @@
 			return true;
 		}
 
-		buildToolTabContent(tabContainer) {
-
-		}
-
 		getSettings() {
 			return null;
 		}

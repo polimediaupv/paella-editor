@@ -129,7 +129,9 @@
 							
 						};
 						
-						$scope.$watch('tracks');
+						$scope.$watch('tracks', function() {
+							console.log("Tracks changed");
+						});
 						$scope.$watch('zoom',function() {
 							$('#timeline-content').css({ width:$scope.zoom + "%" });
 							buildTimeDivisions($scope.divisionWidth);

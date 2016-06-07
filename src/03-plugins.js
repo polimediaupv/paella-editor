@@ -1,166 +1,156 @@
 (function() {
-	class PluginManager {
-		constructor() {
-			this.trackPlugins = [];
-			this.sideBarPlugins = [];
-			this.toolbarPlugins = [];
-			
-			this._plugins = [];
-			this._pluginsLoaded = false;
+	var app = angular.module(paella.editor.APP_NAME);
+	let plugins = [];
+	let pluginsLoaded = false;
+
+	function registeredPlugins(callback) {
+		var enablePluginsByDefault = false;
+		var pluginsConfig = {};
+		try {
+			enablePluginsByDefault = paella.$editor.config.plugins.enablePluginsByDefault;
 		}
-		
-		registerPlugin(plugin) {
-			this._plugins.push(plugin);
-			this._plugins.sort(function(a,b) {
-				return a.getIndex() - b.getIndex();
-			});
+		catch(e){}
+		try {
+			pluginsConfig = paella.player.config.plugins.list;
 		}
-		
-		loadPlugins() {
-			return new Promise((loadResolve,loadReject) => {
-				let pluginsPromises = [];
-				this.foreach((plugin,config) => {
-					if (config.enabled) {
-						plugin.config = config;
-						let promise = new Promise((resolve, reject) => {
-							plugin.checkEnabled()
-								.then((isEnabled) => {
+		catch(e){}
+				
+		plugins.forEach(function(plugin){			
+			var name = plugin.getName();
+			var config = pluginsConfig[name];
+			if (!config) {
+				config = { enabled: enablePluginsByDefault };
+			}
+			callback(plugin, config);
+		});
+	}
+
+	paella.editor.registerPlugin = function(plugin) {
+		plugins.push(plugin);
+		plugins.sort(function(a,b) {
+			return a.getIndex() - b.getIndex();
+		});
+	}
+
+	app.factory("PluginManager", ["$timeout", function($timeout) {
+		let loadingPlugins = false;
+		let pluginsLoaded = false;
+
+		function loadPlugins() {
+			return new Promise(function(resolve) {
+				function waitFunc() {
+					if (pluginsLoaded) {
+						resolve();
+					}
+					else {
+						$timeout(waitFunc,100);
+					}
+				}
+
+				if (!pluginsLoaded && loadingPlugins) {
+					waitFunc();
+				}
+				else if (pluginsLoaded) {
+					resolve();
+				}
+				else if (!loadingPlugins) {
+					loadingPlugins = true;
+					let pluginsPromises = [];
+					registeredPlugins((registeredPlugin, config) => {
+						if (config.enabled) {
+							registeredPlugin.config = config;
+							let promise = new Promise((checkEnabledResolve) => {
+								registeredPlugin.checkEnabled().then((isEnabled) => {
 									if (isEnabled) {
-										this.addPlugin(plugin);
+										addPlugin(registeredPlugin);
 									}
-									resolve();
+									checkEnabledResolve();
 								});
-						});
-						pluginsPromises.push(promise);
-					}
-				});
-				Promise.all(pluginsPromises)
-					.then(() => {
-						this._pluginsLoaded = true;
-						loadResolve();
+							})
+						}
 					});
-			});
-		}
-		
-		foreach(callback) {
-			var enablePluginsByDefault = false;
-			var pluginsConfig = {};
-			try {
-				enablePluginsByDefault = paella.$editor.config.plugins.enablePluginsByDefault;
-			}
-			catch(e){}
-			try {
-				pluginsConfig = paella.player.config.plugins.list;
-			}
-			catch(e){}
-					
-			this._plugins.forEach(function(plugin){			
-				var name = plugin.getName();
-				var config = pluginsConfig[name];
-				if (!config) {
-					config = { enabled: enablePluginsByDefault };
-				}
-				callback(plugin, config);
-			});
-		}
-		
-		get plugins() {
-			return this._plugins;
-		}
-		
-		get enabledPlugins() {
-			return new Promise((resolve,reject) => {
-				let This = this;
-				function checkAndResolve() {
-					if (This._pluginsLoaded) {
-						resolve({
-							trackPlugins:This.trackPlugins,
-							sideBarPlugins:This.sideBarPlugins,
-							toolbarPlugins:This.toolbarPlugins
+
+					Promise.all(pluginsPromises)
+						.then(() => {
+							resolve();
 						});
-					}
-					else {
-						setTimeout(checkAndResolve, 100);
-					}
 				}
-				checkAndResolve();
 			});
+			
+
 		}
-		
-		ready() {
-			return new Promise((resolve,reject) => {
-				let This = this;
-				function checkAndResolve() {
-					if (This._pluginsLoaded) {
-						resolve(This);
-					}
-					else {
-						setTimeout(checkAndResolve, 100);
-					}
-				}
-				checkAndResolve();
-			});
-		}
-		
-		addPlugin(plugin) {
+
+		function addPlugin(plugin) {
 			plugin.setup();
 			if (plugin.type=='editorTrackPlugin') {
-				this.trackPlugins.push(plugin);
+				service.trackPlugins.push(plugin);
 			}
 			if (plugin.type=='editorSideBarPlugin') {
 				console.log(`Adding plugin ${plugin.getName()}`)
-				this.sideBarPlugins.push(plugin);
+				service.sideBarPlugins.push(plugin);
 			}
 			if (plugin.type=='editorToolbarPlugin') {
-				this.toolbarPlugins.push(plugin);
+				service.toolbarPlugins.push(plugin);
 			}
 		}
-		
-		onTrackChanged(newTrack) {
-			// Notify tab plugins
-			this.sideBarPlugins.forEach(function(plugin) {
-				plugin.onTrackSelected(newTrack);
-			});
 
-			// Notify toolbar plugins
-			this.toolbarPlugins.forEach(function(plugin) {
-				plugin.onTrackSelected(newTrack);
-			});
-		}
+		var service = {
+			trackPlugins: [],
+			sideBarPlugins: [],
+			toolbarPlugins: [],
 
-		onSave() {
-			var promises = [];
-			
-			var handleOnSave = function(plugin) {
-				promises.push(plugin.onSave());
-			};
-			
-			this.trackPlugins.forEach(handleOnSave);
-			this.sideBarPlugins.forEach(handleOnSave);
-			this.toolbarPlugins.forEach(handleOnSave);
-			
-			return new Promise((resolve,reject) => {
-				Promise.all(promises)
-					.then(() => {
-						resolve();
+			plugins:function() {
+				return new Promise((resolve) => {
+					loadPlugins().then(() => {
+						resolve({
+							trackPlugins: this.trackPlugins,
+							sideBarPlugins: this.sideBarPlugins,
+							toolbarPlugins: this.toolbarPlugins
+						});
 					})
-					.catch(() => {
-						reject();
-					});
-			});
-		}
+				});
+			},
 
-		onDiscard() {
-			
-		}
-	}
-	
-	paella.editor.pluginManager = new PluginManager();
-	
+			ready:function() {
+				return loadPlugins();
+			},
+
+			onTrackChanged:function(newTrack) {
+				this.sideBarPlugins.forEach((plugin) => {
+					plugin.onTrackSelected(newTrack);
+				});
+
+				this.toolbarPlugins.forEach((plugin) => {
+					plugin.onTrackSelected(newTrack);
+				});
+			},
+
+			onSave:function() {
+				var promises = [];
+
+				var handleOnSave = function(plugin) {
+					promises.push(plugin.onSave());
+				};
+
+				this.trackPlugins.forEach(handleOnSave);
+				this.sideBarPlugins.forEach(handleOnSave);
+				this.toolbarPlugins.forEach(handleOnSave);
+
+				return new Promise((resolve,reject) => {
+					Promise.all(promises)
+						.then(() => resolve())
+						.catch(() => reject());
+				});
+			}
+		};
+
+		return service;
+	}]);
+
 	class EditorPlugin {
 		constructor() {
 			console.log("Registering plugin " + this.getName());
-			paella.editor.pluginManager.registerPlugin(this);
+			paella.editor.registerPlugin(this);
 		}
 		
 		checkEnabled() {

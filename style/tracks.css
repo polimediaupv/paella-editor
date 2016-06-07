@@ -33,7 +33,8 @@ time-line .visualization-bar {
 }
 
 .timeline-content {
-	
+	padding-left: 10px;
+    padding-right: 10px;
 }
 
 .track {
