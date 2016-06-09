@@ -130,7 +130,8 @@
 						};
 						
 						$scope.$watch('tracks', function() {
-							console.log("Tracks changed");
+							//console.log("Tracks changed");
+							$scope.$apply();
 						});
 						$scope.$watch('zoom',function() {
 							$('#timeline-content').css({ width:$scope.zoom + "%" });
@@ -145,7 +146,10 @@
 							$scope.currentTrack = PaellaEditor.currentTrack;
 							$scope.tools = PaellaEditor.tools;
 							$scope.currentTool = PaellaEditor.currentTool;
+							$scope.$apply();
 						});
+
+						$scope.$apply();
 					});
 			}]
 		};
@@ -177,6 +181,18 @@
 				function selectTrackItem(trackData) {
 					PaellaEditor.selectTrackItem($scope.plugin,trackData);
 				}
+
+				$scope.highlightTrack = function(trackData) {
+					PaellaEditor.tracks()
+						.then((tracks) => {
+							tracks.forEach(function(track) {
+								track.list.forEach(function(trackItem) {
+									trackItem.selected = false;
+								});
+							});
+						});
+					trackData.selected = true;
+				};
 				
 				$scope.getLeft = function(trackData) {
 					return (100 * trackData.s / $scope.duration);

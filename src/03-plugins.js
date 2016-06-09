@@ -72,6 +72,7 @@
 
 					Promise.all(pluginsPromises)
 						.then(() => {
+							pluginsLoaded = true;
 							resolve();
 						});
 				}

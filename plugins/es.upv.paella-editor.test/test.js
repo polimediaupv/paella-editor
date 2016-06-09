@@ -95,7 +95,7 @@
 	class TestPlugin2 extends paella.editor.MainTrackPlugin {
 		
 		checkEnabled() {
-			return Promise.resolve(true);
+			return Promise.resolve(false);
 		}
 		
 		getIndex() {
@@ -146,9 +146,9 @@
 		
 		onSave() {
 			return new Promise((resolve,reject) => {
-				setTimeout(function() {
+				//setTimeout(function() {
 					resolve();
-				},5000);
+				//},5000);
 			});
 		}
 
@@ -204,6 +204,10 @@
 	});
 
 	class TestSideBar2 extends paella.editor.SideBarPlugin {
+		checkEnabled() {
+			return Promise.resolve(false);
+		}
+
 		getName() {
 			return "My side bar plugin 2";
 		}
@@ -233,6 +237,10 @@
 	});
 	
 	class SidebarPlugin2 extends paella.editor.SideBarPlugin {
+		checkEnabled() {
+			return Promise.resolve(false);
+		}
+		
 		getName() {
 			return "other sidebar plugin";
 		}

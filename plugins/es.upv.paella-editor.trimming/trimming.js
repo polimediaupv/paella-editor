@@ -16,9 +16,16 @@
 							paella.player.videoContainer.setTrimming(startTime, endTime)
 								.then(() => resolve(true));
 						}
+						else {
+							resolve(true);
+						}
 					}
 				});
 			});
+		}
+
+		getIndex() {
+			return 100;
 		}
 		
 		getName() {
@@ -63,6 +70,10 @@
 		}
 		
 		allowDrag() {
+			return false;
+		}
+
+		allowEditContent() {
 			return false;
 		}
 		
