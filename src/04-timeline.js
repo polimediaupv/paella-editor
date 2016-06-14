@@ -22,8 +22,9 @@
 					let p = time.currentTime * $scope.zoom / time.duration;
 					$('#time-mark').css({ left: p + '%'});
 					let timeMarkOffset = $('#time-mark').offset();
-					if (timeMarkOffset.left<0 || timeMarkOffset.left>$(window).width()) {
-						$('.timeline-zoom-container')[0].scrollLeft += timeMarkOffset.left
+					let leftOffset = 200;
+					if (timeMarkOffset.left - 200<0 || timeMarkOffset.left>$(window).width()) {
+						$('.timeline-zoom-container')[0].scrollLeft += timeMarkOffset.left - leftOffset;
 					}
 				}
 				
@@ -34,7 +35,7 @@
 				function setTime(clientX) {
 					let left = $('.timeline-zoom-container')[0].scrollLeft;
 					let width = $('#timeline-ruler').width();
-					let offset = clientX;
+					let offset = clientX - $(window).width() * 0.1;
 					
 					left = left * 100 / width;
 					offset = offset * 100 / width;
@@ -131,7 +132,7 @@
 						
 						$scope.$watch('tracks', function() {
 							//console.log("Tracks changed");
-							$scope.$apply();
+							//$scope.$apply();
 						});
 						$scope.$watch('zoom',function() {
 							$('#timeline-content').css({ width:$scope.zoom + "%" });
@@ -146,7 +147,7 @@
 							$scope.currentTrack = PaellaEditor.currentTrack;
 							$scope.tools = PaellaEditor.tools;
 							$scope.currentTool = PaellaEditor.currentTool;
-							$scope.$apply();
+							//$scope.$apply();
 						});
 
 						$scope.$apply();
@@ -178,8 +179,9 @@
 				$scope.allowMove = $scope.data.allowMove;
 				$scope.plugin = $scope.data.plugin;
 				
-				function selectTrackItem(trackData) {
-					PaellaEditor.selectTrackItem($scope.plugin,trackData);
+				function selectTrackItem(trackData,tracks) {
+					PaellaEditor.selectTrack(tracks);
+					PaellaEditor.selectTrackItem($scope.plugin,trackData,tracks);
 				}
 
 				$scope.highlightTrack = function(trackData) {
@@ -210,8 +212,8 @@
 					return "track-" + $scope.pluginId + "-" + trackData.id;
 				};
 				
-				$scope.leftHandlerDown = function(event,trackData) {
-					selectTrackItem(trackData);
+				$scope.leftHandlerDown = function(event,trackData,tracks) {
+					selectTrackItem(trackData,tracks);
 					if ($scope.allowResize) {
 						var mouseDown = event.clientX;
 						$(document).on("mousemove",function(evt) {
@@ -235,8 +237,8 @@
 					}
 				};
 				
-				$scope.centerHandlerDown = function(event,trackData) {
-					selectTrackItem(trackData);
+				$scope.centerHandlerDown = function(event,trackData,tracks) {
+					selectTrackItem(trackData,tracks);
 					if ($scope.allowMove) {
 						var mouseDown = event.clientX;
 						$(document).on("mousemove",function(evt) {
@@ -262,8 +264,8 @@
 					}
 				};
 				
-				$scope.rightHandlerDown = function(event,trackData) {
-					selectTrackItem(trackData);
+				$scope.rightHandlerDown = function(event,trackData,tracks) {
+					selectTrackItem(trackData,tracks);
 					if ($scope.allowResize) {
 						var mouseDown = event.clientX;
 						$(document).on("mousemove",function(evt) {

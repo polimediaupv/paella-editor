@@ -13,7 +13,8 @@ time-line nav {
 }
 
 time-line .timeline-zoom-container {
-	width: 100%;
+	width: 90%;
+	right: 0px;
     overflow: auto;
     position: absolute;
     bottom: 36px;
@@ -141,4 +142,25 @@ rzslider {
 
 .navbar-inverse {
 	background-color: #525252;
+}
+
+.track-names {
+	padding-top: 5px;
+}
+
+.track-header {
+	background-color: #4f4f4f;
+	color: white;
+    height: 20px;
+    padding-top: 2px;
+    width: 10%;
+    text-align: right;
+    padding-right: 5px;
+	cursor: pointer;
+	cursor: hand;
+}
+
+.track-header.main-track {
+	height: 35px;
+	padding-top: 9px;
 }

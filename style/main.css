@@ -131,7 +131,7 @@ time-line nav.navbar {
     z-index: 2;
     position: absolute;
     top: 50px;
-    left: 0px;
+    left: 10%;
     right: 0px;
     cursor: pointer;
 }
