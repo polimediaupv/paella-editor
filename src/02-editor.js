@@ -291,6 +291,8 @@
 					currentTrackItem.plugin = plugin;
 					currentTrackItem.trackData = trackData;
 					currentTrackItem.trackData.selected = true;
+					this.currentTrackItem = { trackData:trackData, plugin: plugin };
+					this.notify();
 				}
 			},
 			

@@ -10,6 +10,7 @@
 				
 				PaellaEditor.subscribe($scope,() => {
 					$scope.currentTrack = PaellaEditor.currentTrack;
+					//if (PaellaEditor.currentTrackItem) console.log(PaellaEditor.currentTrackItem.trackData.id);
 					if ($scope.currentTrack) {
 						$scope.trackName = $scope.currentTrack.name;	
 					}

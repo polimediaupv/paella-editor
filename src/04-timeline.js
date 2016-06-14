@@ -22,8 +22,9 @@
 					let p = time.currentTime * $scope.zoom / time.duration;
 					$('#time-mark').css({ left: p + '%'});
 					let timeMarkOffset = $('#time-mark').offset();
+					// TODO: Refactor
 					let leftOffset = 200;
-					if (timeMarkOffset.left - 200<0 || timeMarkOffset.left>$(window).width()) {
+					if (timeMarkOffset.left - leftOffset<0 || timeMarkOffset.left>$(window).width()) {
 						$('.timeline-zoom-container')[0].scrollLeft += timeMarkOffset.left - leftOffset;
 					}
 				}
