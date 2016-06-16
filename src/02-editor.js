@@ -122,26 +122,30 @@
 									let promisedTrackItems = [];
 									service._tracks = [];
 									plugins.trackPlugins.forEach((plugin) => {
-										promisedTrackItems.push(plugin.getTrackItems()
-											.then((trackItems) => {
-												let depth = 0;
-												trackItems.forEach((item) => {
-													item.depth = depth++;
-												});
-												service._tracks.push({
-													pluginId:plugin.getName(),
-													type:plugin.getTrackType(),
-													name:plugin.getTrackName(),
-													color:plugin.getColor(),
-													textColor:plugin.getTextColor(),
-													duration:videoData.duration,
-													allowResize:plugin.allowResize(),
-													allowMove:plugin.allowDrag(),
-													allowEditContent:plugin.allowEditContent(),
-													list: trackItems,
-													plugin:plugin
-												});
-											}));
+										let trackItemPromise = plugin.getTrackItems();
+										if (!Array.isArray(trackItemPromise)) {
+											promisedTrackItems.push(trackItemPromise
+												.then((trackItems) => {
+													let depth = 0;
+													trackItems.forEach((item) => {
+														item.depth = depth++;
+													});
+													service._tracks.push({
+														pluginId:plugin.getName(),
+														type:plugin.getTrackType(),
+														name:plugin.getTrackName(),
+														color:plugin.getColor(),
+														textColor:plugin.getTextColor(),
+														duration:videoData.duration,
+														allowResize:plugin.allowResize(),
+														allowMove:plugin.allowDrag(),
+														allowEditContent:plugin.allowEditContent(),
+														list: trackItems,
+														plugin:plugin
+													});
+												}));
+										}
+										
 									});
 
 									return Promise.all(promisedTrackItems);

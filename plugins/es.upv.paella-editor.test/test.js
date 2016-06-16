@@ -4,7 +4,7 @@
 	
 	class TestPlugin extends paella.editor.TrackPlugin {
 		
-		checkEnabled() {
+		isEnabled() {
 			return Promise.resolve(true);
 		}
 		
@@ -94,7 +94,7 @@
 
 	class TestPlugin2 extends paella.editor.MainTrackPlugin {
 		
-		checkEnabled() {
+		isEnabled() {
 			return Promise.resolve(false);
 		}
 		
@@ -204,7 +204,7 @@
 	});
 
 	class TestSideBar2 extends paella.editor.SideBarPlugin {
-		checkEnabled() {
+		isEnabled() {
 			return Promise.resolve(false);
 		}
 
@@ -237,7 +237,7 @@
 	});
 	
 	class SidebarPlugin2 extends paella.editor.SideBarPlugin {
-		checkEnabled() {
+		isEnabled() {
 			return Promise.resolve(false);
 		}
 		

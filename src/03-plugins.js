@@ -27,9 +27,6 @@
 
 	paella.editor.registerPlugin = function(plugin) {
 		plugins.push(plugin);
-		plugins.sort(function(a,b) {
-			return a.getIndex() - b.getIndex();
-		});
 	}
 
 	app.factory("PluginManager", ["$timeout", function($timeout) {
@@ -59,19 +56,30 @@
 					registeredPlugins((registeredPlugin, config) => {
 						if (config.enabled) {
 							registeredPlugin.config = config;
-							let promise = new Promise((checkEnabledResolve) => {
-								registeredPlugin.checkEnabled().then((isEnabled) => {
-									if (isEnabled) {
-										addPlugin(registeredPlugin);
-									}
-									checkEnabledResolve();
-								});
-							})
+							let promise = new Promise((isEnabledResolve) => {
+								if (registeredPlugin.isEnabled) {
+									pluginsPromises.push()
+									registeredPlugin.isEnabled().then((isEnabled) => {
+										if (isEnabled) {
+											addPlugin(registeredPlugin);
+										}
+										isEnabledResolve();
+									});
+								}
+								else {
+									isEnabledResolve();
+								}
+							});
+							pluginsPromises.push(promise);
 						}
 					});
 
 					Promise.all(pluginsPromises)
 						.then(() => {
+							function sortFunc(a,b) { return a.getIndex() - b.getIndex(); }
+							service.trackPlugins.sort(sortFunc);
+							service.sideBarPlugins.sort(sortFunc);
+							service.toolbarPlugins.sort(sortFunc);
 							pluginsLoaded = true;
 							resolve();
 						});
@@ -154,7 +162,7 @@
 			paella.editor.registerPlugin(this);
 		}
 		
-		checkEnabled() {
+		isEnabled() {
 			return Promise.resolve(true);
 		}
 		

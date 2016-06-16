@@ -20,7 +20,7 @@
 	});
 
 	class TrackInfoPlugin extends paella.editor.SideBarPlugin {
-		checkEnabled() {
+		isEnabled() {
 			return Promise.resolve(true);
 		}
 
