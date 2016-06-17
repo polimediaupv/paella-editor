@@ -17,6 +17,18 @@
 				};
 				
 				$scope.divisionWidth = 60;
+
+				$scope.currentTime = toTextTime(0);
+
+				function toTextTime(time) {
+					let hours = Math.floor(time / (60 * 60));
+					let seconds = time % (60 * 60);
+					let minutes = Math.floor(seconds / 60);
+					seconds = Math.ceil(seconds % 60);
+					return hours + ":" +
+							(minutes<10 ? "0":"") + minutes + ":" +
+							(seconds<10 ? "0":"") + seconds;
+				}
 				
 				function setTimeMark(time) {
 					let p = time.currentTime * $scope.zoom / time.duration;
@@ -31,6 +43,8 @@
 				
 				paella.events.bind(paella.events.timeUpdate, function(evt,time) {
 					setTimeMark(time);
+					$scope.currentTime = toTextTime(time.currentTime);
+					$scope.$apply();
 				});
 				
 				function setTime(clientX) {

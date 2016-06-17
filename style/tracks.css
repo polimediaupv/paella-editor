@@ -148,6 +148,15 @@ rzslider {
 	padding-top: 5px;
 }
 
+.track-names-container {
+	margin-top: 35px;
+}
+
+.current-time {
+	margin-top: 21px;
+	color: white;
+}
+
 .track-header {
 	background-color: #4f4f4f;
 	color: white;

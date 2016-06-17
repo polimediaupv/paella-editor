@@ -295,6 +295,9 @@
 					currentTrackItem.plugin = plugin;
 					currentTrackItem.trackData = trackData;
 					currentTrackItem.trackData.selected = true;
+					if (plugin.setTimeOnSelect()) {
+						paella.player.videoContainer.setCurrentTime(trackData.s);
+					}
 					this.currentTrackItem = { trackData:trackData, plugin: plugin };
 					this.notify();
 				}

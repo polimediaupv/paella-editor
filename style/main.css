@@ -114,7 +114,7 @@ time-line nav.navbar {
 	z-index: 1;
 	top: 0px;
 	bottom: 0px;
-    border-left: 2px solid #B9B9B9;
+    border-left: 2px dotted red;
 }
 
 #timeline-ruler {
@@ -124,6 +124,7 @@ time-line nav.navbar {
     border-bottom: 1px solid black;
 	z-index: 0;
 	cursor: pointer;
+	margin-bottom: 20px;
 }
 
 #timeline-ruler-action {
