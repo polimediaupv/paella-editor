@@ -82,7 +82,7 @@
 								$(elem).css({ width:divisionWidth + 'px' });
 								timelineRuler.appendChild(elem);
 								
-								time += Math.round(timeIncrement);
+								time += timeIncrement;
 							}
 						});
 				}
@@ -193,6 +193,16 @@
 				$scope.allowResize = $scope.data.allowResize;
 				$scope.allowMove = $scope.data.allowMove;
 				$scope.plugin = $scope.data.plugin;
+				$scope.img = $scope.data.img;
+
+				$scope.getStyle = function(item) {
+					let style = `color: ${ $scope.textColor }; background-color: ${ $scope.color };`;
+					if (item.img) {
+						style += ` background-image: url(${ item.img }); background-size: auto 100%;`;
+					}
+					return style;
+				}
+				
 				
 				function selectTrackItem(trackData,tracks) {
 					PaellaEditor.selectTrack(tracks);

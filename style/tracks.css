@@ -34,8 +34,6 @@ time-line .visualization-bar {
 }
 
 .timeline-content {
-	padding-left: 10px;
-    padding-right: 10px;
 }
 
 .track {
@@ -88,7 +86,7 @@ time-line .visualization-bar {
 }
 
 .handler:first-child {
-	left: -7px;
+	left: 0px;
 	border-radius: 8px 0px 0px 8px;
 	border-top: 1px solid black;
     border-bottom: 1px solid black;
@@ -96,7 +94,7 @@ time-line .visualization-bar {
 }
 
 .handler:last-child {
-	right: -7px;
+	right: 0px;
 	border-radius: 0px 8px 8px 0px;
 	border-top: 1px solid black;
     border-bottom: 1px solid black;
@@ -110,6 +108,9 @@ time-line .visualization-bar {
 	margin-top: -1px;
 	border-top: 1px solid black;
     border-bottom: 1px solid black;
+	position: absolute;
+	left: 7px;
+	right: 7px;
 }
 
 rzslider .rz-pointer {
