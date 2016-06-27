@@ -29,7 +29,7 @@
 		plugins.push(plugin);
 	}
 
-	app.factory("PluginManager", ["$timeout", function($timeout) {
+	app.factory("PluginManager", ["$timeout","$rootScope",function($timeout,$rootScope) {
 		let loadingPlugins = false;
 		let pluginsLoaded = false;
 
@@ -134,6 +134,15 @@
 				});
 			},
 
+			subscribeTrackReload:function(scope,callback) {
+				var handler = $rootScope.$on('notify-track-reload',callback);
+				scope.$on('destroy',handler);
+			},
+
+			notifyTrackChanged:function(plugin) {
+				$rootScope.$emit('notify-track-reload');
+			},
+
 			onSave:function() {
 				var promises = [];
 
@@ -190,6 +199,14 @@
 			super();
 			
 			this.type = 'editorTrackPlugin';
+
+			
+		}
+
+		notifyTrackChanged() {
+			let injector = angular.element(document).injector();
+			let PluginManager = injector.get('PluginManager');
+			PluginManager.notifyTrackChanged(this);
 		}
 
 		getIndex() {

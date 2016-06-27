@@ -302,7 +302,7 @@
 					this.notify();
 				}
 			},
-			
+
 			subscribe:function(scope, callback) {
 				var handler = $rootScope.$on('notify-service-changed', callback);
 				scope.$on('destroy', handler);
