@@ -13,7 +13,8 @@ time-line nav {
 }
 
 time-line .timeline-zoom-container {
-	width: 100%;
+	width: 90%;
+	right: 0px;
     overflow: auto;
     position: absolute;
     bottom: 36px;
@@ -33,8 +34,6 @@ time-line .visualization-bar {
 }
 
 .timeline-content {
-	padding-left: 10px;
-    padding-right: 10px;
 }
 
 .track {
@@ -87,7 +86,7 @@ time-line .visualization-bar {
 }
 
 .handler:first-child {
-	left: -7px;
+	left: 0px;
 	border-radius: 8px 0px 0px 8px;
 	border-top: 1px solid black;
     border-bottom: 1px solid black;
@@ -95,7 +94,7 @@ time-line .visualization-bar {
 }
 
 .handler:last-child {
-	right: -7px;
+	right: 0px;
 	border-radius: 0px 8px 8px 0px;
 	border-top: 1px solid black;
     border-bottom: 1px solid black;
@@ -109,6 +108,9 @@ time-line .visualization-bar {
 	margin-top: -1px;
 	border-top: 1px solid black;
     border-bottom: 1px solid black;
+	position: absolute;
+	left: 7px;
+	right: 7px;
 }
 
 rzslider .rz-pointer {
@@ -141,4 +143,34 @@ rzslider {
 
 .navbar-inverse {
 	background-color: #525252;
+}
+
+.track-names {
+	padding-top: 5px;
+}
+
+.track-names-container {
+	margin-top: 35px;
+}
+
+.current-time {
+	margin-top: 21px;
+	color: white;
+}
+
+.track-header {
+	background-color: #4f4f4f;
+	color: white;
+    height: 20px;
+    padding-top: 2px;
+    width: 10%;
+    text-align: right;
+    padding-right: 5px;
+	cursor: pointer;
+	cursor: hand;
+}
+
+.track-header.main-track {
+	height: 35px;
+	padding-top: 9px;
 }

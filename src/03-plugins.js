@@ -27,12 +27,9 @@
 
 	paella.editor.registerPlugin = function(plugin) {
 		plugins.push(plugin);
-		plugins.sort(function(a,b) {
-			return a.getIndex() - b.getIndex();
-		});
 	}
 
-	app.factory("PluginManager", ["$timeout", function($timeout) {
+	app.factory("PluginManager", ["$timeout","$rootScope",function($timeout,$rootScope) {
 		let loadingPlugins = false;
 		let pluginsLoaded = false;
 
@@ -59,19 +56,30 @@
 					registeredPlugins((registeredPlugin, config) => {
 						if (config.enabled) {
 							registeredPlugin.config = config;
-							let promise = new Promise((checkEnabledResolve) => {
-								registeredPlugin.checkEnabled().then((isEnabled) => {
-									if (isEnabled) {
-										addPlugin(registeredPlugin);
-									}
-									checkEnabledResolve();
-								});
-							})
+							let promise = new Promise((isEnabledResolve) => {
+								if (registeredPlugin.isEnabled) {
+									pluginsPromises.push()
+									registeredPlugin.isEnabled().then((isEnabled) => {
+										if (isEnabled) {
+											addPlugin(registeredPlugin);
+										}
+										isEnabledResolve();
+									});
+								}
+								else {
+									isEnabledResolve();
+								}
+							});
+							pluginsPromises.push(promise);
 						}
 					});
 
 					Promise.all(pluginsPromises)
 						.then(() => {
+							function sortFunc(a,b) { return a.getIndex() - b.getIndex(); }
+							service.trackPlugins.sort(sortFunc);
+							service.sideBarPlugins.sort(sortFunc);
+							service.toolbarPlugins.sort(sortFunc);
 							pluginsLoaded = true;
 							resolve();
 						});
@@ -126,6 +134,15 @@
 				});
 			},
 
+			subscribeTrackReload:function(scope,callback) {
+				var handler = $rootScope.$on('notify-track-reload',callback);
+				scope.$on('destroy',handler);
+			},
+
+			notifyTrackChanged:function(plugin) {
+				$rootScope.$emit('notify-track-reload');
+			},
+
 			onSave:function() {
 				var promises = [];
 
@@ -154,7 +171,7 @@
 			paella.editor.registerPlugin(this);
 		}
 		
-		checkEnabled() {
+		isEnabled() {
 			return Promise.resolve(true);
 		}
 		
@@ -182,6 +199,14 @@
 			super();
 			
 			this.type = 'editorTrackPlugin';
+
+			
+		}
+
+		notifyTrackChanged() {
+			let injector = angular.element(document).injector();
+			let PluginManager = injector.get('PluginManager');
+			PluginManager.notifyTrackChanged(this);
 		}
 
 		getIndex() {
@@ -223,6 +248,10 @@
 
 		allowEditContent() {
 			return true;
+		}
+
+		setTimeOnSelect() {
+			return false;
 		}
 
 		onTrackChanged(id,start,end) {

@@ -1,6 +1,6 @@
 (function() {
 	class TrimmingEditorPlugin extends paella.editor.MainTrackPlugin {
-		checkEnabled() {
+		isEnabled() {
 			return new Promise((resolve,reject) => {
 				var videoId = paella.initDelegate.getId();
 				paella.data.read('trimming',{id:videoId},(data,status) => {
@@ -29,7 +29,7 @@
 		}
 		
 		getName() {
-			return "trimmingEditorPlugin";
+			return "trimmingEditorPluginV2";
 		}
 		
 		getTrackName() {

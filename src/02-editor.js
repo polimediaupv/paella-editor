@@ -122,26 +122,30 @@
 									let promisedTrackItems = [];
 									service._tracks = [];
 									plugins.trackPlugins.forEach((plugin) => {
-										promisedTrackItems.push(plugin.getTrackItems()
-											.then((trackItems) => {
-												let depth = 0;
-												trackItems.forEach((item) => {
-													item.depth = depth++;
-												});
-												service._tracks.push({
-													pluginId:plugin.getName(),
-													type:plugin.getTrackType(),
-													name:plugin.getTrackName(),
-													color:plugin.getColor(),
-													textColor:plugin.getTextColor(),
-													duration:videoData.duration,
-													allowResize:plugin.allowResize(),
-													allowMove:plugin.allowDrag(),
-													allowEditContent:plugin.allowEditContent(),
-													list: trackItems,
-													plugin:plugin
-												});
-											}));
+										let trackItemPromise = plugin.getTrackItems();
+										if (!Array.isArray(trackItemPromise)) {
+											promisedTrackItems.push(trackItemPromise
+												.then((trackItems) => {
+													let depth = 0;
+													trackItems.forEach((item) => {
+														item.depth = depth++;
+													});
+													service._tracks.push({
+														pluginId:plugin.getName(),
+														type:plugin.getTrackType(),
+														name:plugin.getTrackName(),
+														color:plugin.getColor(),
+														textColor:plugin.getTextColor(),
+														duration:videoData.duration,
+														allowResize:plugin.allowResize(),
+														allowMove:plugin.allowDrag(),
+														allowEditContent:plugin.allowEditContent(),
+														list: trackItems,
+														plugin:plugin
+													});
+												}));
+										}
+										
 									});
 
 									return Promise.all(promisedTrackItems);
@@ -238,11 +242,19 @@
 			selectTrack:function(trackData) {
 				if (!this.currentTrack || this.currentTrack.pluginId!=trackData.pluginId) {
 					var This = this;
+					if (currentTrackItem.trackData) {
+						currentTrackItem.trackData.selected = false;
+					}
+					if (trackData && trackData.list.length==1) {
+						trackData.list[0].selected = true;
+					}
 					this.currentTrack = trackData;
 					this.currentTool = null;
 					this._tracks.forEach(function(track) {
+						track.selected = false;
 						track.plugin.onToolSelected(trackData);
 					});
+					trackData.selected = true;
 					this.tools = [];
 					trackData.plugin.getTools().forEach(function(tool) {
 						var isEnabled = This.currentTrack.plugin.isToolEnabled(tool);
@@ -268,10 +280,13 @@
 				}
 			},
 			
-			selectTrackItem:function(plugin,trackData) {
+			selectTrackItem:function(plugin,trackData,tracks) {
 				if (currentTrackItem.plugin != plugin ||
 					!currentTrackItem.trackData || currentTrackItem.trackData.id!=trackData.id)
 				{
+					if (currentTrackItem.trackData) {
+						currentTrackItem.trackData.selected = false;
+					}
 					if (currentTrackItem.plugin)
 					{
 						currentTrackItem.plugin.onUnselect(currentTrackItem.trackData && currentTrackItem.trackData.id);
@@ -279,9 +294,15 @@
 					plugin.onSelect(trackData.id);
 					currentTrackItem.plugin = plugin;
 					currentTrackItem.trackData = trackData;
+					currentTrackItem.trackData.selected = true;
+					if (plugin.setTimeOnSelect()) {
+						paella.player.videoContainer.setCurrentTime(trackData.s);
+					}
+					this.currentTrackItem = { trackData:trackData, plugin: plugin };
+					this.notify();
 				}
 			},
-			
+
 			subscribe:function(scope, callback) {
 				var handler = $rootScope.$on('notify-service-changed', callback);
 				scope.$on('destroy', handler);
@@ -289,7 +310,6 @@
 			
 			notify:function() {
 				$rootScope.$emit('notify-service-changed');
-				$rootScope.$apply();
 			},
 			
 			plugins:function() {
