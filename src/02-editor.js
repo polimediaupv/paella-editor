@@ -11,6 +11,7 @@
 			this.resizerV = $('#resizerV');
 			
 			this.resizerH.setPosition = (top) => {
+				base.cookies.set("editorResizerH",top/$(window).height());
 				var percentTop = top * 100 / $(window).height();
 				var percentBottom = 100 - percentTop;
 				this.topContainer.css({"height":percentTop + '%'});
@@ -22,7 +23,8 @@
 			this.resizerH.minY = 30;
 			this.resizerH.maxY = 80;
 			
-			this.resizerH.setPosition($(window).height() * 0.6);
+			let storedHeight = base.cookies.get("editorResizerH") || 0.6;
+			this.resizerH.setPosition($(window).height() * storedHeight);
 			this.resizerH.on("mousedown", (evt) => {
 				$(document).on("mouseup", (evt) => {
 					$(document).off("mouseup");
@@ -40,6 +42,7 @@
 			});
 			
 			this.resizerV.setPosition = (left) => {
+				base.cookies.set("editorResizerV",left/$(window).width());
 				let percentLeft = left * 100 / $(window).width();
 				let percentRight = 100 - percentLeft;
 				this.paellaVideoContainer.css({"width":percentLeft + '%'});
@@ -51,7 +54,8 @@
 			this.resizerV.minX = 30;
 			this.resizerV.maxX = 90;
 			
-			this.resizerV.setPosition($(window).width() * 0.8);
+			let storedWidth = base.cookies.get("editorResizerV") || 0.8;
+			this.resizerV.setPosition($(window).width() * storedWidth);
 			this.resizerV.on("mousedown", (evt) => {
 				$(document).on("mouseup", (evt) => {
 					$(document).off("mouseup");
@@ -281,6 +285,10 @@
 			},
 			
 			selectTrackItem:function(plugin,trackData,tracks) {
+				if (plugin && plugin.setTimeOnSelect()) {
+					paella.player.videoContainer.setCurrentTime(trackData.s);
+				}
+
 				if (currentTrackItem.plugin != plugin ||
 					!currentTrackItem.trackData || currentTrackItem.trackData.id!=trackData.id)
 				{
@@ -295,9 +303,7 @@
 					currentTrackItem.plugin = plugin;
 					currentTrackItem.trackData = trackData;
 					currentTrackItem.trackData.selected = true;
-					if (plugin.setTimeOnSelect()) {
-						paella.player.videoContainer.setCurrentTime(trackData.s);
-					}
+					
 					this.currentTrackItem = { trackData:trackData, plugin: plugin };
 					this.notify();
 				}

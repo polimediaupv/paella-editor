@@ -7,6 +7,7 @@ Class ("paella.editor.PaellaPlayer", paella.PaellaPlayer,{
 			paella.$editor.load()
 				.then(function() {
 					angular.bootstrap(document, [ paella.editor.APP_NAME ]);
+					paella.keyManager.enabled = false;
 				});
 		});
 		
