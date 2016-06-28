@@ -41,8 +41,10 @@
 		<div id="time-mark" style="left:0%">
 			<div class="current-time">{{ currentTime }}</div>
 		</div>
-		<div class="track" ng-class="{ 'main-track':trackData.type=='master', 'selected':trackData.selected }" ng-mousedown="selectTrack(trackData)" ng-repeat="trackData in tracks">
-			<track data="trackData"></track>
+		<div class="track" ng-class="{ 'main-track':trackData.type=='master', 'selected':trackData.selected }"
+			 ng-mousedown="selectTrack(trackData)" ng-repeat="trackData in tracks"
+			 ng-click="setTimeToCursor($event)">
+			<track data="trackData" ng-click="$event.stopPropagation()"></track>
 		</div>
 	</div>
 </div>
