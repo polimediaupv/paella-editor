@@ -107,71 +107,74 @@
 					});
 				});
 				
+				$scope.selectTrack = function(t) {
+					PaellaEditor.selectTrack(t);
+				};
+
+				$scope.selectTool = function(tool) {
+					if (tool.isEnabled) {
+						PaellaEditor.selectTool(tool.name);
+					}
+				};
+
+				$scope.saveAndClose = function() {
+					PaellaEditor.saveAll()
+						.then(() => {
+							$scope.closeEditor(true);
+						});
+				};
+				
+				$scope.saveChanges = function() {
+					PaellaEditor.saveAll();
+				};
+				
+				$scope.closeEditor = function(noConfirm) {
+					if (noConfirm || confirm($translate.instant("Are you sure you want to discard all changes and close editor?"))) {
+						location.href = location.href.replace("editor.html","index.html");
+					}
+				};
+				
+				$scope.$watch('tracks', function() {
+				
+				});
+
+				$scope.$watch('zoom',function() {
+					$('#timeline-content').css({ width:$scope.zoom + "%" });
+					buildTimeDivisions($scope.divisionWidth);
+					paella.player.videoContainer.currentTime()
+						.then((time) => {
+							setTimeMark(time);
+						});
+				});
+
+				$scope.setTimeToCursor = function(evt) {
+					setTimeout(function() {
+						setTime(evt.clientX);
+					},50);
+				};
+				
 				function reloadTracks() {
 					PaellaEditor.tracks()
 						.then(function(tracks) {
 							$scope.tracks = tracks;
 							$scope.currentTrack = PaellaEditor.currentTrack;
-							$scope.selectTrack = function(t) {
-								PaellaEditor.selectTrack(t);
-							};
+							
 							
 							$scope.tools = PaellaEditor.tools;
 							$scope.currentTool = PaellaEditor.currentTool;
-							$scope.selectTool = function(tool) {
-								if (tool.isEnabled) {
-									PaellaEditor.selectTool(tool.name);
-								}
-							};
-							
-							$scope.selectTrack = function(trackData) {
-								PaellaEditor.selectTrack(trackData);
-							};
-							
-							$scope.saveAndClose = function() {
-								PaellaEditor.saveAll()
-									.then(() => {
-										$scope.closeEditor(true);
-									});
-							};
-							
-							$scope.saveChanges = function() {
-								PaellaEditor.saveAll();
-							};
-							
-							$scope.closeEditor = function(noConfirm) {
-								if (noConfirm || confirm($translate.instant("Are you sure you want to discard all changes and close editor?"))) {
-									location.href = location.href.replace("editor.html","index.html");
-								}
-								
-							};
-							
-							$scope.$watch('tracks', function() {
-								//console.log("Tracks changed");
-								//$scope.$apply();
-							});
-							$scope.$watch('zoom',function() {
-								$('#timeline-content').css({ width:$scope.zoom + "%" });
-								buildTimeDivisions($scope.divisionWidth);
-								paella.player.videoContainer.currentTime()
-									.then((time) => {
-										setTimeMark(time);
-									});
-							});
-							
-							PaellaEditor.subscribe($scope, function() {
-								$scope.currentTrack = PaellaEditor.currentTrack;
-								$scope.tools = PaellaEditor.tools;
-								$scope.currentTool = PaellaEditor.currentTool;
-								//$scope.$apply();
-							});
-
+	
 							$scope.$apply();
 						});
 				}
 				
 				reloadTracks();
 				
+				PaellaEditor.subscribe($scope, function() {
+					$scope.currentTrack = PaellaEditor.currentTrack;
+					$scope.tools = PaellaEditor.tools;
+					$scope.currentTool = PaellaEditor.currentTool;
+				});
+
 				PluginManager.subscribeTrackReload($scope,() => {
 					reloadTracks();
 				});
@@ -243,7 +246,7 @@
 				$scope.getTrackItemId = function(trackData) {
 					return "track-" + $scope.pluginId + "-" + trackData.id;
 				};
-				
+
 				$scope.leftHandlerDown = function(event,trackData,tracks) {
 					selectTrackItem(trackData,tracks);
 					if ($scope.allowResize) {
