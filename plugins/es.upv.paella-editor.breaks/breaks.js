@@ -44,8 +44,17 @@
 		}
 
 		onToolSelected(toolName) {
-			if (toolName=="Delete") {
-
+			if (toolName=="Delete" && this._currentId) {
+				let deleteIndex = -1;
+				this._tracks.some((track,index) => {
+					if (track.id==this._currentId) {
+						deleteIndex = index;
+					}
+				});
+				if (deleteIndex!=-1) {
+					this._tracks.splice(deleteIndex,1);
+					this.notifyTrackChanged();
+				}
 			}
 			else if (toolName=="Create") {
 				let id = 1;
@@ -64,7 +73,7 @@
 				}
 				paella.player.videoContainer.currentTime()
 					.then((time) => {
-						this._tracks.push({ id:id, s: time, e: time + 60});
+						this._tracks.push({ id:id, s: time, e: time + 60, text:"Break" });
 						this.notifyTrackChanged();
 					});
 			}
@@ -79,7 +88,7 @@
 		}
 
 		allowEditContent() {
-			return false;
+			return true;
 		}
 
 		setTimeOnSelect() {
@@ -87,9 +96,31 @@
 		}
 		
 		onTrackChanged(id,start,end) {
+			this._tracks.some((t) => {
+				if (t.id==id) {
+					t.s = start;
+					t.e = end;
+				}
+			});
 		}
 		
+		onSelect(trackItemId) {
+			this._currentId = trackItemId;
+		}
+
+		onUnselect(id) {
+			this._currentId = null;
+		}
+
 		onSave() {
+			return new Promise((resolve,reject) => {
+				var data = {
+					breaks: this._tracks
+				};
+				paella.data.write('breaks',{id:paella.initDelegate.getId()},data,function(response,status) {
+					resolve();
+				});
+			});
 		}
 	}
 

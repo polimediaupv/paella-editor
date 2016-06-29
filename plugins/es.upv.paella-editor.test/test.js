@@ -5,7 +5,7 @@
 	class TestPlugin extends paella.editor.TrackPlugin {
 		
 		isEnabled() {
-			return Promise.resolve(true);
+			return Promise.resolve(false);
 		}
 		
 		getIndex() {
@@ -59,11 +59,11 @@
 		}
 
 		onSelect(trackItemId) {
-			console.log('Track item selected: ' + this.getTrackName() + ", " + trackItemId);
+			this._currentId = trackItemId;
 		}
 
 		onUnselect(id) {
-			console.log('Track list unselected: ' + this.getTrackName() + ", " + id);
+			this._currentId = null;
 		}
 
 		onDblClick(trackData) {
