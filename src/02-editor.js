@@ -103,7 +103,7 @@
 			plugin:null,
 			trackItem:null
 		};
-		
+
 		let _editorLoaded = false;
 		let _loadingEditor = false;
 		function ensurePaellaEditorLoaded() {
@@ -164,6 +164,7 @@
 			});
 		}
 
+		let trackItemSumary = {};
 		var service = {
 			_tracks:[],
 			tools:[],
@@ -173,7 +174,31 @@
 			
 			tracks:function() {
 				return new Promise((resolve) => {
-					ensurePaellaEditorLoaded().then(() => resolve(this._tracks) );
+					ensurePaellaEditorLoaded().then(() => {
+						// Compare trackItemSumary
+						let newTrackItems = {};
+						let newTrackItemData = {
+							track: null,
+							trackItem: null	
+						};
+						let oldTrackItemCount = Object.keys(trackItemSumary).length;
+						this._tracks.forEach((track) => {
+							track.list.forEach((trackItem) => {
+								let hash = `${track.pluginId}-${trackItem.id}`;
+								newTrackItems[hash] = trackItem;
+								if (!trackItemSumary[hash] && oldTrackItemCount>0 && newTrackItemData.track==null) {
+									 newTrackItemData.track = track;
+									 newTrackItemData.trackItem = trackItem;
+								} 
+							});
+						});
+						trackItemSumary = newTrackItems;
+
+						resolve(this._tracks);
+						if (newTrackItemData.track && newTrackItemData.trackItem) {
+							this.selectTrackItem(newTrackItemData.track.plugin,newTrackItemData.trackItem);
+						}
+					});
 				});
 			},
 			
