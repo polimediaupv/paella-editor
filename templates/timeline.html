@@ -12,7 +12,7 @@
 
 	<div class="btn-group">
 		<label ng-repeat="tool in tools" class="btn btn-primary" ng-class="{ 'active' : tool.name==currentTool && tool.isToggle, 'disabled' : !tool.isEnabled }"
-			ng-click="selectTool(tool)">{{ tool.name }}</label>
+			ng-click="selectTool(tool)">{{ tool.name | translate }}</label>
 	</div>
 
 	<div class="pull-right btn-group">
@@ -29,7 +29,7 @@
 
 <div class="track-names-container">
 	<div class="track-names" ng-mousedown="selectTrack(trackData)" ng-repeat="trackData in tracks">
-		<div class="track-header" ng-class="{ 'main-track':trackData.type=='master', 'selected':trackData.selected }">{{ trackData.name }}</div>
+		<div class="track-header" ng-class="{ 'main-track':trackData.type=='master', 'selected':trackData.selected }">{{ trackData.name | translate }}</div>
 	</div>
 </div>
 

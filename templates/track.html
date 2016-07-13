@@ -2,6 +2,6 @@
 		id="{{ getTrackItemId(trackData) }}" ng-repeat="trackData in tracks"
 		style="left: {{ getLeft(trackData) }}%; width: {{ getWidth(trackData) }}%; z-index: {{ getDepth(trackData) }};">
 	<div class="handler" ng-mousedown="leftHandlerDown($event,trackData,data); $event.stopPropagation();" style="{{ getStyle(trackData) }}"></div>
-	<p ng-mousedown="centerHandlerDown($event,trackData,data); $event.stopPropagation();" style="{{ getStyle(trackData) }}">{{ trackData.name || name }}</p>
+	<p ng-mousedown="centerHandlerDown($event,trackData,data); $event.stopPropagation();" style="{{ getStyle(trackData) }}">{{ trackData.name || (name | translate) }}</p>
 	<div ng-mousedown="rightHandlerDown($event,trackData,data); $event.stopPropagation();" class="handler" style="{{ getStyle(trackData) }}"></div>
 </div>

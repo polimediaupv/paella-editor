@@ -23,6 +23,15 @@ gulp.task("compile", function() {
 		.pipe(gulp.dest(`${config.outDir}player/javascript/`));
 });
 
+gulp.task("compileDebug", function() {
+	gulp.src(["src/*.js","plugins/*/*.js","src-debug/*.js"])
+		//.pipe(sourcemaps.init())
+		.pipe(traceur())
+		.pipe(concat("paella_editor.js"))
+		//.pipe(sourcemaps.write('.'))
+		.pipe(gulp.dest(`${config.outDir}player/javascript/`));
+});
+
 gulp.task("styles", function() {
 	gulp.src(['style/*.css','plugins/**/*.css'])
 		.pipe(concat('editor.css'))
@@ -81,7 +90,9 @@ gulp.task('dictionary', function() {
 	addDictionary('es');
 });
 
+
 gulp.task("build", ["compile","styles","dictionary","copy"]);
+gulp.task("buildDebug", ["compileDebug","styles","dictionary","copy"])
 
 gulp.task("watch", function() {
 	gulp.watch([
@@ -92,10 +103,11 @@ gulp.task("watch", function() {
 		'style/*.css',
 		'plugins/**/*.css',
 		'src/*.js',
+		'src-debug/*.js',
 		'plugins/**/*.js',
 		'plugins/**/*.html'
-	],["build"]);
+	],["buildDebug"]);
 });
 
 gulp.task("default",["build"]);
-gulp.task("serve",["build","webserver","watch"]);
+gulp.task("serve",["buildDebug","webserver","watch"]);

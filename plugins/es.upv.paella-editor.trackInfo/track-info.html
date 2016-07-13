@@ -1,4 +1,4 @@
-<p>Current track: {{ currentTrack.name }}</p>
+<p ng-show="currentTrack">{{ "Current track" | translate }}: {{ currentTrack.name | translate }}</p>
 <div>
 	<form role="form" ng-repeat="trackItem in currentTrack.list">
 		<div class="form-group">

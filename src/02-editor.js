@@ -85,10 +85,24 @@
 				$.get("config/editor-config.json")
 					.then((data) => {
 						this.config = data;
-						resolve();
+						return paella.player.auth.canWrite();
 					},
 					() => {
 						reject();
+					})
+
+					.then((canWrite) => {
+						if (canWrite) {
+							resolve();
+						}
+						else {
+							alert(base.dictionary.translate("You are not authorized to view this resource"));
+							let url = location.href;
+							let result = /(\?.*)$/.exec(url);
+							if (result) {
+								location.href = `index.html${result[1]}`; 
+							}
+						}
 					});
 			});
 		}
