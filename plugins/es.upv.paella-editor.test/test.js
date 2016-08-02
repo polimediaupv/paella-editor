@@ -303,7 +303,7 @@
 
 	class TestSideBar2 extends paella.editor.SideBarPlugin {
 		isEnabled() {
-			return Promise.resolve(false);
+			return Promise.resolve(true);
 		}
 
 		getName() {
@@ -336,6 +336,10 @@
 	
 	class SidebarPlugin2 extends paella.editor.SideBarPlugin {
 		isEnabled() {
+			return Promise.resolve(true);
+		}
+
+		isVisible() {
 			return Promise.resolve(false);
 		}
 		

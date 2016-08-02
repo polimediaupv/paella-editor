@@ -55,6 +55,36 @@
 					tabContainer.append(tabContent);
 				}
 
+				function buildView() {
+					PaellaEditor.plugins()
+						.then(function(plugins) {
+							$scope.plugins = [];
+							let promises = [];
+							
+							plugins.sideBarPlugins.forEach((plugin) => {
+								$scope.plugins.push(plugin);
+								plugin.isVisible().then((visible) => {
+									plugin.__visible__ = visible;
+									promises.push(Promise.resolve());
+								});
+							});
+
+							return Promise.all(promises);
+						})
+
+						.then(function(promises) {
+							console.log($scope.plugins);
+							$scope.plugins.some((plugin) => {
+								if (plugin.__visible__) {
+									insertTabContents(plugin);
+									$scope.selectedPlugin = plugin;
+									return true;
+								}
+							});
+							$scope.$apply();
+						});
+				}
+
 				$scope.isSelected = function(plugin) {
 					return plugin == $scope.selectedPlugin;			
 				};
@@ -62,18 +92,10 @@
 				$scope.selectTab = function(plugin) {
 					$scope.selectedPlugin = plugin;
 					insertTabContents(plugin);
-				}
+				};
 				
-				PaellaEditor.plugins()
-					.then(function(plugins) {
-						$scope.plugins = plugins.sideBarPlugins;
-						if ($scope.plugins.length) {
-							insertTabContents($scope.plugins[0]);
-						}
-						$scope.selectedPlugin = $scope.plugins[0];
-						$scope.$apply();
-					});
-					
+				
+				buildView();
 				createTabContainer();
 			}//,
 			//controller: ["$scope", "PaellaEditor", SidebarController]

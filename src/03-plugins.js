@@ -326,6 +326,10 @@
 			this.type = 'editorSideBarPlugin';
 		}
 
+		isVisible() {
+			return Promise.resolve(true);
+		}
+
 		getIndex() {
 			return 10000;
 		}

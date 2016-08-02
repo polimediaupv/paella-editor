@@ -1,5 +1,5 @@
 <ul class="nav nav-tabs">
-	<li role="presentation" ng-repeat="plugin in plugins" ng-class="{ 'active':isSelected(plugin)  }">
+	<li role="presentation" ng-repeat="plugin in plugins" ng-class="{ 'active':isSelected(plugin)  }" ng-show="plugin.__visible__">
 		<a ng-click="selectTab(plugin)">{{ plugin.getTabName() | translate }}</a>
 	</li>
 </ul>
