@@ -24,6 +24,10 @@
 			return Promise.resolve(true);
 		}
 
+		isVisible(PaellaEditor,PluginManager) {
+			return Promise.resolve(PaellaEditor.currentTrack);
+		}
+
 		getName() {
 			return "trackInfoSidebar";
 		}

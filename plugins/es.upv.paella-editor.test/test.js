@@ -303,6 +303,10 @@
 
 	class TestSideBar2 extends paella.editor.SideBarPlugin {
 		isEnabled() {
+			return Promise.resolve(false);
+		}
+
+		isVisible(PaellaEditor,PluginManager) {
 			return Promise.resolve(true);
 		}
 
@@ -336,11 +340,11 @@
 	
 	class SidebarPlugin2 extends paella.editor.SideBarPlugin {
 		isEnabled() {
-			return Promise.resolve(true);
+			return Promise.resolve(false);
 		}
 
-		isVisible() {
-			return Promise.resolve(false);
+		isVisible(PaellaEditor,PluginManager) {
+			return Promise.resolve(PaellaEditor.currentTrack && PaellaEditor.currentTrack.pluginId=='trimmingEditorPluginV2');
 		}
 		
 		getName() {

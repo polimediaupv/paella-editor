@@ -28,7 +28,7 @@
 			
 	}
 	
-	app.directive("sideBar", ['$compile','PaellaEditor',function($compile,PaellaEditor) {
+	app.directive("sideBar", ['$compile','PaellaEditor','PluginManager',function($compile,PaellaEditor,PluginManager) {
 		return {
 			restrict: "E",
 			templateUrl: "templates/sideBar.html",
@@ -63,7 +63,7 @@
 							
 							plugins.sideBarPlugins.forEach((plugin) => {
 								$scope.plugins.push(plugin);
-								plugin.isVisible().then((visible) => {
+								plugin.isVisible(PaellaEditor,PluginManager).then((visible) => {
 									plugin.__visible__ = visible;
 									promises.push(Promise.resolve());
 								});
@@ -73,14 +73,18 @@
 						})
 
 						.then(function(promises) {
-							console.log($scope.plugins);
-							$scope.plugins.some((plugin) => {
-								if (plugin.__visible__) {
-									insertTabContents(plugin);
-									$scope.selectedPlugin = plugin;
-									return true;
-								}
-							});
+							if (!$scope.selectedPlugin || !$scope.selectedPlugin.__visible__) {
+								$scope.plugins.some((plugin) => {
+									if (plugin.__visible__) {
+										insertTabContents(plugin);
+										$scope.selectedPlugin = plugin;
+										return true;
+									}
+								});
+							}
+							else {
+								$scope.selectTab($scope.selectedPlugin);
+							}
 							$scope.$apply();
 						});
 				}
@@ -94,6 +98,9 @@
 					insertTabContents(plugin);
 				};
 				
+				PaellaEditor.subscribeTrackSelected($scope, () => {
+					buildView();
+				});
 				
 				buildView();
 				createTabContainer();

@@ -326,7 +326,7 @@
 			this.type = 'editorSideBarPlugin';
 		}
 
-		isVisible() {
+		isVisible(PaellaEditor,PluginManager) {
 			return Promise.resolve(true);
 		}
 

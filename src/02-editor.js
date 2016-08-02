@@ -308,6 +308,7 @@
 							isToggle:isToggle
 						});
 					});
+					this.notifyTrackSelected();
 					this.notify();
 				}
 			},
@@ -344,8 +345,14 @@
 					currentTrackItem.trackData.selected = true;
 					
 					this.currentTrackItem = { trackData:trackData, plugin: plugin };
+					this.notifyTrackSelected();
 					this.notify();
 				}
+			},
+
+			subscribeTrackSelected:function(scope,callback) {
+				var handler = $rootScope.$on('notify-track-selected', callback);
+				scope.$on('destroy', handler);
 			},
 
 			subscribe:function(scope, callback) {
@@ -353,6 +360,10 @@
 				scope.$on('destroy', handler);
 			},
 			
+			notifyTrackSelected:function() {
+				$rootScope.$emit('notify-track-selected');
+			},
+
 			notify:function() {
 				$rootScope.$emit('notify-service-changed');
 			},
