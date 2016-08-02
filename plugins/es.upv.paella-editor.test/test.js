@@ -187,6 +187,100 @@
 
 	new TestPlugin2();
 	
+
+	class MilestoneTrackPlugin extends paella.editor.MainTrackPlugin {
+		
+		isEnabled() {
+			return Promise.resolve(true);
+		}
+		
+		getIndex() {
+			return 10000;
+		}
+
+		getName() {
+			return "milestonePlugin";
+		}
+
+		getTrackName() {
+			return "Milestone test";
+		}
+
+		getColor() {
+			return "#AA2244";
+		}
+
+		getTextColor() {
+			return "black";
+		}
+
+		getTrackItems() {
+			return new Promise((resolve,reject) => {
+				resolve([{id:1,s:10,e:10,minDuration:0},{id:2,s:30,e:30,minDuration:0}]);
+			});
+		}
+
+		allowResize() {
+			return true;
+		}
+
+		allowDrag() {
+			return true;
+		}
+
+		allowEditContent() {
+			return true;
+		}
+
+		onTrackChanged(id,start,end) {
+			//console.log("Track changed: s=" + start + ", e=" + end);
+		}
+
+		onTrackContentChanged(id,content) {
+			//console.log("Track content changed: " + content);
+		}
+		
+		onSave() {
+			return new Promise((resolve,reject) => {
+				//setTimeout(function() {
+					resolve();
+				//},5000);
+			});
+		}
+
+		onSelect(trackItemId) {
+			console.log('Track item selected: ' + this.getTrackName() + ", " + trackItemId);
+		}
+
+		onUnselect(id) {
+			console.log('Track list unselected: ' + this.getTrackName() + ", " + id);
+		}
+
+		onDblClick(trackData) {
+		}
+
+		getTools() {
+			return [];
+		}
+
+		onToolSelected(toolName) {
+			//base.log.debug('Tool selected: ' + toolName);
+			paella.events.trigger(paella.events.documentChanged);
+		}
+
+		isToolEnabled(toolName) {
+			return true;
+		}
+
+		getSettings() {
+			return null;
+		}
+	}
+
+	new MilestoneTrackPlugin();
+
+
+
 	var app = angular.module(paella.editor.APP_NAME);
 	
 	app.directive("sidebar2",function() {

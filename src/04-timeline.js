@@ -255,9 +255,11 @@
 							var delta = evt.clientX - mouseDown;
 							var elem = $('#' + $scope.getTrackItemId(trackData));
 							var trackWidth = elem.width();
-							var diff = delta * (trackData.e - trackData.s) / trackWidth;
+							var diff = trackWidth!=0 ? delta * (trackData.e - trackData.s) / trackWidth:0;
 							var s = trackData.s + diff;
-							if (s>0 && s<trackData.e) {
+							var minDuration = trackData.minDuration!==undefined ? trackData.minDuration : delta;
+							var newDuration = trackData.e - s;
+							if (newDuration>minDuration && s>0 && s<trackData.e) {
 								trackData.s = s;
 								PaellaEditor.saveTrack($scope.pluginId,trackData);
 								mouseDown = evt.clientX;
@@ -280,7 +282,8 @@
 							var delta = evt.clientX - mouseDown;
 							var elem = $('#' + $scope.getTrackItemId(trackData));
 							var trackWidth = elem.width();
-							var diff = delta * (trackData.e - trackData.s) / trackWidth;
+							var trackLeft = elem.position().left;
+							var diff = trackWidth!=0 ? delta * (trackData.e - trackData.s) / trackWidth : delta * (trackData.s / trackLeft) ;
 							var s = trackData.s + diff;
 							var e = trackData.e + diff;
 							if (s>0 && e<=$scope.duration) {
@@ -307,9 +310,11 @@
 							var delta = evt.clientX - mouseDown;
 							var elem = $('#' + $scope.getTrackItemId(trackData));
 							var trackWidth = elem.width();
-							var diff = delta * (trackData.e - trackData.s) / trackWidth;
+							var diff = trackWidth!=0 ? delta * (trackData.e - trackData.s) / trackWidth : delta;
 							var e = trackData.e + diff;
-							if (e<=$scope.duration && e>trackData.s) {
+							var minDuration = trackData.minDuration!==undefined ? trackData.minDuration : 1;
+							var newDuration = e - trackData.s;
+							if (newDuration>minDuration && e<=$scope.duration && e>trackData.s) {
 								trackData.e = e;
 								PaellaEditor.saveTrack($scope.pluginId,trackData);
 								mouseDown = evt.clientX;
@@ -322,6 +327,10 @@
 							cancelMouseTracking();
 						});						
 					}
+				};
+
+				$scope.isZeroDurationTrack = function(trackData) {
+					return (trackData.e - trackData.s)<1;
 				};
 			}]
 		};
