@@ -35,11 +35,14 @@
 
 
 <div id="timeline-ruler-action"></div>
-<div class="timeline-zoom-container">
+<div class="timeline-zoom-container" ng-mousemove="mouseTrack($event)">
 	<div id="timeline-content" class="timeline-content">
 		<div id="timeline-ruler"></div>
 		<div id="time-mark" style="left:0%">
 			<div class="current-time">{{ currentTime }}</div>
+		</div>
+		<div id="mouse-tracker" style="left:0%" ng-click="setTimeToCursor($event)">
+			<div class="current-time">{{ mouseTrackTime }}</div>
 		</div>
 		<div class="track" ng-class="{ 'main-track':trackData.type=='master', 'selected':trackData.selected }"
 			 ng-mousedown="selectTrack(trackData)" ng-repeat="trackData in tracks"

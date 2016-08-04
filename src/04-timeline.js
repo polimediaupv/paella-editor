@@ -19,6 +19,7 @@
 				$scope.divisionWidth = 60;
 
 				$scope.currentTime = toTextTime(0);
+				$scope.mouseTrackTime = toTextTime(0);
 
 				function toTextTime(time) {
 					let hours = Math.floor(time / (60 * 60));
@@ -47,14 +48,18 @@
 					$scope.$apply();
 				});
 				
-				function setTime(clientX) {
+				function getTimePercentFromClientX(clientX) {
 					let left = $('.timeline-zoom-container')[0].scrollLeft;
 					let width = $('#timeline-ruler').width();
 					let offset = clientX - $(window).width() * 0.1;
 					
 					left = left * 100 / width;
 					offset = offset * 100 / width;
-					paella.player.videoContainer.seekTo(offset + left);
+					return offset + left;
+				}
+
+				function setTime(clientX) {
+					paella.player.videoContainer.seekTo(getTimePercentFromClientX(clientX));
 				}
 				
 				function buildTimeDivisions(divisionWidth) {
@@ -91,6 +96,21 @@
 					buildTimeDivisions($scope.divisionWidth);
 				});
 				
+				$scope.mouseTrack = function(evt) {
+					let x = evt.clientX;
+					let scroll = $('.timeline-zoom-container')[0].scrollLeft;
+					let left = $('.timeline-zoom-container').offset().left;;
+
+					let mouseTracker = $('#mouse-tracker');
+					mouseTracker.css({ left:(x - left + scroll) + 'px'});
+					let percent = getTimePercentFromClientX(x);
+					paella.player.videoContainer.duration()
+						.then((duration) => {
+							let time = percent * duration / 100;
+							$scope.mouseTrackTime = toTextTime(time);
+						});
+				};
+			
 				$('#timeline-ruler-action').on('mousedown',(evt) => {
 					setTime(evt.clientX);
 					
