@@ -244,6 +244,10 @@
 					PaellaEditor.selectTrackItem($scope.plugin,trackData,tracks);
 				}
 
+				$scope.seekToTrackStart = function(trackData) {
+					paella.player.videoContainer.setCurrentTime(trackData.s);
+				};
+
 				$scope.highlightTrack = function(trackData) {
 					PaellaEditor.tracks()
 						.then((tracks) => {

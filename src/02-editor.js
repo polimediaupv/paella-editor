@@ -325,10 +325,6 @@
 			},
 			
 			selectTrackItem:function(plugin,trackData,tracks) {
-				if (plugin && plugin.setTimeOnSelect()) {
-					paella.player.videoContainer.setCurrentTime(trackData.s);
-				}
-
 				if (currentTrackItem.plugin != plugin ||
 					!currentTrackItem.trackData || currentTrackItem.trackData.id!=trackData.id)
 				{

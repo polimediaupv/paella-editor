@@ -1,5 +1,6 @@
 <div class="track-item" ng-class="{ 'track-selected' : trackData.selected }"
 		id="{{ getTrackItemId(trackData) }}" ng-repeat="trackData in tracks"
+		ng-dblclick="seekToTrackStart(trackData)"
 		style="left: {{ getLeft(trackData) }}%; width: {{ getWidth(trackData) }}%; z-index: {{ getDepth(trackData) }};">
 	<div class="handler" ng-mousedown="leftHandlerDown($event,trackData,data); $event.stopPropagation();" ng-hide="isZeroDurationTrack(trackData)" style="{{ getStyle(trackData) }}"></div>
 	<p ng-mousedown="centerHandlerDown($event,trackData,data); $event.stopPropagation();" ng-hide="isZeroDurationTrack(trackData)" style="{{ getStyle(trackData) }}">{{ trackData.name || (name | translate) }}</p>
