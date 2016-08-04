@@ -60,11 +60,7 @@
 		allowEditContent() {
 			return false;
 		}
-
-		setTimeOnSelect() {
-			return true;
-		}
-		
+				
 		onTrackChanged(id,start,end) {
 		}
 		

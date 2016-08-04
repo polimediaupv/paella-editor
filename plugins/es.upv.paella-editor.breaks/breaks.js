@@ -91,10 +91,6 @@
 			return true;
 		}
 
-		setTimeOnSelect() {
-			return true;
-		}
-		
 		onTrackChanged(id,start,end) {
 			this._tracks.some((t) => {
 				if (t.id==id) {

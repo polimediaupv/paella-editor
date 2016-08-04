@@ -45,11 +45,7 @@
 		allowEditContent() {
 			return true;
 		}
-
-		setTimeOnSelect() {
-			return true;
-		}
-
+		
 		onTrackChanged(id,start,end) {
 			//console.log("Track changed: s=" + start + ", e=" + end);
 		}

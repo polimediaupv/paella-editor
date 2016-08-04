@@ -250,10 +250,6 @@
 			return true;
 		}
 
-		setTimeOnSelect() {
-			return false;
-		}
-
 		onTrackChanged(id,start,end) {
 			//base.log.debug('Track changed: id=' + id + ", start: " + start + ", end:" + end);
 			paella.events.trigger(paella.events.documentChanged);
