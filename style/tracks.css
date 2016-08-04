@@ -3,6 +3,7 @@ time-line {
     width: 100%;
     height: 100%;
     display: block;
+	overflow: hidden;
 }
 
 time-line nav {

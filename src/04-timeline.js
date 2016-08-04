@@ -110,7 +110,7 @@
 							$scope.mouseTrackTime = toTextTime(time);
 						});
 				};
-			
+
 				$('#timeline-ruler-action').on('mousedown',(evt) => {
 					setTime(evt.clientX);
 					
@@ -126,6 +126,11 @@
 						setTime(evt.clientX);
 					});
 				});
+
+				$('.timeline-zoom-container')
+					.scroll(function(e) {
+						$('.track-names-container').css({'margin-top':(- $('.timeline-zoom-container')[0].scrollTop + 35) + 'px'});
+					});
 				
 				$scope.selectTrack = function(t) {
 					PaellaEditor.selectTrack(t);
