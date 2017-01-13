@@ -17,6 +17,5 @@
     "gulp-traceur": "^0.17.2"
   },
   "scripts": {
-    "test": "grunt checksyntax"
   }
 }
