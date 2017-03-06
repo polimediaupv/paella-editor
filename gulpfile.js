@@ -7,7 +7,8 @@ const   gulp = require('gulp'),
 		merge = require('gulp-merge-json');
 
 var config = {
-	outDir:'build/'
+	outDir:'build/',
+	paellaDir:'bower_components/paella/player'
 };
 
 gulp.task("webserver", function() {
@@ -39,7 +40,7 @@ gulp.task("styles", function() {
 });
 
 gulp.task("copy", function() {
-	gulp.src('player/**')
+	gulp.src(`${config.paellaDir}/**`)
 		.pipe(gulp.dest(`${config.outDir}player`));
 	
 	gulp.src('editor.html')
