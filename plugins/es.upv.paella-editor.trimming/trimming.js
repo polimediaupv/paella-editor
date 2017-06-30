@@ -1,24 +1,34 @@
 (function() {
 	class TrimmingEditorPlugin extends paella.editor.MainTrackPlugin {
 		isEnabled() {
+			this._track = {};
 			return new Promise((resolve,reject) => {
 				var videoId = paella.initDelegate.getId();
 				paella.data.read('trimming',{id:videoId},(data,status) => {
+					let start = 0;
+					let end = 0;
+					let enabled = false;
 					if (data && status && data.end>0) {
-						paella.player.videoContainer.setTrimming(data.start, data.end)
-							.then(() => resolve(true) )
+						start = data.start;
+						end = data.end;
+						enabled = data.end>0;
 					}
 					else {
 						// Check for optional trim 'start' and 'end', in seconds, in location args
-						var startTime =  base.parameters.get('start');
-						var endTime = base.parameters.get('end');
-						if (startTime && endTime) {
-							paella.player.videoContainer.setTrimming(startTime, endTime)
-								.then(() => resolve(true));
-						}
-						else {
-							resolve(true);
-						}
+						start = base.parameters.get('start');
+						end = base.parameters.get('end');
+						enabled = end>0
+					}
+
+					if (enabled) {
+						this._track.id = 1;
+						this._track.s = start;
+						this._track.e = end;
+						paella.player.videoContainer.setTrimming(data.start, data.end)
+							.then(() => resolve(true));
+					}
+					else {
+						resolve(true);
 					}
 				});
 			});
@@ -45,7 +55,6 @@
 		}
 		
 		getTrackItems() {
-			this._track = {};
 			return new Promise((resolve,reject) => {
 				let trimming = {}
 				paella.player.videoContainer.trimming()
@@ -110,7 +119,7 @@
 				if (this._track.s!==undefined) {
 					paella.data.write('trimming',
 						{id:paella.initDelegate.getId()},
-						{start:this._track.s,end:this._track.end},
+						{start:this._track.s,end:this._track.e},
 						function(data,status) {
 							resolve();
 						});

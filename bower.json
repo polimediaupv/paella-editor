@@ -24,6 +24,6 @@
     "angularjs-slider": "^2.9.0",
     "traceur": "^0.0.102",
     "angular-translate": "^2.11.0",
-    "paella": "^5.2.0"
+    "paella": "^5.2.1"
   }
 }
