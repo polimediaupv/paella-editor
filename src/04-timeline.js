@@ -5,6 +5,12 @@
 		return {
 			restrict: "E",
 			templateUrl: "templates/timeline.html",
+			link:function($scope,elem,attrs) {
+				let scrollContainer = $('.timeline-zoom-container')[0];
+				scrollContainer.addEventListener('scroll', function(evt) {
+					$scope.trackTitleStyle = { left: scrollContainer.scrollLeft + 'px' };
+				});
+			},
 			controller: ["$scope","$translate","PaellaEditor","PluginManager",function($scope,$translate,PaellaEditor,PluginManager) {
 				$scope.zoom = 100;
 				$scope.zoomOptions = {
@@ -20,6 +26,9 @@
 
 				$scope.currentTime = toTextTime(0);
 				$scope.mouseTrackTime = toTextTime(0);
+
+				// This is used to move the track title to the scroll position
+				$scope.trackTitleStyle = { left: "0px" };
 
 				function toTextTime(time) {
 					let hours = Math.floor(time / (60 * 60));
@@ -51,7 +60,7 @@
 				function getTimePercentFromClientX(clientX) {
 					let left = $('.timeline-zoom-container')[0].scrollLeft;
 					let width = $('#timeline-ruler').width();
-					let offset = clientX - $(window).width() * 0.1;
+					let offset = clientX;// - $(window).width() * 0.1;
 					
 					left = left * 100 / width;
 					offset = offset * 100 / width;
@@ -98,11 +107,14 @@
 				
 				$scope.mouseTrack = function(evt) {
 					let x = evt.clientX;
-					let scroll = $('.timeline-zoom-container')[0].scrollLeft;
-					let left = $('.timeline-zoom-container').offset().left;;
+					let $zoomContainer = $('.timeline-zoom-container');
+					let scroll = $zoomContainer[0].scrollLeft;
+					let left = $zoomContainer.offset().left;;
+					$scope.mouseTrackPosition = x - left;
+					$scope.timeLineContainerSize = $zoomContainer.width();
 
 					let mouseTracker = $('#mouse-tracker');
-					mouseTracker.css({ left:(x - left + scroll) + 'px'});
+					mouseTracker.css({ left:($scope.mouseTrackPosition + scroll) + 'px'});
 					let percent = getTimePercentFromClientX(x);
 					paella.player.videoContainer.duration()
 						.then((duration) => {
@@ -142,6 +154,14 @@
 					}
 				};
 
+				$scope.currentTrack = function() {
+					return PaellaEditor.currentTrack;
+				}
+
+				$scope.currentTrackName = function() {
+					return (PaellaEditor.currentTrack && PaellaEditor.currentTrack.name) || "";
+				}
+
 				$scope.saveAndClose = function() {
 					PaellaEditor.saveAll()
 						.then(() => {
@@ -169,7 +189,12 @@
 					paella.player.videoContainer.currentTime()
 						.then((time) => {
 							setTimeMark(time);
-						});
+							return paella.player.videoContainer.currentTime();
+						})
+
+						.then((c) => {
+							paella.player.videoContainer.setCurrentTime(c);
+						})
 				});
 
 				$scope.setTimeToCursor = function(evt) {

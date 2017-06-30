@@ -14,8 +14,9 @@ time-line nav {
 }
 
 time-line .timeline-zoom-container {
-	width: 90%;
+	width: 100%;
 	right: 0px;
+	left: 0px;
     overflow: auto;
     position: absolute;
     bottom: 36px;
@@ -23,6 +24,7 @@ time-line .timeline-zoom-container {
 	background: radial-gradient(#424242 15%, transparent 16%) 0 0, radial-gradient(#424242 15%, transparent 16%) 8px 8px, radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%) 0 1px, radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%) 8px 9px;
     background-color: #5D5D5D;
     background-size: 8px 8px;
+	user-select: none;
 }
 
 time-line .visualization-bar {
@@ -32,6 +34,22 @@ time-line .visualization-bar {
 	right: 0px;
 	background-color: #525252;
 	border-top: 2px solid #3E3E3E;
+}
+
+.track-title {
+	color: white;
+    position: absolute;
+    left: 5px;
+    top: 4px;
+    padding: 0px 0px 0px 0px;
+    margin: 0px 0px 0px 0px;
+    font-size: 25px;
+    opacity: 0.6;
+	pointer-events: none;
+}
+
+.track-title.current-track {
+	opacity: 1;
 }
 
 .timeline-content {

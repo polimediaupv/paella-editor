@@ -45,6 +45,7 @@
 		}
 		
 		getTrackItems() {
+			this._track = {};
 			return new Promise((resolve,reject) => {
 				let trimming = {}
 				paella.player.videoContainer.trimming()
@@ -54,15 +55,37 @@
 					})
 					
 					.then((d) => {
-						this._start = trimming.start;
-						this._end = trimming.end || d;
-						return resolve([{
-							id:1,
-							s:trimming.start,
-							e:trimming.end || d
-						}]);
+						this._track.id = 1;
+						this._track.s = trimming.start;
+						this._track.e = trimming.end || d;
+						return resolve([this._track]);
 					})
 			});
+		}
+
+		getTools() {
+			return ["Mark Start", "Mark End"];
+		}
+
+		onToolSelected(toolName) {
+			if (toolName=="Mark Start") {
+				paella.player.videoContainer.currentTime(true)
+					.then((c) => {
+						if (this._track.e>c) {
+							this._track.s = c;
+						}
+					});
+				this.notifyTrackChanged();
+			}
+			else if (toolName=="Mark End") {
+				paella.player.videoContainer.currentTime(true)
+					.then((c) => {
+						if (this._track.s<c) {
+							this._track.e = c;
+						}
+					});
+				this.notifyTrackChanged();
+			}
 		}
 		
 		allowResize() {
@@ -78,17 +101,16 @@
 		}
 		
 		onTrackChanged(id,start,end) {
-			this._start = start;
-			this._end = end;
-			console.log(`From ${this._start} to ${this._end}`);
+			this._track.s = start;
+			this._track.e = end;
 		}
 		
 		onSave() {
 			return new Promise((resolve,reject) => {
-				if (this._start!==undefined) {
+				if (this._track.s!==undefined) {
 					paella.data.write('trimming',
 						{id:paella.initDelegate.getId()},
-						{start:this._start,end:this._end},
+						{start:this._track.s,end:this._track.end},
 						function(data,status) {
 							resolve();
 						});

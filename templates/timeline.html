@@ -11,6 +11,7 @@
 	-->
 
 	<div class="btn-group">
+		<h2 class="track-tool-title">{{ currentTrackName() | translate }}</h2>
 		<label ng-repeat="tool in tools" class="btn btn-primary" ng-class="{ 'active' : tool.name==currentTool && tool.isToggle, 'disabled' : !tool.isEnabled }"
 			ng-click="selectTool(tool)">{{ tool.name | translate }}</label>
 	</div>
@@ -27,13 +28,6 @@
 	</div>
 </nav>
 
-<div class="track-names-container">
-	<div class="track-names" ng-mousedown="selectTrack(trackData)" ng-repeat="trackData in tracks">
-		<div class="track-header" ng-class="{ 'main-track':trackData.type=='master', 'selected':trackData.selected }">{{ trackData.name | translate }}</div>
-	</div>
-</div>
-
-
 <div id="timeline-ruler-action"></div>
 <div class="timeline-zoom-container" ng-mousemove="mouseTrack($event)">
 	<div id="timeline-content" class="timeline-content">
@@ -42,11 +36,12 @@
 			<div class="current-time">{{ currentTime }}</div>
 		</div>
 		<div id="mouse-tracker" style="left:0%" ng-click="setTimeToCursor($event)">
-			<div class="current-time">{{ mouseTrackTime }}</div>
+			<div class="current-time" ng-class="{ 'left-side' : mouseTrackPosition/timeLineContainerSize>0.5 }">{{ mouseTrackTime }}</div>
 		</div>
 		<div class="track" ng-class="{ 'main-track':trackData.type=='master', 'selected':trackData.selected }"
 			 ng-mousedown="selectTrack(trackData)" ng-repeat="trackData in tracks"
 			 ng-click="setTimeToCursor($event)">
+			<h3 class="track-title" ng-class="{ 'current-track' : trackData.selected }" ng-style="trackTitleStyle">{{ trackData.name | translate }}</h3>
 			<track data="trackData" ng-click="$event.stopPropagation()"></track>
 		</div>
 	</div>

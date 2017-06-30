@@ -219,12 +219,37 @@
 				this.isLoading = true;
 				return new Promise((resolve,reject) => {
 					this.tracks().then((tracks) => {
-						let promisedTasks = [];
-						tracks.forEach((track) => {
-							promisedTasks.push(track.plugin.onSave());
-						});
+						let promisedTasks = tracks.map((track) => {
+							return new Promise((resolve) => {
+								let p = track.plugin.onSave();
+								if (p) {
+									p.then(() => {
+										resolve({ err:null, track:track });
+									})
+									.catch((err) => {
+										let error = new Error(`Error saving track ${ track.name }: ${ err.message }`);
+										console.log(error.message);
+										resolve({ err:error, track:track });
+									});
+								}
+								else {
+									let err = new Error(`Unexpected error saving track ${ track.name }: onSave() function does not returns a promise.`)
+									resolve({ err:err, track:track });
+								}
+							})
+						})
+						//tracks.forEach((track) => {
+						//	promisedTasks.push(track.plugin.onSave());
+						//});
 						Promise.all(promisedTasks)
 							.then(() => {
+								promisedTasks.forEach((p) => {
+									p.then((data) => {
+										if (data.err) {
+											console.log("WARNING: " + data.err.message);
+										}
+									})
+								})
 								$rootScope.$apply(() => {
 									this.isLoading = false;
 									resolve();
