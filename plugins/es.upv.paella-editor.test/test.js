@@ -187,7 +187,7 @@
 	class MilestoneTrackPlugin extends paella.editor.MainTrackPlugin {
 		
 		isEnabled() {
-			return Promise.resolve(true);
+			return Promise.resolve(false);
 		}
 		
 		getIndex() {

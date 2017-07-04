@@ -65,6 +65,7 @@
 		}
 		
 		onSave() {
+			return Promise.resolve();
 		}
 	}
 

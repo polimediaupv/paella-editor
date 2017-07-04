@@ -216,6 +216,31 @@
 			},
 			
 			saveAll:function() {
+				return new Promise((mainResolve) => {
+					let plugins = [];
+					let result = [];
+					this.tracks().then((tracks) => {
+						tracks.forEach((track) => {
+							plugins.push(track.plugin);
+						});
+
+						plugins.reduce((promise,plugin) => {
+							return promise.then((first) => {
+								if (!first) {
+									result.push(true);
+								}
+								return plugin.onSave();
+							});
+						},Promise.resolve(true))
+							.then(() => {
+								result.push(true);
+								mainResolve(result);
+							});
+					})
+				});
+			},
+
+			saveAllSimultaneously:function() {
 				this.isLoading = true;
 				return new Promise((resolve,reject) => {
 					this.tracks().then((tracks) => {

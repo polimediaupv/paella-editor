@@ -169,3 +169,20 @@ time-line nav.navbar {
     font-size: 24px;
     color: #f5f5f5;
 }
+
+track-info h3 {
+	padding: 3px;
+	color: white;
+	font-size: 15px;
+}
+
+track-info .panel {
+	padding: 5px;
+	background-color: #a7a7a7;
+    color: white;
+}
+
+side-bar .tab-item a {
+	cursor: pointer;
+	user-select: none;
+}

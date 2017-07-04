@@ -2,10 +2,25 @@
 		id="{{ getTrackItemId(trackData) }}" ng-repeat="trackData in tracks"
 		ng-dblclick="seekToTrackStart(trackData)"
 		style="left: {{ getLeft(trackData) }}%; width: {{ getWidth(trackData) }}%; z-index: {{ getDepth(trackData) }};">
-	<div class="handler" ng-mousedown="leftHandlerDown($event,trackData,data); $event.stopPropagation();" ng-hide="isZeroDurationTrack(trackData)" style="{{ getStyle(trackData) }}"></div>
-	<p ng-mousedown="centerHandlerDown($event,trackData,data); $event.stopPropagation();" ng-hide="isZeroDurationTrack(trackData)" style="{{ getStyle(trackData) }}">{{ trackData.name || (name | translate) }}</p>
-	<div class="milestone" ng-show="isZeroDurationTrack(trackData)">
+	<div class="handler"
+		ng-mousedown="leftHandlerDown($event,trackData,data); $event.stopPropagation();"
+		ng-hide="isZeroDurationTrack(trackData)"
+		style="{{ getStyle(trackData) }}"
+		title="{{ trackData.name || (name | translate) }}">
+	</div>
+	<p ng-mousedown="centerHandlerDown($event,trackData,data); $event.stopPropagation();"
+		ng-hide="isZeroDurationTrack(trackData)"
+		style="{{ getStyle(trackData) }}"
+		title="{{ trackData.name || (name | translate) }}">
+		{{ trackData.name || (name | translate) }}
+	</p>
+	<div class="milestone" ng-show="isZeroDurationTrack(trackData)" title="{{ trackData.name || (name | translate) }}">
 		<div class="milestone-handler" ng-mousedown="centerHandlerDown($event,trackData,data); $event.stopPropagation();" style="{{ getStyle(trackData) }}"></div>
 	</div>
-	<div ng-mousedown="rightHandlerDown($event,trackData,data); $event.stopPropagation();" class="handler" ng-hide="isZeroDurationTrack(trackData)" style="{{ getStyle(trackData) }}"></div>
+	<div ng-mousedown="rightHandlerDown($event,trackData,data); $event.stopPropagation();"
+		class="handler"
+		ng-hide="isZeroDurationTrack(trackData)"
+		style="{{ getStyle(trackData) }}"
+		title="{{ trackData.name || (name | translate) }}">
+	</div>
 </div>

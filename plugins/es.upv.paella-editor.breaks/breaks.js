@@ -44,7 +44,7 @@
 		}
 
 		onToolSelected(toolName) {
-			if (toolName=="Delete" && this._currentId) {
+			if (toolName=="Delete" && this._currentId!==undefined) {
 				let deleteIndex = -1;
 				this._tracks.some((track,index) => {
 					if (track.id==this._currentId) {
