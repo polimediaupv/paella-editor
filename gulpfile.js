@@ -25,7 +25,8 @@ var config = {
 		'bower_components/bootstrap/dist/js/bootstrap.min.js',
 		'bower_components/angularjs-slider/dist/rzslider.js',
 		'bower_components/traceur/traceur.min.js'
-	]
+	],
+	serverPort: 8080
 };
 
 gulp.task("configTest", function() {
@@ -49,7 +50,11 @@ gulp.task("configEditorOnly", function() {
 });
 
 gulp.task("webserver", function() {
-	return connect.server();
+	return connect.server({
+		name: "Paella Editor",
+		root: config.outDir,
+		port: config.serverPort
+	});
 });
 
 gulp.task("compile", function() {
