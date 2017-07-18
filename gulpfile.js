@@ -4,7 +4,8 @@ const   gulp = require('gulp'),
         concat = require('gulp-concat'),
         connect = require('gulp-connect'),
 		replace = require('gulp-replace'),
-		merge = require('gulp-merge-json');
+		merge = require('gulp-merge-json'),
+		bower = require('gulp-bower');
 
 var config = {
 	outDir:'build/',
@@ -28,6 +29,10 @@ var config = {
 	],
 	serverPort: 8080
 };
+
+gulp.task('bower', function() {
+  return bower();
+});
 
 gulp.task("configTest", function() {
 	config.outDir = 'build/';
@@ -76,7 +81,7 @@ function $p(task) {
 	});
 }
 
-gulp.task("copy", function() {
+gulp.task("copy", ['bower'], function() {
 	let promises = [
 		$p(gulp.src('editor.html')
 			.pipe(gulp.dest(`${config.outDir}${ config.editorDir }`))),
