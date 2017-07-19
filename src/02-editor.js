@@ -82,27 +82,38 @@
 		load:function() {
 			this.uiLayout = new paella.editor.UILayout();
 			return new Promise((resolve,reject) => {
-				$.get("config/editor-config.json")
-					.then((data) => {
-						this.config = data;
-						paella.player.auth.canWrite()
-							.then((canWrite) => {
-								if (canWrite) {
-									resolve();
+				var params = {};
+				params.url = configUrl;
+				base.ajax.get(params,
+				(data,type,returnCode) => {				
+					if (typeof(data)=='string') {
+						try {
+							data = JSON.parse(data);
+						}
+						catch (e) {
+							reject();
+							return;
+						}
+					}
+					this.config = data;
+					paella.player.auth.canWrite()
+						.then((canWrite) => {
+							if (canWrite) {
+								resolve();
+							}
+							else {
+								alert(base.dictionary.translate("You are not authorized to view this resource"));
+								let url = location.href;
+								let result = /(\?.*)$/.exec(url);
+								if (result) {
+									location.href = `index.html${result[1]}`; 
 								}
-								else {
-									alert(base.dictionary.translate("You are not authorized to view this resource"));
-									let url = location.href;
-									let result = /(\?.*)$/.exec(url);
-									if (result) {
-										location.href = `index.html${result[1]}`; 
-									}
-								}
-							});
-					},
-					() => {
-						reject();
-					});
+							}
+						});
+				},
+				() => {
+					reject();
+				});
 			});
 		}
 	};
