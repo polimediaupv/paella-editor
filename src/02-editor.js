@@ -83,7 +83,7 @@
 			this.uiLayout = new paella.editor.UILayout();
 			return new Promise((resolve,reject) => {
 				var params = {};
-				params.url = configUrl;
+				params.url = "config/editor-config.json";
 				base.ajax.get(params,
 				(data,type,returnCode) => {				
 					if (typeof(data)=='string') {
