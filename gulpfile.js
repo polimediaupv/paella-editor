@@ -147,7 +147,7 @@ gulp.task("watch", function() {
 		'src-debug/*.js',
 		'plugins/**/*.js',
 		'plugins/**/*.html'
-	],["buildDebug"]);
+	],["buildFiles"]);
 });
 
 gulp.task("build",["configAll","buildFiles"]);

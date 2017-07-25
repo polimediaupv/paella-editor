@@ -204,7 +204,7 @@
 				};
 				
 				function reloadTracks() {
-					PaellaEditor.tracks()
+					PaellaEditor.tracks(true)
 						.then(function(tracks) {
 							$scope.tracks = tracks;
 							$scope.currentTrack = PaellaEditor.currentTrack;

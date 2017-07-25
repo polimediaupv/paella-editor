@@ -196,7 +196,11 @@
 			currentTool:null,
 			_isLoading:false,
 			
-			tracks:function() {
+			tracks:function(reload = false) {
+				if (reload) {
+					service._tracks = [];
+					_loadingEditor = false;
+				}
 				return new Promise((resolve) => {
 					ensurePaellaEditorLoaded().then(() => {
 						// Compare trackItemSumary
@@ -222,6 +226,7 @@
 						if (newTrackItemData.track && newTrackItemData.trackItem) {
 							this.selectTrackItem(newTrackItemData.track.plugin,newTrackItemData.trackItem);
 						}
+						this.reloadTools();
 					});
 				});
 			},
@@ -343,8 +348,8 @@
 			},
 			
 			selectTrack:function(trackData) {
+				var This = this;
 				if (!this.currentTrack || this.currentTrack.pluginId!=trackData.pluginId) {
-					var This = this;
 					if (currentTrackItem.trackData) {
 						currentTrackItem.trackData.selected = false;
 					}
@@ -358,8 +363,15 @@
 						track.plugin.onToolSelected(trackData);
 					});
 					trackData.selected = true;
-					this.tools = [];
-					trackData.plugin.getTools().forEach(function(tool) {
+				}
+				this.reloadTools();	// this function calls notifyTrackSelected() and notify()
+			},
+
+			reloadTools:function() {
+				let This = this;
+				this.tools = [];
+				if (this.currentTrack) {
+					this.currentTrack.plugin.getTools().forEach(function(tool) {
 						var isEnabled = This.currentTrack.plugin.isToolEnabled(tool);
 						var isToggle = This.currentTrack.plugin.isToggleTool(tool);
 						This.tools.push({
@@ -368,9 +380,9 @@
 							isToggle:isToggle
 						});
 					});
-					this.notifyTrackSelected();
-					this.notify();
 				}
+				this.notifyTrackSelected();
+				this.notify();
 			},
 			
 			selectTool:function(toolName) {
