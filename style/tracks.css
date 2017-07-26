@@ -4,6 +4,8 @@ time-line {
     height: 100%;
     display: block;
 	overflow: hidden;
+	user-select: none;
+	-moz-user-select: none;
 }
 
 time-line nav {
@@ -25,6 +27,7 @@ time-line .timeline-zoom-container {
     background-color: #5D5D5D;
     background-size: 8px 8px;
 	user-select: none;
+	-moz-user-select: none;
 }
 
 time-line .visualization-bar {
