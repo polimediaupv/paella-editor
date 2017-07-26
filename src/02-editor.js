@@ -234,10 +234,19 @@
 				return new Promise((mainResolve) => {
 					let plugins = [];
 					let result = [];
-					this.tracks().then((tracks) => {
-						tracks.forEach((track) => {
-							plugins.push(track.plugin);
-						});
+					PluginManager.plugins()
+					//this.tracks().then((tracks) => {
+						.then((pluginTypes) => {
+					//	tracks.forEach((track) => {
+					//		plugins.push(track.plugin);
+					//	});
+
+						
+					//		.then((pluginTypes) => {
+						pluginTypes.trackPlugins.forEach((p) => plugins.push(p) );
+						pluginTypes.sideBarPlugins.forEach((p) => plugins.push(p) );
+						pluginTypes.toolbarPlugins.forEach((p) => plugins.push(p) );
+					//		})
 
 						plugins.reduce((promise,plugin) => {
 							return promise.then((first) => {

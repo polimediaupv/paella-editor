@@ -354,6 +354,11 @@
 		getDirectiveName() {
 			return "test-sidebar";
 		}
+
+		onSave() {
+			console.log("On save sidebar");
+			return Promise.resolve(true);
+		}
 	}
 	
 	new SidebarPlugin2();

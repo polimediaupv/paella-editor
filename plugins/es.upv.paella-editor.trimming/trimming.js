@@ -1,7 +1,7 @@
 (function() {
 	class TrimmingEditorPlugin extends paella.editor.MainTrackPlugin {
 		isEnabled() {
-			this._track = {};
+			this._trackItems = [];
 			return new Promise((resolve,reject) => {
 				var videoId = paella.initDelegate.getId();
 				paella.data.read('trimming',{id:videoId},(data,status) => {
@@ -21,14 +21,24 @@
 					}
 
 					if (enabled) {
-						this._track.id = 1;
-						this._track.s = start;
-						this._track.e = end;
+						this._trackItems.push({
+							id: 1,
+							s: start,
+							e: end
+						});
 						paella.player.videoContainer.setTrimming(data.start, data.end)
 							.then(() => resolve(true));
 					}
 					else {
-						resolve(true);
+						paella.player.videoContainer.duration()
+							.then((d) => {
+								this._trackItems.push({
+									id: 1,
+									s: 0,
+									e: d
+								});
+								resolve(true);
+							});
 					}
 				});
 			});
@@ -56,7 +66,9 @@
 		
 		getTrackItems() {
 			return new Promise((resolve,reject) => {
-				let trimming = {}
+				//let trimming = {}
+				resolve(this._trackItems);
+				/*
 				paella.player.videoContainer.trimming()
 					.then((t) => {
 						trimming = t;
@@ -67,8 +79,10 @@
 						this._track.id = 1;
 						this._track.s = trimming.start;
 						this._track.e = trimming.end || d;
-						return resolve([this._track]);
+						this._trackItems = [ this._track ];
+						return resolve(this._trackItems);
 					})
+					*/
 			});
 		}
 
@@ -80,8 +94,8 @@
 			if (toolName=="Mark Start") {
 				paella.player.videoContainer.currentTime(true)
 					.then((c) => {
-						if (this._track.e>c) {
-							this._track.s = c;
+						if (this._trackItems[0].e>c) {
+							this._trackItems[0].s = c;
 						}
 					});
 				this.notifyTrackChanged();
@@ -89,8 +103,8 @@
 			else if (toolName=="Mark End") {
 				paella.player.videoContainer.currentTime(true)
 					.then((c) => {
-						if (this._track.s<c) {
-							this._track.e = c;
+						if (this._trackItems[0].s<c) {
+							this._trackItems[0].e = c;
 						}
 					});
 				this.notifyTrackChanged();
@@ -110,16 +124,16 @@
 		}
 		
 		onTrackChanged(id,start,end) {
-			this._track.s = start;
-			this._track.e = end;
+			this._trackItems[0].s = start;
+			this._trackItems[0].e = end;
 		}
 		
 		onSave() {
 			return new Promise((resolve,reject) => {
-				if (this._track.s!==undefined) {
+				if (this._trackItems[0].s!==undefined) {
 					paella.data.write('trimming',
 						{id:paella.initDelegate.getId()},
-						{start:this._track.s,end:this._track.e},
+						{start:this._trackItems[0].s,end:this._trackItems[0].e},
 						function(data,status) {
 							resolve();
 						});
