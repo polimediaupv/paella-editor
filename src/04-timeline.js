@@ -175,7 +175,10 @@
 				
 				$scope.closeEditor = function(noConfirm) {
 					if (noConfirm || confirm($translate.instant("Are you sure you want to discard all changes and close editor?"))) {
-						location.href = location.href.replace("editor.html","index.html");
+						let editorConfig = paella.$editor.config.editor || {};
+						let url = editorConfig.loginFailedUrl || "index.html${LOCATION.SEARCH}";
+						url = url.replace(/\$\{\s*LOCATION\.SEARCH\s*\}/,location.search);
+						location.href = url;
 					}
 				};
 				

@@ -1,7 +1,8 @@
 {
     "editor": {
         "loginFailedUrl": "index.html${LOCATION.SEARCH}",
-        "alertMessage": "You are not authorized to view this resource"
+        "alertMessage": "You are not authorized to view this resource",
+        "closeEditorUrl": "index.html${LOCATION.SEARCH}"
     },
 	"plugins": {
 		"enablePluginsByDefault": true,
