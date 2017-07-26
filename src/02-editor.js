@@ -103,11 +103,10 @@
 							}
 							else {
 								alert(base.dictionary.translate("You are not authorized to view this resource"));
-								let url = location.href;
-								let result = /(\?.*)$/.exec(url);
-								if (result) {
-									location.href = `index.html${result[1]}`; 
-								}
+								let editorConfig = this.config.editor || {};
+								let url = editorConfig.loginFailedUrl || "index.html${LOCATION.SEARCH}";
+								url = url.replace(/\$\{\s*LOCATION\.SEARCH\s*\}/,location.search);
+								location.href = url;
 							}
 						});
 				},
