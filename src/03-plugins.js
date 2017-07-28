@@ -11,7 +11,7 @@
 		}
 		catch(e){}
 		try {
-			pluginsConfig = paella.player.config.plugins.list;
+			pluginsConfig = paella.$editor.config.plugins.list;
 		}
 		catch(e){}
 				
