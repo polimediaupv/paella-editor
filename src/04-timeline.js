@@ -11,7 +11,7 @@
 					$scope.trackTitleStyle = { left: scrollContainer.scrollLeft + 'px' };
 				});
 			},
-			controller: ["$scope","$translate","PaellaEditor","PluginManager",function($scope,$translate,PaellaEditor,PluginManager) {
+			controller: ["$rootScope","$scope","$translate","PaellaEditor","PluginManager",function($rootScope,$scope,$translate,PaellaEditor,PluginManager) {
 				$scope.zoom = 100;
 				$scope.zoomOptions = {
 					floor:100,
@@ -170,7 +170,10 @@
 				};
 				
 				$scope.saveChanges = function() {
-					PaellaEditor.saveAll();
+					PaellaEditor.saveAll()
+						.then(() => {
+							$rootScope.$apply();
+						})
 				};
 				
 				$scope.closeEditor = function(noConfirm) {

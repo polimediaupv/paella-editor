@@ -16,6 +16,10 @@ paella.editor.APP_NAME = "paella-editor";
 		function loadDictionary(localization) {
 			$.ajax('localization/editor_' + localization + '.json')
 				.success(function(data) {
+					try {
+						data = typeof(data)=="string" ? JSON.parse(data) : data;
+					}
+					catch(e) {}
 					$translateProvider.translations(localization,data);
 				});
 		}
