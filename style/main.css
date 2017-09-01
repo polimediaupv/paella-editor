@@ -13,6 +13,7 @@ body {
 
 #paellaVideoContainer {
 	position: relative;
+	/*
 	background:
 	repeating-linear-gradient(
 		45deg,
@@ -21,6 +22,8 @@ body {
 		#3F3F3F 10px,
 		#3F3F3F 20px
 	);
+	*/
+	background: linear-gradient( 180deg, #171717, #333333);
 	height: 100%;
 	width:80%;
 	position: relative;
@@ -185,4 +188,77 @@ track-info .panel {
 side-bar .tab-item a {
 	cursor: pointer;
 	user-select: none;
+}
+
+
+/* TODO: Move this to a skin file */
+.editor-command-bar {
+	background: linear-gradient( 180deg, #4a4a4a, #404040) !important;
+}
+
+side-bar {
+	background: linear-gradient( 180deg, #292828, #404040);
+}
+
+.visualization-bar {
+	background: linear-gradient( 180deg, #4a4a4a, #404040) !important;
+}
+
+side-bar li a.side-bar-tab {
+	padding-left: 8px;
+    padding-top: 2px;
+    padding-right: 8px;
+    padding-bottom: 2px;
+	margin-top: 4px;
+	font-size: 11px;
+}
+
+.row.pe-playback-bar {
+	background: linear-gradient( 180deg, rgba(41, 39, 39, 0.33), rgba(23, 23, 23, 0.34)) !important;
+    border: 1px solid #4a4a4a;
+    padding: 5px 10px 7px 10px;
+    width: 200px;
+    border-radius: 5px;
+    margin-left: auto;
+    margin-right: auto;
+	margin-bottom: 22px;
+	z-index: 10;
+}
+
+.row.pe-playback-bar button {
+	font-size: 10px;
+    padding: 3px 15px 3px 15px;
+    background: linear-gradient( 180deg, #505050, #313131) !important;
+    border: 1px solid #d0d0d0;
+    color: #848484;
+}
+
+.row.pe-playback-bar button:hover {
+	background: linear-gradient( 180deg, #787777, #B4B4B4) !important;
+    border: 1px solid #767676;
+    color: #2d2d2d;
+}
+
+.btn.btn-primary {
+	background: linear-gradient( 180deg, #505050, #313131) !important;
+    border: 1px solid #d0d0d0;
+    color: #d0d0d0;
+}
+
+.btn.btn-primary:hover {
+	background: linear-gradient( 180deg, #787777, #B4B4B4) !important;
+    border: 1px solid #767676;
+    color: #2d2d2d;;
+}
+
+#playerContainer {
+    position: absolute;
+    top: 10px;
+    left: 35px;
+    right: 20px;
+    bottom: 10px;
+}
+
+track-info .panel {
+	background-color: #525252;
 }

@@ -1,4 +1,4 @@
-<nav class="navbar navbar-inverse navbar-static-top">
+<nav class="navbar navbar-inverse navbar-static-top editor-command-bar">
 	<!--
 	<div class="btn-group" uib-dropdown is-open="trackSelector.isOpen">
 		<button id="single-button" type="button" class="btn btn-primary" uib-dropdown-toggle>
@@ -10,8 +10,8 @@
 	</div>
 	-->
 
+	<h2 class="track-tool-title">{{ currentTrackName() | translate }}</h2>
 	<div class="btn-group">
-		<h2 class="track-tool-title">{{ currentTrackName() | translate }}</h2>
 		<label ng-repeat="tool in tools" class="btn btn-primary" ng-class="{ 'active' : tool.name==currentTool && tool.isToggle, 'disabled' : !tool.isEnabled }"
 			ng-click="selectTool(tool)">{{ tool.name | translate }}</label>
 	</div>
