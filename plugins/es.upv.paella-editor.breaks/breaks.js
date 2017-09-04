@@ -71,9 +71,16 @@
 						done = true;
 					}
 				}
+				let currentTime = 0;
 				paella.player.videoContainer.currentTime()
 					.then((time) => {
-						this._tracks.push({ id:id, s: time, e: time + 60, text:"Break" });
+						currentTime = time;
+						return paella.player.videoContainer.duration(true);
+					})
+					.then((duration)=> {
+						let end = currentTime + 60;
+						end = end>duration ? duration : end;
+						this._tracks.push({ id:id, s: currentTime, e: end, text:"Break" });
 						this.notifyTrackChanged();
 					});
 			}
