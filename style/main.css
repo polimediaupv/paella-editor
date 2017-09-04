@@ -138,7 +138,7 @@ time-line nav.navbar {
 #timeline-ruler {
 	width: 100%;
     height: 20px;
-    background-color: #676767;
+	background-color: #313131;
     border-bottom: 1px solid black;
 	z-index: 0;
 	cursor: pointer;

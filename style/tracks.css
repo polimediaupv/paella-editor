@@ -17,16 +17,16 @@ time-line nav {
 
 time-line .timeline-zoom-container {
 	width: 100%;
-	right: 0px;
-	left: 0px;
+    right: 0px;
+    left: 0px;
     overflow: auto;
     position: absolute;
     bottom: 36px;
     top: 50px;
-	background: radial-gradient(#424242 15%, transparent 16%) 0 0, radial-gradient(#424242 15%, transparent 16%) 8px 8px, radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%) 0 1px, radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%) 8px 9px;
-    background-color: #5D5D5D;
+    background: radial-gradient(#252525 15%, transparent 16%) 0 0, radial-gradient(#1b1b1b 15%, transparent 16%) 8px 8px, radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%) 0 1px, radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%) 8px 9px;
+    background-color: #3a3a3a;
     background-size: 8px 8px;
-	user-select: none;
+    user-select: none;
 	-moz-user-select: none;
 }
 
@@ -65,13 +65,13 @@ time-line .visualization-bar {
 
 .track {
 	position: relative;
-	height: 20px;
-	margin-top: 5px;
+    height: 20px;
+    margin-top: 5px;
     margin-bottom: 5px;
     border-bottom: 1px solid #3C3B3B;
     border-top: 1px solid #3C3B3B;
-    background: radial-gradient(#575757 15%, transparent 16%) 0 0, radial-gradient(#575757 15%, transparent 16%) 8px 8px, radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%) 0 1px, radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%) 8px 9px;
-    background-color: #696666;
+    background: radial-gradient(#2f2e2e 15%, transparent 16%) 0 0, radial-gradient(#575757 15%, transparent 16%) 8px 8px, radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%) 0 1px, radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%) 8px 9px;
+    background-color: #484848;
     background-size: 8px 8px;
     box-shadow: inset 0px 0px 5px 0px rgba(0,0,0,0.5);
 }
