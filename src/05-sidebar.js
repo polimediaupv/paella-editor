@@ -21,7 +21,6 @@
 		PaellaEditor.plugins()
 			.then(function(plugins) {
 				$scope.plugins = plugins.sideBarPlugins;
-				console.log($scope.plugins);
 				$scope.selectedPlugin = $scope.plugins[0];
 				$scope.$apply();
 			});
@@ -94,9 +93,31 @@
 				};
 				
 				$scope.selectTab = function(plugin) {
-					$scope.selectedPlugin = plugin;
 					insertTabContents(plugin);
+					$scope.selectedPlugin = plugin;
 				};
+
+				paella.events.bind("editor:selectTab",function(evt,data) {
+					if (data.pluginName) {
+						PaellaEditor.plugins()
+							.then((plugins) => {
+								let plg = null;
+								plugins.sideBarPlugins.some((p) => {
+									if (p.getName()==data.pluginName) {
+										plg = p;
+										return true;
+									}
+								});
+								return Promise.resolve(plg);
+							})
+
+							.then((plugin) => {
+								$scope.$apply(() => {
+									$scope.selectTab(plugin);
+								});
+							});
+					}
+				});
 				
 				PaellaEditor.subscribeTrackSelected($scope, () => {
 					buildView();

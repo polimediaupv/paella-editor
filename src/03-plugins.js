@@ -217,6 +217,10 @@
 			return "editorTrackPlugin";
 		}
 
+		getSideBarPluginName() {
+			return "";
+		}
+
 		getTrackName() {
 			return "My Track";
 		}

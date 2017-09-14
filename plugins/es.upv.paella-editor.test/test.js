@@ -187,7 +187,11 @@
 	class MilestoneTrackPlugin extends paella.editor.MainTrackPlugin {
 		
 		isEnabled() {
-			return Promise.resolve(false);
+			return Promise.resolve(true);
+		}
+
+		getSideBarPluginName() {
+			return "My side bar plugin 2";
 		}
 		
 		getIndex() {
@@ -299,7 +303,7 @@
 
 	class TestSideBar2 extends paella.editor.SideBarPlugin {
 		isEnabled() {
-			return Promise.resolve(false);
+			return Promise.resolve(true);
 		}
 
 		isVisible(PaellaEditor,PluginManager) {

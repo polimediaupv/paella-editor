@@ -358,6 +358,10 @@
 			selectTrack:function(trackData) {
 				var This = this;
 				if (!this.currentTrack || this.currentTrack.pluginId!=trackData.pluginId) {
+					let selectTab = "";
+					if ((this.currentTrack && this.currentTrack.pluginId!=trackData.pluginId) || !this.currentTrack) {
+						selectTab = trackData.plugin.getSideBarPluginName();
+					}
 					if (currentTrackItem.trackData) {
 						currentTrackItem.trackData.selected = false;
 					}
@@ -371,6 +375,9 @@
 						track.plugin.onToolSelected(trackData);
 					});
 					trackData.selected = true;
+					if (selectTab) {
+						paella.events.trigger("editor:selectTab",{ pluginName:selectTab });
+					} 
 				}
 				this.reloadTools();	// this function calls notifyTrackSelected() and notify()
 			},
