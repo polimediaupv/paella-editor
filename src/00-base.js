@@ -14,7 +14,7 @@ paella.editor.APP_NAME = "paella-editor";
 	
 	app.config(["$translateProvider",function($translateProvider) {
 		function loadDictionary(localization) {
-			$.ajax('localization/editor_' + localization + '.json')
+			$.getJSON('localization/editor_' + localization + '.json')
 				.success(function(data) {
 					try {
 						data = typeof(data)=="string" ? JSON.parse(data) : data;
