@@ -157,19 +157,23 @@
 													trackItems.forEach((item) => {
 														item.depth = depth++;
 													});
-													service._tracks.push({
-														pluginId:plugin.getName(),
-														type:plugin.getTrackType(),
-														name:plugin.getTrackName(),
-														color:plugin.getColor(),
-														textColor:plugin.getTextColor(),
-														duration:videoData.duration,
-														allowResize:plugin.allowResize(),
-														allowMove:plugin.allowDrag(),
-														allowEditContent:plugin.allowEditContent(),
-														list: trackItems,
-														plugin:plugin
-													});
+													if (!service._tracks.some((t) => {
+														return t.pluginId==plugin.getName();
+													})) {
+														service._tracks.push({
+															pluginId:plugin.getName(),
+															type:plugin.getTrackType(),
+															name:plugin.getTrackName(),
+															color:plugin.getColor(),
+															textColor:plugin.getTextColor(),
+															duration:videoData.duration,
+															allowResize:plugin.allowResize(),
+															allowMove:plugin.allowDrag(),
+															allowEditContent:plugin.allowEditContent(),
+															list: trackItems,
+															plugin:plugin
+														});
+													}
 												}));
 										}
 										
