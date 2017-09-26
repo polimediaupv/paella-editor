@@ -300,7 +300,8 @@
 				};
 				
 				$scope.getDepth = function(trackData) {
-					return $(window).width() - Math.round(trackData.e - trackData.s);
+					let depth = $(window).width() - Math.round(trackData.e - trackData.s);
+					return depth>0 ? depth : 1;
 				};
 				
 				$scope.getTrackItemId = function(trackData) {
