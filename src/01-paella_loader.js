@@ -52,6 +52,24 @@ Class ("paella.editor.PaellaPlayer", paella.PaellaPlayer,{
 		});
 	},
 
+	// This function is rewrited here to prevent load the skin style sheet
+	loadPaellaPlayer:function() {
+		var This = this;
+		this.loader = new paella.LoaderContainer('paellaPlayer_loader');
+		$('body')[0].appendChild(this.loader.domElement);
+		paella.events.trigger(paella.events.loadStarted);
+
+		paella.initDelegate.loadDictionary()
+			.then(function() {
+				return paella.initDelegate.loadConfig();
+			})
+
+			.then(function(config) {
+				This.accessControl = paella.initDelegate.initParams.accessControl;
+				This.onLoadConfig(config);
+			});
+	},
+
 	showPlaybackBar:function() {
 		// Use custom editor playback controls
 	},
