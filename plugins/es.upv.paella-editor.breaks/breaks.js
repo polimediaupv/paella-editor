@@ -1,4 +1,7 @@
 (function() {
+	
+	let g_breakDuration = 0.05;	// 5% of the video duration
+
 	class BreaksEditorPlugin extends paella.editor.MainTrackPlugin {
 		isEnabled() {
 			this._tracks = [];
@@ -78,7 +81,8 @@
 						return paella.player.videoContainer.duration(true);
 					})
 					.then((duration)=> {
-						let end = currentTime + 60;
+						let breakDuration = duration * g_breakDuration;
+						let end = currentTime + breakDuration;
 						end = end>duration ? duration : end;
 						this._tracks.push({ id:id, s: currentTime, e: end, text:"Break" });
 						this.notifyTrackChanged();
