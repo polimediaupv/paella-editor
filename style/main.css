@@ -188,6 +188,7 @@ side-bar .panel {
 side-bar .tab-item a {
 	cursor: pointer;
 	user-select: none;
+	color: white;
 }
 
 

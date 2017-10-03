@@ -5,7 +5,8 @@ const   gulp = require('gulp'),
         connect = require('gulp-connect'),
 		replace = require('gulp-replace'),
 		merge = require('gulp-merge-json'),
-		bower = require('gulp-bower');
+		bower = require('gulp-bower')
+		exec = require('child_process').execSync;
 
 var config = {
 	outDir:'build/',
@@ -29,6 +30,24 @@ var config = {
 	],
 	serverPort: 8080
 };
+
+function getVersion() {
+	let pkg = require('./package.json');
+	try {
+		let rev = exec('git show --oneline -s');
+		let re = /([a-z0-9:]+)\s/i;
+		let reResult = re.exec(rev);
+		if (reResult && !/fatal/.test(reResult[1])) {
+			return pkg.version + ' - build: ' + reResult[1];
+		}
+		else {
+			return pkg.version;
+		}
+	}
+	catch (e) {
+		return pkg.version;
+	}
+}
 
 gulp.task('bower', function() {
   return bower();
@@ -66,6 +85,7 @@ gulp.task("compile", function() {
 	return gulp.src(config.editorFiles)
 		.pipe(traceur())
 		.pipe(concat("paella_editor.js"))
+		.pipe(replace(/@version@/,getVersion()))
 		.pipe(gulp.dest(`${ config.outDir }${ config.editorDir }javascript/`));
 });
 

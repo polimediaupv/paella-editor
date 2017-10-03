@@ -3,6 +3,7 @@ var paella = paella || {};
 paella.editor = {};
 
 paella.editor.APP_NAME = "paella-editor";
+paella.editor.version = "@version@";
 
 (function(){
 	var app = angular.module(paella.editor.APP_NAME,[
