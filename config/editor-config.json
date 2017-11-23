@@ -1,5 +1,9 @@
 {
-    "editor": {},
+    "editor": {
+        "loginFailedUrl": "index.html${LOCATION.SEARCH}",
+        "alertMessage": "You are not authorized to view this resource",
+        "closeEditorUrl": "index.html${LOCATION.SEARCH}"
+    },
 	"plugins": {
 		"enablePluginsByDefault": true,
         "//**** Instructions: Disable any individual plugin by setting its enable property to false": {

@@ -4,8 +4,8 @@
 	
 	class TestPlugin extends paella.editor.TrackPlugin {
 		
-		checkEnabled() {
-			return Promise.resolve(true);
+		isEnabled() {
+			return Promise.resolve(false);
 		}
 		
 		getIndex() {
@@ -45,7 +45,7 @@
 		allowEditContent() {
 			return true;
 		}
-
+		
 		onTrackChanged(id,start,end) {
 			//console.log("Track changed: s=" + start + ", e=" + end);
 		}
@@ -55,11 +55,11 @@
 		}
 
 		onSelect(trackItemId) {
-			console.log('Track item selected: ' + this.getTrackName() + ", " + trackItemId);
+			this._currentId = trackItemId;
 		}
 
 		onUnselect(id) {
-			console.log('Track list unselected: ' + this.getTrackName() + ", " + id);
+			this._currentId = null;
 		}
 
 		onDblClick(trackData) {
@@ -94,7 +94,7 @@
 
 	class TestPlugin2 extends paella.editor.MainTrackPlugin {
 		
-		checkEnabled() {
+		isEnabled() {
 			return Promise.resolve(false);
 		}
 		
@@ -183,6 +183,104 @@
 
 	new TestPlugin2();
 	
+
+	class MilestoneTrackPlugin extends paella.editor.MainTrackPlugin {
+		
+		isEnabled() {
+			return Promise.resolve(false);
+		}
+
+		getSideBarPluginName() {
+			return "My side bar plugin 2";
+		}
+		
+		getIndex() {
+			return 10000;
+		}
+
+		getName() {
+			return "milestonePlugin";
+		}
+
+		getTrackName() {
+			return "Milestone test";
+		}
+
+		getColor() {
+			return "#AA2244";
+		}
+
+		getTextColor() {
+			return "black";
+		}
+
+		getTrackItems() {
+			return new Promise((resolve,reject) => {
+				resolve([{id:1,s:10,e:10,minDuration:0},{id:2,s:30,e:30,minDuration:0}]);
+			});
+		}
+
+		allowResize() {
+			return true;
+		}
+
+		allowDrag() {
+			return true;
+		}
+
+		allowEditContent() {
+			return true;
+		}
+
+		onTrackChanged(id,start,end) {
+			//console.log("Track changed: s=" + start + ", e=" + end);
+		}
+
+		onTrackContentChanged(id,content) {
+			//console.log("Track content changed: " + content);
+		}
+		
+		onSave() {
+			return new Promise((resolve,reject) => {
+				//setTimeout(function() {
+					resolve();
+				//},5000);
+			});
+		}
+
+		onSelect(trackItemId) {
+			console.log('Track item selected: ' + this.getTrackName() + ", " + trackItemId);
+		}
+
+		onUnselect(id) {
+			console.log('Track list unselected: ' + this.getTrackName() + ", " + id);
+		}
+
+		onDblClick(trackData) {
+		}
+
+		getTools() {
+			return [];
+		}
+
+		onToolSelected(toolName) {
+			//base.log.debug('Tool selected: ' + toolName);
+			paella.events.trigger(paella.events.documentChanged);
+		}
+
+		isToolEnabled(toolName) {
+			return true;
+		}
+
+		getSettings() {
+			return null;
+		}
+	}
+
+	new MilestoneTrackPlugin();
+
+
+
 	var app = angular.module(paella.editor.APP_NAME);
 	
 	app.directive("sidebar2",function() {
@@ -204,8 +302,12 @@
 	});
 
 	class TestSideBar2 extends paella.editor.SideBarPlugin {
-		checkEnabled() {
+		isEnabled() {
 			return Promise.resolve(false);
+		}
+
+		isVisible(PaellaEditor,PluginManager) {
+			return Promise.resolve(true);
 		}
 
 		getName() {
@@ -237,8 +339,12 @@
 	});
 	
 	class SidebarPlugin2 extends paella.editor.SideBarPlugin {
-		checkEnabled() {
+		isEnabled() {
 			return Promise.resolve(false);
+		}
+
+		isVisible(PaellaEditor,PluginManager) {
+			return Promise.resolve(PaellaEditor.currentTrack && PaellaEditor.currentTrack.pluginId=='trimmingEditorPluginV2');
 		}
 		
 		getName() {
@@ -251,6 +357,11 @@
 		
 		getDirectiveName() {
 			return "test-sidebar";
+		}
+
+		onSave() {
+			console.log("On save sidebar");
+			return Promise.resolve(true);
 		}
 	}
 	

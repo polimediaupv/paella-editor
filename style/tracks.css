@@ -3,6 +3,9 @@ time-line {
     width: 100%;
     height: 100%;
     display: block;
+	overflow: hidden;
+	user-select: none;
+	-moz-user-select: none;
 }
 
 time-line nav {
@@ -14,13 +17,17 @@ time-line nav {
 
 time-line .timeline-zoom-container {
 	width: 100%;
+    right: 0px;
+    left: 0px;
     overflow: auto;
     position: absolute;
     bottom: 36px;
     top: 50px;
-	background: radial-gradient(#424242 15%, transparent 16%) 0 0, radial-gradient(#424242 15%, transparent 16%) 8px 8px, radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%) 0 1px, radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%) 8px 9px;
-    background-color: #5D5D5D;
+    background: radial-gradient(#252525 15%, transparent 16%) 0 0, radial-gradient(#1b1b1b 15%, transparent 16%) 8px 8px, radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%) 0 1px, radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%) 8px 9px;
+    background-color: #3a3a3a;
     background-size: 8px 8px;
+    user-select: none;
+	-moz-user-select: none;
 }
 
 time-line .visualization-bar {
@@ -32,20 +39,39 @@ time-line .visualization-bar {
 	border-top: 2px solid #3E3E3E;
 }
 
+.track-title {
+	color: white;
+    position: absolute;
+    left: 5px;
+    top: 2px;
+    padding: 0px 0px 0px 0px;
+    margin: 0px 0px 0px 0px;
+    font-size: 15px;
+    opacity: 0.6;
+	pointer-events: none;
+}
+
+.main-track .track-title {
+	font-size: 25px;
+	top: 4px;
+}
+
+.track-title.current-track {
+	opacity: 1;
+}
+
 .timeline-content {
-	padding-left: 10px;
-    padding-right: 10px;
 }
 
 .track {
 	position: relative;
-	height: 20px;
-	margin-top: 5px;
+    height: 20px;
+    margin-top: 5px;
     margin-bottom: 5px;
     border-bottom: 1px solid #3C3B3B;
     border-top: 1px solid #3C3B3B;
-    background: radial-gradient(#575757 15%, transparent 16%) 0 0, radial-gradient(#575757 15%, transparent 16%) 8px 8px, radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%) 0 1px, radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%) 8px 9px;
-    background-color: #696666;
+    background: radial-gradient(#2f2e2e 15%, transparent 16%) 0 0, radial-gradient(#575757 15%, transparent 16%) 8px 8px, radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%) 0 1px, radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%) 8px 9px;
+    background-color: #484848;
     background-size: 8px 8px;
     box-shadow: inset 0px 0px 5px 0px rgba(0,0,0,0.5);
 }
@@ -87,7 +113,7 @@ time-line .visualization-bar {
 }
 
 .handler:first-child {
-	left: -7px;
+	left: 0px;
 	border-radius: 8px 0px 0px 8px;
 	border-top: 1px solid black;
     border-bottom: 1px solid black;
@@ -95,7 +121,7 @@ time-line .visualization-bar {
 }
 
 .handler:last-child {
-	right: -7px;
+	right: 0px;
 	border-radius: 0px 8px 8px 0px;
 	border-top: 1px solid black;
     border-bottom: 1px solid black;
@@ -109,6 +135,27 @@ time-line .visualization-bar {
 	margin-top: -1px;
 	border-top: 1px solid black;
     border-bottom: 1px solid black;
+	position: absolute;
+	left: 7px;
+	right: 7px;
+}
+
+.milestone {
+	width: 37px;
+	height: 100%;
+	border-left: 1px solid whitesmoke;
+	position: absolute;
+	top: -1px;
+	box-sizing: border-box;
+}
+
+.milestone-handler {
+	width: 100%;
+	height: 14px;
+	border-right: 1px solid whitesmoke;
+    border-top: 1px solid whitesmoke;
+    border-bottom: 1px solid whitesmoke;
+    border-radius: 0px 5px 5px 0px;
 }
 
 rzslider .rz-pointer {
@@ -141,4 +188,34 @@ rzslider {
 
 .navbar-inverse {
 	background-color: #525252;
+}
+
+.track-names {
+	padding-top: 5px;
+}
+
+.track-names-container {
+	margin-top: 35px;
+}
+
+.current-time {
+	margin-top: 21px;
+	color: white;
+}
+
+.track-header {
+	background-color: #4f4f4f;
+	color: white;
+    height: 20px;
+    padding-top: 2px;
+    width: 10%;
+    text-align: right;
+    padding-right: 5px;
+	cursor: pointer;
+	cursor: hand;
+}
+
+.track-header.main-track {
+	height: 35px;
+	padding-top: 9px;
 }

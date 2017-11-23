@@ -1,4 +1,5 @@
-<nav class="navbar navbar-inverse navbar-static-top">
+<nav class="navbar navbar-inverse navbar-static-top editor-command-bar">
+	<!--
 	<div class="btn-group" uib-dropdown is-open="trackSelector.isOpen">
 		<button id="single-button" type="button" class="btn btn-primary" uib-dropdown-toggle>
         {{ currentTrack.name || "Select track" }} <span class="caret"></span>
@@ -7,32 +8,41 @@
 			<li role="menuitem" ng-repeat="track in tracks"><a href="#" ng-click="selectTrack(track)">{{ track.name }}</a></li>
 		</ul>
 	</div>
+	-->
 
+	<h2 class="track-tool-title">{{ currentTrackName() | translate }}</h2>
 	<div class="btn-group">
 		<label ng-repeat="tool in tools" class="btn btn-primary" ng-class="{ 'active' : tool.name==currentTool && tool.isToggle, 'disabled' : !tool.isEnabled }"
-			ng-click="selectTool(tool)">{{ tool.name }}</label>
+			ng-click="selectTool(tool)">{{ tool.name | translate }}</label>
 	</div>
 
 	<div class="pull-right btn-group">
 		<div class="btn-group" uib-dropdown is-open="saveOptions.isOpen">
-			<button id="single-button" type="button" class="btn btn-primary" uib-dropdown-toggle>
-        {{ "paella_editor" | translate }} <span class="caret"></span>
-      </button>
+			<button id="single-button" type="button" class="btn btn-primary" ng-click="saveChanges()">{{ "save_changes" | translate }}</button>
+			<button type="button" class="btn btn-primary" uib-dropdown-toggle><span class="caret"></span></button>
 			<ul uib-dropdown-menu role="menu" class="pull-right" aria-labelledby="single-button">
 				<li role="menuitem"><a href="#" ng-click="saveAndClose()">{{ "save_and_close" | translate }}</a></li>
-				<li role="menuitem"><a href="#" ng-click="saveChanges()">{{ "save_changes" | translate }}</a></li>
 				<li role="menuitem"><a href="#" ng-click="closeEditor()">{{ "discard_and_close" | translate }}</a></li>
 			</ul>
 		</div>
 	</div>
 </nav>
+
 <div id="timeline-ruler-action"></div>
-<div class="timeline-zoom-container">
+<div class="timeline-zoom-container" ng-mousemove="mouseTrack($event)">
 	<div id="timeline-content" class="timeline-content">
 		<div id="timeline-ruler"></div>
-		<div id="time-mark" style="left:0%"></div>
-		<div class="track" ng-class="{ 'main-track':trackData.type=='master', 'selected':trackData.selected }" ng-mousedown="selectTrack(trackData)" ng-repeat="trackData in tracks">
-			<track data="trackData"></track>
+		<div id="time-mark" style="left:0%">
+			<div class="current-time">{{ currentTime }}</div>
+		</div>
+		<div id="mouse-tracker" style="left:0%" ng-click="setTimeToCursor($event)">
+			<div class="current-time" ng-class="{ 'left-side' : mouseTrackPosition/timeLineContainerSize>0.5 }">{{ mouseTrackTime }}</div>
+		</div>
+		<div class="track" ng-class="{ 'main-track':trackData.type=='master', 'selected':trackData.selected }"
+			 ng-mousedown="selectTrack(trackData)" ng-repeat="trackData in tracks"
+			 ng-click="setTimeToCursor($event)">
+			<h3 class="track-title" ng-class="{ 'current-track' : trackData.selected }" ng-style="trackTitleStyle">{{ trackData.name | translate }}</h3>
+			<track data="trackData" ng-click="$event.stopPropagation()"></track>
 		</div>
 	</div>
 </div>

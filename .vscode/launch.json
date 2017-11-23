@@ -1,0 +1,20 @@
+{
+        "version": "0.2.0",
+        "configurations": [
+            {
+                "type": "node",
+                "request": "launch",
+                "name": "Gulp serve",
+                "program": "${workspaceRoot}/node_modules/gulp/bin/gulp.js",
+                "args": [
+                    "serve"
+                ]
+            },
+            {
+                "type": "node",
+                "request": "launch",
+                "name": "Launch Program",
+                "program": "${file}"
+            }
+        ]
+    }
