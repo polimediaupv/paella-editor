@@ -1,8 +1,7 @@
 
 
-(function() {
-	
-	class TestPlugin extends paella.editor.TrackPlugin {
+paella.editor.addPlugin(() => {
+	return class TestPlugin extends paella.editor.TrackPlugin {
 		
 		isEnabled() {
 			return Promise.resolve(false);
@@ -89,10 +88,10 @@
 			return null;
 		}
 	}
+});
 
-	new TestPlugin();
-
-	class TestPlugin2 extends paella.editor.MainTrackPlugin {
+paella.editor.addPlugin(() => {
+	return class TestPlugin2 extends paella.editor.MainTrackPlugin {
 		
 		isEnabled() {
 			return Promise.resolve(false);
@@ -180,12 +179,10 @@
 			return null;
 		}
 	}
+});	
 
-	new TestPlugin2();
-	
-
-	class MilestoneTrackPlugin extends paella.editor.MainTrackPlugin {
-		
+paella.editor.addPlugin(() => {
+	return class MilestoneTrackPlugin extends paella.editor.MainTrackPlugin {
 		isEnabled() {
 			return Promise.resolve(false);
 		}
@@ -276,12 +273,10 @@
 			return null;
 		}
 	}
+});
 
-	new MilestoneTrackPlugin();
-
-
-
-	var app = angular.module(paella.editor.APP_NAME);
+paella.editor.addPlugin(() => {
+	let app = angular.module(paella.editor.APP_NAME);
 	
 	app.directive("sidebar2",function() {
 		return {
@@ -301,7 +296,7 @@
 		}
 	});
 
-	class TestSideBar2 extends paella.editor.SideBarPlugin {
+	return class TestSideBar2 extends paella.editor.SideBarPlugin {
 		isEnabled() {
 			return Promise.resolve(false);
 		}
@@ -325,8 +320,10 @@
 			return "sidebar2";
 		}
 	}
+});
 
-	new TestSideBar2();
+paella.editor.addPlugin(() => {
+	let app = angular.module(paella.editor.APP_NAME);
 	
 	app.directive("testSidebar",function() {
 		return {
@@ -338,7 +335,7 @@
 		}
 	});
 	
-	class SidebarPlugin2 extends paella.editor.SideBarPlugin {
+	return class SidebarPlugin2 extends paella.editor.SideBarPlugin {
 		isEnabled() {
 			return Promise.resolve(false);
 		}
@@ -363,9 +360,6 @@
 			console.log("On save sidebar");
 			return Promise.resolve(true);
 		}
-	}
-	
-	new SidebarPlugin2();
-	
-})();
+	}	
+});
 

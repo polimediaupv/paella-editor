@@ -57,6 +57,8 @@ Class ("paella.editor.PaellaPlayer", paella.PaellaPlayer,{
 		var This = this;
 		this.loader = new paella.LoaderContainer('paellaPlayer_loader');
 		$('body')[0].appendChild(this.loader.domElement);
+
+		paella.editor.registerPluginClasses();
 		paella.events.trigger(paella.events.loadStarted);
 
 		paella.initDelegate.loadDictionary()

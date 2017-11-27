@@ -1,4 +1,4 @@
-(function() {
+paella.editor.addPlugin(() => {
 	let app = angular.module(paella.editor.APP_NAME);
 
 	app.directive("trackInfo",function() {
@@ -19,7 +19,7 @@
 		}
 	});
 
-	class TrackInfoPlugin extends paella.editor.SideBarPlugin {
+	return class TrackInfoPlugin extends paella.editor.SideBarPlugin {
 		isEnabled() {
 			return Promise.resolve(true);
 		}
@@ -40,6 +40,4 @@
 			return "track-info";
 		}
 	}
-
-	new TrackInfoPlugin();
-})();
+});

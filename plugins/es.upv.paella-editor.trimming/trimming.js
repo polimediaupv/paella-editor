@@ -1,5 +1,5 @@
-(function() {
-	class TrimmingEditorPlugin extends paella.editor.MainTrackPlugin {
+paella.editor.addPlugin(() => {
+	return class TrimmingEditorPlugin extends paella.editor.MainTrackPlugin {
 		isEnabled() {
 			this._trackItems = [];
 			return new Promise((resolve,reject) => {
@@ -144,6 +144,4 @@
 			});
 		}
 	}
-
-	new TrimmingEditorPlugin();
-})();
+});

@@ -1,8 +1,8 @@
-(function() {
+paella.editor.addPlugin(() => {
 	
 	let g_breakDuration = 0.05;	// 5% of the video duration
 
-	class BreaksEditorPlugin extends paella.editor.MainTrackPlugin {
+	return class BreaksEditorPlugin extends paella.editor.MainTrackPlugin {
 		isEnabled() {
 			this._tracks = [];
 			return new Promise((resolve) => {
@@ -130,6 +130,4 @@
 			});
 		}
 	}
-
-	new BreaksEditorPlugin();
-})();
+});

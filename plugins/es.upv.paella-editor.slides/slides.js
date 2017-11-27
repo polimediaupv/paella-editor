@@ -1,5 +1,5 @@
-(function() {
-	class SlidesEditorPlugin extends paella.editor.MainTrackPlugin {
+paella.editor.addPlugin(() => {
+	return class SlidesEditorPlugin extends paella.editor.MainTrackPlugin {
 		isEnabled() {
 			let frames = paella.player.videoLoader.frameList;
 			return Promise.resolve(Object.keys(frames).length);
@@ -68,6 +68,4 @@
 			return Promise.resolve();
 		}
 	}
-
-	new SlidesEditorPlugin();
-})();
+});

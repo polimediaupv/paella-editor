@@ -3,6 +3,8 @@
 	let plugins = [];
 	let pluginsLoaded = false;
 
+	let g_pluginClasses = [];
+
 	function registeredPlugins(callback) {
 		var enablePluginsByDefault = false;
 		var pluginsConfig = {};
@@ -28,6 +30,22 @@
 	paella.editor.registerPlugin = function(plugin) {
 		plugins.push(plugin);
 	}
+
+	// This function is called from paella.editor.PaellaPlayer.loadPaellaPlayer.
+	// The function creates the editor plugin instances
+	paella.editor.registerPluginClasses = function() {
+		g_pluginClasses.forEach((PluginClass) => {
+			let instance = new PluginClass();
+			console.log("Registering plugin " + instance.getName());
+			paella.editor.registerPlugin(instance);
+		});
+	}
+
+	// This function is used to add a plugin class, that will be instantiated from
+	// the paella.editor.registerPluginClasses() function
+	paella.editor.addPlugin = function(pluginClass) {
+		g_pluginClasses.push(pluginClass());
+	};
 
 	app.factory("PluginManager", ["$timeout","$rootScope",function($timeout,$rootScope) {
 		let loadingPlugins = false;
@@ -167,8 +185,6 @@
 
 	class EditorPlugin {
 		constructor() {
-			console.log("Registering plugin " + this.getName());
-			paella.editor.registerPlugin(this);
 		}
 		
 		isEnabled() {
@@ -199,8 +215,6 @@
 			super();
 			
 			this.type = 'editorTrackPlugin';
-
-			
 		}
 
 		notifyTrackChanged() {
