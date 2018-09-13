@@ -6,13 +6,21 @@ const   gulp = require('gulp'),
 		replace = require('gulp-replace'),
 		merge = require('gulp-merge-json'),
 		bower = require('gulp-bower')
+		minimist = require('minimist'),
 		exec = require('child_process').execSync;
+
+var knownOptions = {
+	string: 'paellaDir',
+	default: { 'paellaDir': '../paella/build/player' }
+}
+
+var options = minimist(process.argv.slice(2), knownOptions)
 
 var config = {
 	outDir:'build/',
 	editorDir:'player/',
 	buildTest:true,
-	paellaDir:'bower_components/paella/player',
+	paellaDir:options.paellaDir,
 	editorFiles: [
 		"src/*.js",
 		"plugins/*/*.js"

@@ -57,6 +57,31 @@ Class ("paella.editor.PaellaPlayer", paella.PaellaPlayer,{
 		var This = this;
 		this.loader = new paella.LoaderContainer('paellaPlayer_loader');
 		$('body')[0].appendChild(this.loader.domElement);
+		paella.editor.registerPluginClasses();
+		paella.events.trigger(paella.events.loadStarted);
+
+
+
+
+
+
+		paella.initDelegate.loadDictionary()
+			.then(function() {
+				return paella.initDelegate.loadConfig();
+			})
+
+			.then(function(config) {
+				This.accessControl = paella.initDelegate.initParams.accessControl;
+				This.videoLoader = paella.initDelegate.initParams.videoLoader;
+				This.onLoadConfig(config);
+			});
+
+
+
+
+
+
+		/*
 
 		paella.editor.registerPluginClasses();
 		paella.events.trigger(paella.events.loadStarted);
@@ -70,6 +95,7 @@ Class ("paella.editor.PaellaPlayer", paella.PaellaPlayer,{
 				This.accessControl = paella.initDelegate.initParams.accessControl;
 				This.onLoadConfig(config);
 			});
+			*/
 	},
 
 	showPlaybackBar:function() {

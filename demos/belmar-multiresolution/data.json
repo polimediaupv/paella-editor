@@ -41,6 +41,7 @@
 					}
 				]
 			},
+			"content": "presenter",
 			"preview": "http://paellaplayer.upv.es/demo/repository/belmar-multiresolution/preview/presenter_cut.jpg"
 		},
 		{
@@ -136,6 +137,7 @@
 					}
 				]
 			},
+			"content": "presentation",
 			"preview": "http://paellaplayer.upv.es/demo/repository/belmar-multiresolution/preview/presentation_cut.jpg"
 		}
 	],
