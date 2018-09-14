@@ -60,11 +60,6 @@ Class ("paella.editor.PaellaPlayer", paella.PaellaPlayer,{
 		paella.editor.registerPluginClasses();
 		paella.events.trigger(paella.events.loadStarted);
 
-
-
-
-
-
 		paella.initDelegate.loadDictionary()
 			.then(function() {
 				return paella.initDelegate.loadConfig();
@@ -75,27 +70,6 @@ Class ("paella.editor.PaellaPlayer", paella.PaellaPlayer,{
 				This.videoLoader = paella.initDelegate.initParams.videoLoader;
 				This.onLoadConfig(config);
 			});
-
-
-
-
-
-
-		/*
-
-		paella.editor.registerPluginClasses();
-		paella.events.trigger(paella.events.loadStarted);
-
-		paella.initDelegate.loadDictionary()
-			.then(function() {
-				return paella.initDelegate.loadConfig();
-			})
-
-			.then(function(config) {
-				This.accessControl = paella.initDelegate.initParams.accessControl;
-				This.onLoadConfig(config);
-			});
-			*/
 	},
 
 	showPlaybackBar:function() {
