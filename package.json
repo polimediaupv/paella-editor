@@ -9,23 +9,20 @@
   },
   "dependencies": {
     "angular": "^1.5.0",
-    "angular-bootstrap": "^0.12.2",
     "angular-resource": "^1.5.0",
     "angular-route": "^1.5.0",
     "angular-translate": "^2.11.0",
+    "angular-ui-bootstrap": "^2.5.6",
     "angularjs-slider": "^2.9.0",
-    "bootstrap": "^3.3.6",
-    "traceur": "^0.0.102"
+    "bootstrap": "^3.3.6"
   },
   "devDependencies": {
     "gulp": "^3.9.1",
-    "gulp-bower": "0.0.13",
     "gulp-concat": "^2.6.0",
     "gulp-connect": "^3.1.0",
     "gulp-merge-json": "^0.3.0",
     "gulp-replace": "^0.5.4",
     "gulp-sourcemaps": "^1.6.0",
-    "gulp-traceur": "^0.17.2",
     "minimist": "^1.2.0"
   },
   "scripts": {}

@@ -1,11 +1,9 @@
 const   gulp = require('gulp'),
         sourcemaps = require('gulp-sourcemaps'),
-        traceur = require('gulp-traceur'),
         concat = require('gulp-concat'),
         connect = require('gulp-connect'),
 		replace = require('gulp-replace'),
 		merge = require('gulp-merge-json'),
-		bower = require('gulp-bower')
 		minimist = require('minimist'),
 		exec = require('child_process').execSync;
 
@@ -26,15 +24,14 @@ var config = {
 		"plugins/*/*.js"
 	],
 	deps: [
-		'bower_components/angular/angular.min.js',
-		'bower_components/angular/angular.js',
-		'bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js',
-		'bower_components/angular-route/angular-route.min.js',
-		'bower_components/angular-resource/angular-resource.min.js',
-		'bower_components/angular-translate/angular-translate.min.js',
-		'bower_components/bootstrap/dist/js/bootstrap.min.js',
-		'bower_components/angularjs-slider/dist/rzslider.js',
-		'bower_components/traceur/traceur.min.js'
+		'node_modules/angular/angular.min.js',
+		'node_modules/angular/angular.js',
+		'node_modules/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js',
+		'node_modules/angular-route/angular-route.min.js',
+		'node_modules/angular-resource/angular-resource.min.js',
+		'node_modules/angular-translate/dist/angular-translate.min.js',
+		'node_modules/bootstrap/dist/js/bootstrap.min.js',
+		'node_modules/angularjs-slider/dist/rzslider.js'
 	],
 	serverPort: 8080
 };
@@ -56,10 +53,6 @@ function getVersion() {
 		return pkg.version;
 	}
 }
-
-gulp.task('bower', function() {
-  return bower();
-});
 
 gulp.task("configTest", function() {
 	config.outDir = 'build/';
@@ -91,7 +84,7 @@ gulp.task("webserver", function() {
 
 gulp.task("compile", function() {
 	return gulp.src(config.editorFiles)
-		.pipe(traceur())
+//		.pipe(traceur())
 		.pipe(concat("paella_editor.js"))
 		.pipe(replace(/@version@/,getVersion()))
 		.pipe(gulp.dest(`${ config.outDir }${ config.editorDir }javascript/`));
@@ -109,7 +102,7 @@ function $p(task) {
 	});
 }
 
-gulp.task("copy", ['bower'], function() {
+gulp.task("copy", function() {
 	let promises = [
 		$p(gulp.src('editor.html')
 			.pipe(gulp.dest(`${config.outDir}${ config.editorDir }`))),
@@ -127,11 +120,11 @@ gulp.task("copy", ['bower'], function() {
 		$p(gulp.src(config.deps)
 			.pipe(gulp.dest(`${config.outDir}${ config.editorDir }javascript/`))),
 
-		$p(gulp.src(['bower_components/bootstrap/dist/css/bootstrap.min.css',
-				'bower_components/angularjs-slider/dist/rzslider.min.css'])
+		$p(gulp.src(['node_modules/bootstrap/dist/css/bootstrap.min.css',
+				'node_modules/angularjs-slider/dist/rzslider.min.css'])
 			.pipe(gulp.dest(`${config.outDir}${ config.editorDir }resources/editor/css`))),
 		
-		$p(gulp.src('bower_components/bootstrap/dist/fonts/*')
+		$p(gulp.src('node_modules/bootstrap/dist/fonts/*')
 			.pipe(gulp.dest(`${config.outDir}${ config.editorDir }resources/editor/fonts`)))
 	];
 
