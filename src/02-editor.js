@@ -108,6 +108,13 @@
 								url = url.replace(/\$\{\s*LOCATION\.SEARCH\s*\}/,location.search);
 								location.href = url;
 							}
+						})
+						.catch(()=>{
+							alert(base.dictionary.translate("You are not authorized to view this resource"));
+							let editorConfig = this.config.editor || {};
+							let url = editorConfig.loginFailedUrl || "index.html${LOCATION.SEARCH}";
+							url = url.replace(/\$\{\s*LOCATION\.SEARCH\s*\}/,location.search);
+							location.href = url;
 						});
 				},
 				() => {
