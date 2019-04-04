@@ -1,8 +1,8 @@
 
-Class ("paella.editor.PaellaPlayer", paella.PaellaPlayer,{
+class PaellaPlayerEditor extends paella.PaellaPlayer {
 	
-	initialize:function(playerId) {
-		this.parent(playerId);
+	constructor(playerId) {
+		super(playerId);
 		paella.events.bind(paella.events.loadComplete, function() {
 			paella.$editor.load()
 				.then(function() {
@@ -50,10 +50,10 @@ Class ("paella.editor.PaellaPlayer", paella.PaellaPlayer,{
 			$(pauseBtn).hide();
 			$(playBtn).show();
 		});
-	},
+	}
 
 	// This function is rewrited here to prevent load the skin style sheet
-	loadPaellaPlayer:function() {
+	loadPaellaPlayer() {
 		var This = this;
 		this.loader = new paella.LoaderContainer('paellaPlayer_loader');
 		$('body')[0].appendChild(this.loader.domElement);
@@ -70,17 +70,19 @@ Class ("paella.editor.PaellaPlayer", paella.PaellaPlayer,{
 				This.videoLoader = paella.initDelegate.initParams.videoLoader;
 				This.onLoadConfig(config);
 			});
-	},
+	}
 
-	showPlaybackBar:function() {
+	showPlaybackBar() {
 		// Use custom editor playback controls
-	},
+	}
 	
-	play:function() {
+	play() {
 		// Use custom editor playback controls
 		this.videoContainer.play();
 	}
-});
+}
+
+paella.editor.PaellaPlayer = PaellaPlayerEditor;
 
 // Overwrite PaellaPlayer class
 var PaellaPlayer = paella.editor.PaellaPlayer;
