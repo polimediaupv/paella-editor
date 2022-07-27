@@ -26,5 +26,8 @@
     "gulp-sourcemaps": "^1.6.0",
     "minimist": "^1.2.0"
   },
-  "scripts": {}
+  "scripts": {},
+  "overrides": {
+    "graceful-fs": "^4.2.10"
+  }
 }
